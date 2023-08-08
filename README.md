@@ -9,7 +9,7 @@
 #### 安装教程
 在Yunzai-Bot根目录执行以下命令
 ```
-git clone --depth=1 https://gitee.com/qiannqq/gi-plugin.git ./plugins/gi-plugin/
+git clone --depth=1 https://gitee.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
 ```
 
 #### 指令以及其作用
