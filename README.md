@@ -1,23 +1,37 @@
 # 群互动插件 Gi-plugin
 
-#### 介绍
-群友之间互动娱乐 云崽互动插件
 
-#### 软件架构
-软件架构说明
 
+<p align="center">
+  <img src="https://gitee.com/qiannqq/gi-plugin/raw/master/resources/logo.png" alt="Image" width="200" height="200">
+</p>
 
 #### 安装教程
+在Yunzai-Bot根目录执行以下命令
+```
+git clone --depth=1 https://gitee.com/qiannqq/gi-plugin.git ./plugins/gi-plugin/
+```
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### 指令以及其作用
+| 指令   | 作用                                | 权限 |
+|------|-----------------------------------|----|
+| 扔漂流瓶 | 扔出漂流瓶，等待有缘人捡到（每天只能扔一次）            | 用户 |
+| 捡漂流瓶 | 捞出漂流瓶，查看漂流瓶里的内容（捡到就销毁，每天只能捡一次）    | 用户 |
+| 每日打卡 | 随机抽取幸运值（每天只能抽取一次，重复使用可查看当天抽到的幸运值） | 用户 |
+| 今日欧皇 | 查看当天诞生的首位100幸运值的欧皇                | 用户 |
+| 互动帮助 | 查看互动插件帮助                          | 用户 |
+| 互动更新 | 更新Gi-plugin插件                     | 主人 |
+| 互动强制更新 | 忽略本地冲突，直接更新Gi-plugin插件 | 主人 |
 
-#### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+<details>
+<summary>画饼ing</summary>
+
+1.  增加更多互动娱乐相关内容
+2.  增加帮助图片
+3.  打断+1和跟随+1
+
+</details>
 
 #### 参与贡献
 
@@ -27,11 +41,11 @@
 4.  新建 Pull Request
 
 
-#### 特技
+#### 声明
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+ - 严禁用于任何商业用途和非法行为
+ - 严禁使用本插件进行盈利等行为
+
+#### 其他
+
+[我的个人博客，欢迎光临](http://blog.moqy.top)
