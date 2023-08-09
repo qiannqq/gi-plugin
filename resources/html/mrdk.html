@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mrdk</title>
+<style>
+  @font-face {
+    font-family: 'HYWenHei';
+    src: url('../../../resources/font/HYWenHei-55W.ttf');
+  }
+
+  html, body {
+    height: 300px;
+    width: 300px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../../../plugins/Gi-plugin/resources/img/mrdk.jpg');
+    background-size: cover;
+  }
+  
+  .number {
+    position: absolute;
+    top: 110px;
+    left: 140px;
+    transform: translate(-50%, -50%);
+    font-size: 5rem;
+    color: white;
+    text-align: center;
+    font-family: 'HYWenHei', sans-serif;
+  }
+</style>
+</head>
+<body>
+  <div class="number">{{zhi}}</div>
+</body>
+</html>

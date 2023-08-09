@@ -1,6 +1,28 @@
 import plugin from '../../../lib/plugins/plugin.js';
 import { segment } from "icqq";
 import puppeteer from "../../../lib/puppeteer/puppeteer.js"
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import image from '../model/image.js';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const parentDir = join(__dirname, '..');
+const mrdkimg = `${parentDir}/resources/img/mrdk.jpg`
+
+/**async function image(e, file, name, obj) {
+  let data = {
+    quality: 100,
+    tplFile: `./plugins/Gi-plugin/resources/html/mrdk.html`,
+    ...obj
+  }
+  let img = puppeteer.screenshot(name, {
+    ...data
+  })
+  let msg = [segment.at(e.user_id)
+    `\n你今天的幸运值是……\n`,
+  img]
+  e.reply(msg)
+}**/
 
 export class meiridaka extends plugin {
     constructor(){
@@ -45,10 +67,12 @@ export class meiridaka extends plugin {
           }
           const zhi = Math.floor(Math.random() * 101);//随机抽取数字,数字范围可以自己调
           console.log(zhi);
-          let msg = [
-            segment.at(e.user_id),
-            `\n打卡成功！！\n你今天抽到的幸运值为`+zhi+`点`
-        ]//将消息设置为变量msg
+
+          //let msg = [
+            //segment.at(e.user_id),
+            //`\n打卡成功！！\n你今天抽到的幸运值为`+zhi+`点`
+        //]
+
         if (zhi === 100){//判断本次抽取的幸运值是否为100
           let date_time3 = await redis.get(`Yunzai:ohuangriqi_daka`);date_time3 = JSON.parse(date_time3); //获取上一次欧皇诞生时间
           if (date_time3 !== date_time){ //判断上一次欧皇诞生时间是否为今天
@@ -59,9 +83,16 @@ export class meiridaka extends plugin {
             redis.set(`Yunzai:ohuangriqi_daka`, JSON.stringify(date_time));//写入欧皇诞生的时间（……
           }
         }
-        e.reply(msg)//处理方式
+        //e.reply(msg)//处理方式
         redis.set(`Yunzai:meiridaka3qn:${e.user_id}_daka`, JSON.stringify(date_time));//将当前日期写入redis防止重复抽取
         redis.set(`Yunzai:meiridakazhi:${e.user_id}_daka`, JSON.stringify(zhi));//将打卡获取的幸运值写入redis
+        const { img } = image(e, 'mrdk', 'mrdk', {
+          zhi,
+        })
+        let msg = [segment.at(e.user_id),
+          `\n你今天的幸运值是……\n`,img
+        ]
+        e.reply(msg)
         return true;//结束运行
     }
     async 今日欧皇(e) {
