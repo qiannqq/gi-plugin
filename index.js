@@ -29,7 +29,7 @@ logger.info(`Created By 千奈千祁`)
 logger.info(`-----------------------------`)
 
 
-//加载插件
+
 const files = fs
   .readdirSync('./plugins/Gi-plugin/apps')
   .filter((file) => file.endsWith('.js'))
@@ -41,7 +41,7 @@ const files = fs
 ret = await Promise.allSettled(ret)
 
 
-//错误提示
+
 let apps = {}
 for (let i in files) {
   let name = files[i].replace('.js', '')
