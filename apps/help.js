@@ -1,5 +1,5 @@
 import plugin from "../../../lib/plugins/plugin.js";
-import puppeteer from "../../../lib/puppeteer/puppeteer.js"
+import image from "../model/image.js";
 
 export class example2 extends plugin {
     constructor(){
@@ -17,17 +17,8 @@ export class example2 extends plugin {
         })
     }
     async help(e){
-        image(e, 'help', 'help', {});
+        const { img } = image(e, 'help', 'help', {})
+        e.reply(img)
         return true;
     }
-}
-async function image(e, file, name) {
-    let data = {
-        quality: 100,
-        tplFile: `./plugins/Gi-plugin/resources/html/help.html`,
-    }
-    let img = puppeteer.screenshot(name, {
-        ...data,
-      })
-      e.reply(img)
 }
