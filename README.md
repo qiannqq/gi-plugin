@@ -28,7 +28,7 @@ git clone --depth=1 https://gitee.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
 <summary>画饼ing</summary>
 
 1.  增加更多互动娱乐相关内容
-2.  增加帮助图片
+2.  增加帮助图片 [√]
 3.  打断+1和跟随+1
 
 </details>
