@@ -23,6 +23,7 @@ export class update extends plugin {
     }
 
     async 互动插件更新(e) {
+        e.reply(`[Gi-plugin]正在执行更新操作，请稍等`)
         const parentDir = path.join(__dirname, '..'); // 上级目录路径
         const gitPullCmd = 'git pull';
         const gitPullForceCmd = 'git reset --hard origin/master && git pull --force';
