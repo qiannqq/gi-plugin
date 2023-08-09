@@ -1,18 +1,5 @@
 import plugin from "../../../lib/plugins/plugin.js";
 import puppeteer from "../../../lib/puppeteer/puppeteer.js"
-//import help from "../resources/html/help.html"
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const Text = 
-`===【Gi插件使用帮助】===
-扔漂流瓶：扔出一个漂流瓶，每天只能扔一次
-捡漂流瓶：捞出一个漂流瓶，每天只能捡一次
-每日打卡：随机抽取幸运值，每天只能抽一次
-互动更新：互动插件更新
-互动强制更新：忽略本地冲突，强制更新`
 
 export class example2 extends plugin {
     constructor(){
@@ -30,11 +17,7 @@ export class example2 extends plugin {
         })
     }
     async help(e){
-        //e.reply(Text)
-        //e.reply(__dirname)
-        image(e, 'help', 'help', {
-
-        });
+        image(e, 'help', 'help', {});
         return true;
     }
 }
