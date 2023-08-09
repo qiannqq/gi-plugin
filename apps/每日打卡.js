@@ -1,21 +1,22 @@
 import plugin from '../../../lib/plugins/plugin.js';
 import { segment } from "icqq";
+import puppeteer from "../../../lib/puppeteer/puppeteer.js"
 
 export class meiridaka extends plugin {
     constructor(){
       super({
-        name: '每日打卡',
-        dsc: '每日打卡抽取幸运值（@千奈千祁）',
+        name: 'Gi互动:每日打卡',
+        dsc: 'Gi互动:每日打卡',
         event: 'message',
         priority: 1,
         rule:[
             {
                 reg: '^每日打卡$',
-                fnc: 'meiridaka3qn'
+                fnc: '每日打卡'
             },
             {
                 reg: '^今日欧皇$',
-                fnc: 'todayohuang'
+                fnc: '今日欧皇'
             },
             {
                 reg: '^让我看看你的卡(.*)$',
@@ -24,7 +25,7 @@ export class meiridaka extends plugin {
         ]
       });
     }
-    async meiridaka3qn(e) {
+    async 每日打卡(e) {
         //获取当前日期
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -63,7 +64,7 @@ export class meiridaka extends plugin {
         redis.set(`Yunzai:meiridakazhi:${e.user_id}_daka`, JSON.stringify(zhi));//将打卡获取的幸运值写入redis
         return true;//结束运行
     }
-    async todayohuang(e) {
+    async 今日欧皇(e) {
         //获取当前日期
         const currentDate = new Date();
         const year = currentDate.getFullYear();
