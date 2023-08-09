@@ -14,19 +14,19 @@ const help =
 互动更新：互动插件更新
 互动强制更新：忽略本地冲突，强制更新`
 
-export class meiridaka extends plugin {
+export class plp extends plugin {
     constructor(){
         super({
-            name: '漂流瓶',
-            dsc: '漂流瓶',
+            name: 'Gi互动:漂流瓶',
+            dsc: 'Gi互动:漂流瓶',
             event: 'message',
             priority: 1,
             rule:[
                 {
-                    reg: '^#?扔漂流瓶$',
+                    reg: '^扔漂流瓶$',
                     fnc: '扔漂流瓶'
                 },{
-                    reg: '^#?捡漂流瓶$',
+                    reg: '^捡漂流瓶$',
                     fnc: '捡漂流瓶'
                 },{
                     reg: '^#?(Gi|互动)帮助$',
@@ -83,7 +83,6 @@ export class meiridaka extends plugin {
             let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp2`);date_time2 = JSON.parse(date_time2);
             if (date_time === date_time2){
                 e.reply(`你今天已经捡过漂流瓶，每天只能捡一次哦~`)
-                return true;
             }
             const randomIndex = Math.floor(Math.random() * Piaoliu.length);
             plp2 = Piaoliu[randomIndex];
