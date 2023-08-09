@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+        width: 1080px;
+        height: 2600px;
+    }
+    table {
+      margin: 0 auto;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .centered {
+      text-align: center;
+    }
+    .red {
+      color: red;
+    }
+    th {
+        font-size: 8em;
+    }
+    td {
+        font-size: 8em;
+    }
+    p {
+        font-size: 6em;
+    }
+  </style>
+</head>
+<body>
+  <div class="centered">
+    <p class="red">考生姓名：{{user_name}}</p>
+    <p class="red">考生学号：{{user_id}}</p>
+  </div>
+  <table>
+    <tr>
+      <th>科目</th>
+      <th>分数</th>
+    </tr>
+    <tr>
+      <td>语文</td>
+      <td>{{yuwen}}</td>
+    </tr>
+    <tr>
+      <td>数学</td>
+      <td>{{shuxue}}</td>
+    </tr>
+    <tr>
+      <td>英语</td>
+      <td>{{yingyu}}</td>
+    </tr>
+    <tr>
+      <td>物理</td>
+      <td>{{wuli}}</td>
+    </tr>
+    <tr>
+      <td>化学</td>
+      <td>{{huaxue}}</td>
+    </tr>
+    <tr>
+      <td>政治</td>
+      <td>{{zhengzhi}}</td>
+    </tr>
+    <tr>
+        <td>总分</td>
+        <td>{{zongfen}}</td>
+    </tr>
+  </table>
+</body>
+</html>
