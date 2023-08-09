@@ -1,28 +1,7 @@
 import plugin from '../../../lib/plugins/plugin.js';
 import { segment } from "icqq";
 import puppeteer from "../../../lib/puppeteer/puppeteer.js"
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
 import image from '../model/image.js';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const parentDir = join(__dirname, '..');
-const mrdkimg = `${parentDir}/resources/img/mrdk.jpg`
-
-/**async function image(e, file, name, obj) {
-  let data = {
-    quality: 100,
-    tplFile: `./plugins/Gi-plugin/resources/html/mrdk.html`,
-    ...obj
-  }
-  let img = puppeteer.screenshot(name, {
-    ...data
-  })
-  let msg = [segment.at(e.user_id)
-    `\n你今天的幸运值是……\n`,
-  img]
-  e.reply(msg)
-}**/
 
 export class meiridaka extends plugin {
     constructor(){
