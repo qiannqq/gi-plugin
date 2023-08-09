@@ -23,10 +23,10 @@ export class plp extends plugin {
             priority: 1,
             rule:[
                 {
-                    reg: '^扔漂流瓶$',
+                    reg: '^#?扔漂流瓶$',
                     fnc: '扔漂流瓶'
                 },{
-                    reg: '^捡漂流瓶$',
+                    reg: '^#?捡漂流瓶$',
                     fnc: '捡漂流瓶'
                 },{
                     reg: '^#?(Gi|互动)帮助$',
@@ -83,6 +83,7 @@ export class plp extends plugin {
             let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp2`);date_time2 = JSON.parse(date_time2);
             if (date_time === date_time2){
                 e.reply(`你今天已经捡过漂流瓶，每天只能捡一次哦~`)
+                return true;
             }
             const randomIndex = Math.floor(Math.random() * Piaoliu.length);
             plp2 = Piaoliu[randomIndex];
