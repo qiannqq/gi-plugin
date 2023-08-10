@@ -2,6 +2,7 @@ import { exec } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import cfg from '../../../lib/config/config.js'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -23,6 +24,7 @@ export class update extends plugin {
     }
 
     async 互动插件更新(e) {
+        let botname = cfg.package.name
         e.reply(`[Gi-plugin]正在执行更新操作，请稍等`)
         const parentDir = path.join(__dirname, '..'); // 上级目录路径
         const gitPullCmd = 'git pull';
@@ -33,14 +35,13 @@ export class update extends plugin {
         if (e.msg.includes("强制")) {
             command = gitPullForceCmd;
         }
-
         exec(command, { cwd: parentDir }, (error, stdout, stderr) => {
             if (error) {
                 e.reply(`更新失败！\n${error.message}`);
             } else if (stdout.includes('Already up to date.')) {
                 e.reply(`互动插件已经是最新的了`);
             } else {
-                e.reply(`互动插件更新成功，请重新云崽以应用更新`);
+                e.reply(`互动插件更新成功，请重新${botname}以应用更新`);
             }
         });
     }
