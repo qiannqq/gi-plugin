@@ -7,7 +7,7 @@
 </p>
 
 #### 安装教程
-在Yunzai-Bot根目录执行以下命令
+在Yunzai-Bot根目录执行以下命令   **安装时请注意文件夹大小写！** 
 ```
 git clone --depth=1 https://gitee.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
 ```
