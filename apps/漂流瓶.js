@@ -60,6 +60,7 @@ export class plp extends plugin {
             }
           })
         e.reply(`你的漂流瓶成功扔出去了~`)
+        logger.mark(`[Gi互动:扔漂流瓶]用户${e.user_id}扔了一个漂流瓶【${this.e.msg}】`)
         redis.set(`Yunzai:giplugin-${e.user_id}_plp`, JSON.stringify(date_time));
     }
     async 捡漂流瓶(e){
