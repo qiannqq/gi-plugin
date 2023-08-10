@@ -6,14 +6,6 @@ import fs from 'fs'
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
 
-/**const help = 
-`===【Gi插件使用帮助】===
-扔漂流瓶：扔出一个漂流瓶，每天只能扔一次
-捡漂流瓶：捞出一个漂流瓶，每天只能捡一次
-每日打卡：随机抽取幸运值，每天只能抽一次
-互动更新：互动插件更新
-互动强制更新：忽略本地冲突，强制更新`**/
-
 export class plp extends plugin {
     constructor(){
         super({
@@ -28,17 +20,10 @@ export class plp extends plugin {
                 },{
                     reg: '^#?捡漂流瓶$',
                     fnc: '捡漂流瓶'
-                }//,{
-                   // reg: '^#?(Gi|互动)帮助$',
-                    //fnc: 'help'
-                //}
+                }
             ]
         })
     }
-    //async help(e){
-    //    e.reply(help)
-    //    return true;
-    //}
     async 扔漂流瓶(e){
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -61,6 +46,11 @@ export class plp extends plugin {
         const date_time = `${year}-${month}-${day}`;
         this.finish(`扔漂流瓶1`)
         let plp;
+        if(this.e.msg == undefined){
+            logger.warn(`[Gi互动:扔漂流瓶]检测到图片或卡片`);
+            e.reply(`扔漂流瓶失败了，无法在漂流瓶内塞进图片卡片等内容。`)
+            return true;
+        }
         plp = `-${this.e.msg}；${e.user_id}`
         fs.appendFile(filePath, plp + '\n', 'utf8', (err) => {
             if (err) {
