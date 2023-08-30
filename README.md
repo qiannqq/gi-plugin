@@ -31,6 +31,7 @@ git clone --depth=1 https://gitee.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
 1.  增加更多互动娱乐相关内容
 2.  增加帮助图片 [√]
 3.  打断+1和跟随+1
+4.  支持漂流瓶图片内容(没跑路，在摸鱼……
 
 </details>
 
