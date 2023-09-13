@@ -12,15 +12,15 @@ export class meiridaka extends plugin {
         priority: 1,
         rule:[
             {
-                reg: '^每日打卡$',
+                reg: '^#?每日打卡$',
                 fnc: '每日打卡'
             },
             {
-                reg: '^今日欧皇$',
+                reg: '^#?今日欧皇$',
                 fnc: '今日欧皇'
             },
             {
-                reg: '^让我看看你的卡(.*)$',
+                reg: '^#?让我看看你的卡(.*)$',
                 fnc: 'looklookyou'
             }
         ]
