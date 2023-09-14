@@ -7,9 +7,14 @@
 </p>
 
 #### 安装教程
-在Yunzai-Bot根目录执行以下命令   **安装时请注意文件夹大小写！** 
+在Yunzai-Bot根目录执行以下命令   **安装时请注意文件夹大小写！** <br>
+##### Gitee源（国内推荐使用）
 ```
 git clone --depth=1 https://gitee.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
+```
+##### Github源
+```
+git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
 ```
 
 #### 指令以及其作用
