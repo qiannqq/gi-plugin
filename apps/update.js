@@ -30,7 +30,7 @@ export class update extends plugin {
     }
     async 自动更新(){
         let botname = cfg.package.name
-        const { config } = getconfig(`config`)
+        const { config } = getconfig(`config`, `config`)
         if(!config.autoupdate) return true;
         const parentDir = path.join(__dirname, '..');
         exec(`git pull`, { cwd: parentDir }, (error, stdout, stderr) => {

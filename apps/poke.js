@@ -16,7 +16,7 @@ export class poke extends plugin {
     }
     async accept(e){
         if(e.target_id != cfg_.qq) return true
-        const { config } = getconfig('poke')
+        const { config } = getconfig('config', 'poke')
         if(!config.poke) return true
         logger.mark(config.poketxt)
         const randomIndex = Math.floor(Math.random() * config.poketxt.length);
