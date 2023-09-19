@@ -1,4 +1,3 @@
-import yaml from 'js-yaml';
 import { segment } from "icqq";
 import plugin from '../../../lib/plugins/plugin.js';
 import cfg_ from'../../../lib/config/config.js';
