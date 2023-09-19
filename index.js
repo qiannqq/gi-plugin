@@ -23,7 +23,7 @@ if (!fs.existsSync(plpFilePath)) {
 
 const _path = process.cwd().replace(/\\/g, '/');
 const configFolder = path.join(`${_path}/plugins/Gi-plugin`, 'config');
-const defSetFolder = path.join(`${_path}/plugins/Gi-plugin`, 'defSet');
+const defSetFolder = path.join(`${_path}/plugins/Gi-plugin`, 'defCfg');
 if (!fs.existsSync(configFolder)) {
   fs.mkdirSync(configFolder);
 }
