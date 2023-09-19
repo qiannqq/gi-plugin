@@ -16,7 +16,7 @@ export class update extends plugin {
             priority: 5000,
             rule: [
                 {
-                    reg: '^#?(互动|Gi)(强制)?更新$',
+                    reg: '^#?(互动|Gi|gi|gI|GI)(强制)?更新$',
                     fnc: '互动插件更新',
                     Permission: 'master'
                 }
@@ -35,11 +35,11 @@ export class update extends plugin {
         const parentDir = path.join(__dirname, '..');
         exec(`git pull`, { cwd: parentDir }, (error, stdout, stderr) => {
             if (error) {
-                Bot.pickUser(cfg.masterQQ[0]).sendMsg(`[GI自动更新]更新失败！\n${error.message}`);
+                Bot.pickUser(cfg.masterQQ[0]).sendMsg(`[Gi自动更新]更新失败！\n${error.message}`);
             } else if (stdout.includes('Already up to date.')) {
                 logger.mark(`[Gi自动更新]互动插件未发现新版本`);
             } else {
-                Bot.pickUser(cfg.masterQQ[0]).sendMsg(`[GI自动更新]互动插件更新成功，请重新${botname}以应用更新`);
+                Bot.pickUser(cfg.masterQQ[0]).sendMsg(`[Gi自动更新]互动插件更新成功，请重启${botname}以应用更新\n更新内容请查看：https://github.com/qiannqq/gi-plugin/commits/master`);
             }
         });
     }
@@ -61,7 +61,7 @@ export class update extends plugin {
             } else if (stdout.includes('Already up to date.')) {
                 e.reply(`互动插件已经是最新的了`);
             } else {
-                e.reply(`互动插件更新成功，请重新${botname}以应用更新`);
+                e.reply(`互动插件更新成功，请重启${botname}以应用更新\n更新内容请查看：https://github.com/qiannqq/gi-plugin/commits/master`);
             }
         });
     }
