@@ -35,11 +35,11 @@ export class update extends plugin {
         const parentDir = path.join(__dirname, '..');
         exec(`git pull`, { cwd: parentDir }, (error, stdout, stderr) => {
             if (error) {
-                Bot.PickUser(cfg.masterQQ[0]).sendMsg(`更新失败！\n${error.message}`);
+                Bot.pickUser(cfg.masterQQ[0]).sendMsg(`[GI自动更新]更新失败！\n${error.message}`);
             } else if (stdout.includes('Already up to date.')) {
                 logger.mark(`[Gi自动更新]互动插件未发现新版本`);
             } else {
-                Bot.PickUser(cfg.masterQQ[0]).sendMsg(`互动插件更新成功，请重新${botname}以应用更新`);
+                Bot.pickUser(cfg.masterQQ[0]).sendMsg(`[GI自动更新]互动插件更新成功，请重新${botname}以应用更新`);
             }
         });
     }
