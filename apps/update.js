@@ -37,7 +37,7 @@ export class update extends plugin {
             if (error) {
                 Bot.PickUser(cfg.masterQQ[0]).sendMsg(`更新失败！\n${error.message}`);
             } else if (stdout.includes('Already up to date.')) {
-                //e.reply(`互动插件已经是最新的了`);
+                logger.mark(`[Gi自动更新]互动插件未发现新版本`);
             } else {
                 Bot.PickUser(cfg.masterQQ[0]).sendMsg(`互动插件更新成功，请重新${botname}以应用更新`);
             }
