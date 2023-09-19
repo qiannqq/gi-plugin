@@ -90,7 +90,8 @@ export class plp extends plugin {
                 redis.set(`Yunzai:giplugin-${e.user_id}_plp2`, JSON.stringify(date_time));
                 return true;
             }
-            let msg = [`正在查看漂流瓶……
+            let msg = 
+[`正在查看漂流瓶……
 这个漂流瓶里有封信哎
 【漂流瓶】
 ${plp3}`]

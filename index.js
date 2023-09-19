@@ -21,6 +21,23 @@ if (!fs.existsSync(plpFilePath)) {
   fs.closeSync(fs.openSync(plpFilePath, 'w'));
 }
 
+const _path = process.cwd().replace(/\\/g, '/');
+const configFolder = path.join(`${_path}/plugins/Gi-plugin`, 'config');
+const defSetFolder = path.join(`${_path}/plugins/Gi-plugin`, 'defSet');
+if (!fs.existsSync(configFolder)) {
+  fs.mkdirSync(configFolder);
+}
+const configFilePath = path.join(configFolder, 'config.yaml');
+if (!fs.existsSync(configFilePath)) {
+  const defConfigFilePath = path.join(defSetFolder, 'config.yaml');
+  fs.copyFileSync(defConfigFilePath, configFilePath);
+}
+const pokeFilePath = path.join(configFolder, 'poke.yaml');
+if (!fs.existsSync(pokeFilePath)) {
+  const defPokeFilePath = path.join(defSetFolder, 'poke.yaml');
+  fs.copyFileSync(defPokeFilePath, pokeFilePath);
+}
+
 let ret = []
 
 logger.info(`---------ヾ(✿ﾟ▽ﾟ)ノ---------`)
