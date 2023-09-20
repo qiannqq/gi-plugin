@@ -2,19 +2,20 @@ import fs from 'fs';
 function shanchu(filePath, plp2) {
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
-            console.error(err);
-            return;
+          console.error(err);
+          return;
         }
-        const regex = new RegExp(plp2 + '\\r?\\n?', 'g');
+        const escapedPlp2 = plp2.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escapedPlp2 + '\\s*\\r?\\n?', 'g');
         const updatedData = data.replace(regex, '');
         fs.writeFile(filePath, updatedData, 'utf8', (err) => {
-            if (err) {
-                logger.error(err);
-                e.reply(`发生错误` + err)
-                return;
-            }
+          if (err) {
+            logger.error(err);
+            e.reply(`发生错误` + err)
+            return;
+          }
         });
-    });
+      });
 }
 
 export default shanchu

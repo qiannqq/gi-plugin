@@ -7,7 +7,7 @@ function duquFile(filePath, callback) {
       return;
     }
 
-    const lines = data.split('-');
+    const lines = data.split('@');
     const Piaoliu = [];
 
     lines.forEach((line) => {
@@ -15,7 +15,7 @@ function duquFile(filePath, callback) {
         const parts = line.split('；');
         const plp = parts[0];
         const userid = parts[1];
-        Piaoliu.push(`-${plp}；${userid}`);
+        Piaoliu.push(`@${plp}；${userid}`);
     });
 
     callback(Piaoliu);
