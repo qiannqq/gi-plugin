@@ -61,7 +61,7 @@ export class plp extends plugin {
         if(message.type == 'image'){
             plp_ = message.url
         }
-        plp = `-${plp_}；${e.user_id}`
+        plp = `@${plp_}；${e.user_id}`
         fs.appendFile(filePath, plp + '\n', 'utf8', (err) => {
             if (err) {
               logger.error(err);
