@@ -3,8 +3,6 @@ import { segment } from "icqq";
 import duquFile from '../model/duquFile.js';
 import shanchu from '../model/shanchu.js';
 import fs from 'fs';
-import axios from 'axios';
-import path from 'path';
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
 const _path = process.cwd().replace(/\\/g, '/')
