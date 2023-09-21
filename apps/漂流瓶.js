@@ -58,14 +58,14 @@ export class plp extends plugin {
             return true;
         }
         let plp_ = this.e.msg
-        if(message.type == 'image'){
-            plp_ = message.url
-        }
         plp_ = plp_.replace(/@/g, '');
         plp_ = plp_.replace(/\n/g, '');
         plp_ = plp_.replace(/；/g, '');
         plp_ = plp_.replace(/https/g, '');
         plp_ = plp_.replace(/⁧/g, '');
+        if(message.type == 'image'){
+            plp_ = message.url
+        }
         plp = `@${plp_}；${e.user_id}`
         fs.appendFile(filePath, plp + '\n', 'utf8', (err) => {
             if (err) {
