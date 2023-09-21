@@ -105,7 +105,9 @@ export class plp extends plugin {
 这个漂流瓶里有封信哎
 【漂流瓶】
 ${plp3}`]
-            if (plp3.startsWith("https://gchat.qpic.cn")) {
+            const regex = /https:\/\/(\w+\.)?qpic\.cn/;
+
+            if (plp3.match(regex)) {
                 msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
                 logger.mark(plp3)
                 e.reply(msg)
