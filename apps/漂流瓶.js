@@ -64,6 +64,8 @@ export class plp extends plugin {
         plp_ = plp_.replace(/@/g, '');
         plp_ = plp_.replace(/\n/g, '');
         plp_ = plp_.replace(/；/g, '');
+        plp_ = plp_.replace(/https/g, '');
+        plp_ = plp_.replace(/⁧/g, '');
         plp = `@${plp_}；${e.user_id}`
         fs.appendFile(filePath, plp + '\n', 'utf8', (err) => {
             if (err) {
@@ -96,11 +98,9 @@ export class plp extends plugin {
             const plp4 = matches[2];
             if (plp4 == undefined) {
                 e.reply(`很可惜，这次没捡到漂流瓶呢~`)
-                redis.set(`Yunzai:giplugin-${e.user_id}_plp2`, JSON.stringify(date_time));
                 return true;
             } else if (plp3 == ``) {
                 e.reply(`很可惜，这次没捡到漂流瓶呢~`)
-                redis.set(`Yunzai:giplugin-${e.user_id}_plp2`, JSON.stringify(date_time));
                 return true;
             }
             let msg = 

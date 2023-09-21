@@ -1,7 +1,5 @@
-import { segment } from "icqq";
 import plugin from '../../../lib/plugins/plugin.js';
 import cfg_ from'../../../lib/config/config.js';
-import fs from 'fs';
 import getconfig from '../model/cfg.js';
 
 export class poke extends plugin {

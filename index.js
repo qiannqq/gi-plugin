@@ -64,7 +64,7 @@ let ret = []
 logger.info(`---------ヾ(✿ﾟ▽ﾟ)ノ---------`)
 logger.info(`互动插件载入成功！`)
 logger.info(`Created By 千奈千祁`)
-logger.info(`-----------------------------`)
+
 
 
 
@@ -91,4 +91,5 @@ for (let i in files) {
     }
     apps[name] = ret[i].value[Object.keys(ret[i].value)[0]]
 }
+logger.info(`-----------------------------`)
 export { apps }
