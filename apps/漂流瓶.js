@@ -62,6 +62,8 @@ export class plp extends plugin {
             plp_ = message.url
         }
         plp_ = plp_.replace(/@/g, '');
+        plp_ = plp_.replace(/\n/g, '');
+        plp_ = plp_.replace(/；/g, '');
         plp = `@${plp_}；${e.user_id}`
         fs.appendFile(filePath, plp + '\n', 'utf8', (err) => {
             if (err) {
@@ -107,7 +109,6 @@ export class plp extends plugin {
 【漂流瓶】
 ${plp3}`]
             const regex = /https:\/\/(\w+\.)?qpic\.cn/;
-
             if (plp3.match(regex)) {
                 msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
                 logger.mark(plp3)
