@@ -1,5 +1,7 @@
 import plugin from "../../../lib/plugins/plugin.js";
 import image from "../model/image.js";
+import { segment } from "icqq";
+import cfg from '../../../lib/config/config.js'
 
 export class example2 extends plugin {
     constructor(){
@@ -18,7 +20,14 @@ export class example2 extends plugin {
     }
     async help(e){
         const { img } = image(e, 'help', 'help')
-        e.reply(img)
+        if (cfg.package.name == `trss-yunzai`) {
+            img.then(async result => {
+                const file = result.file;
+                await e.reply(segment.image(file))
+            }).catch(error => {
+                console.error(error);
+            });
+        } else { e.reply(img) }
         return true;
     }
 }
