@@ -3,6 +3,7 @@ import { segment } from "icqq";
 import duquFile from '../model/duquFile.js';
 import shanchu from '../model/shanchu.js';
 import fs from 'fs';
+import cfg from '../../../lib/config/config.js'
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
 const _path = process.cwd().replace(/\\/g, '/')
@@ -33,8 +34,8 @@ export class plp extends plugin {
         const date_time = `${year}-${month}-${day}`;
         let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp`);date_time2 = JSON.parse(date_time2);
         if (date_time === date_time2) {
-            e.reply(`你今天已经扔过漂流瓶了，每天只能扔一次哦~`)
-            return true;
+            //e.reply(`你今天已经扔过漂流瓶了，每天只能扔一次哦~`)
+            //return true;
         }
         e.reply(`发送你想要扔漂流瓶的内容(仅支持文字和图片)`)
         this.setContext(`扔漂流瓶1`)
@@ -58,13 +59,14 @@ export class plp extends plugin {
             return true;
         }
         let plp_ = this.e.msg
-        plp_ = plp_.replace(/@/g, '');
-        plp_ = plp_.replace(/\n/g, '');
-        plp_ = plp_.replace(/；/g, '');
-        plp_ = plp_.replace(/https/g, '');
-        plp_ = plp_.replace(/⁧/g, '');
-        if(message.type == 'image'){
+        if (message.type == 'image') {
             plp_ = message.url
+        } else {
+            plp_ = plp_.replace(/@/g, '');
+            plp_ = plp_.replace(/\n/g, '');
+            plp_ = plp_.replace(/；/g, '');
+            plp_ = plp_.replace(/https/g, '');
+            plp_ = plp_.replace(/⁧/g, '');
         }
         plp = `@${plp_}；${e.user_id}`
         fs.appendFile(filePath, plp + '\n', 'utf8', (err) => {
@@ -88,8 +90,8 @@ export class plp extends plugin {
             const date_time = `${year}-${month}-${day}`;
             let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp2`);date_time2 = JSON.parse(date_time2);
             if (date_time === date_time2){
-                e.reply(`你今天已经捡过漂流瓶，每天只能捡一次哦~`)
-                return true;
+                //e.reply(`你今天已经捡过漂流瓶，每天只能捡一次哦~`)
+                //return true;
             }
             const randomIndex = Math.floor(Math.random() * Piaoliu.length);
             plp2 = Piaoliu[randomIndex];
@@ -109,7 +111,12 @@ export class plp extends plugin {
 【漂流瓶】
 ${plp3}`]
             const regex = /https:\/\/(\w+\.)?qpic\.cn/;
+            const regexHttp = /http:\/\/(\w+\.)?qpic\.cn/;
             if (plp3.match(regex)) {
+                msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
+                logger.mark(plp3)
+                e.reply(msg)
+            } else if(plp3.match(regexHttp)){
                 msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
                 logger.mark(plp3)
                 e.reply(msg)

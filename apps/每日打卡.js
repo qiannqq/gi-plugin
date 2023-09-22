@@ -1,6 +1,5 @@
 import plugin from '../../../lib/plugins/plugin.js';
 import { segment } from "icqq";
-import puppeteer from "../../../lib/puppeteer/puppeteer.js"
 import image from '../model/image.js';
 
 export class meiridaka extends plugin {
@@ -97,7 +96,13 @@ export class meiridaka extends plugin {
         return true;
       }
     async looklookyou(e) {
-        if(e.at == undefined) return true;
+        const message = e.message[0]
+        const at = e.message[1]
+        //if(message.text !== `让我看看你的卡` && at.type != `at`) return true;
+        //if(e.at == undefined) return true;
+        if(message.text !== `让我看看你的卡`) return true;
+        if(at == `undefined`) return true;
+        logger.mark(at)
         //获取当前日期
         const currentDate = new Date();
         const year = currentDate.getFullYear();
