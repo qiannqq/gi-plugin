@@ -34,8 +34,8 @@ export class plp extends plugin {
         const date_time = `${year}-${month}-${day}`;
         let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp`);date_time2 = JSON.parse(date_time2);
         if (date_time === date_time2) {
-            //e.reply(`你今天已经扔过漂流瓶了，每天只能扔一次哦~`)
-            //return true;
+            e.reply(`你今天已经扔过漂流瓶了，每天只能扔一次哦~`)
+            return true;
         }
         e.reply(`发送你想要扔漂流瓶的内容(仅支持文字和图片)`)
         this.setContext(`扔漂流瓶1`)
@@ -90,8 +90,8 @@ export class plp extends plugin {
             const date_time = `${year}-${month}-${day}`;
             let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp2`);date_time2 = JSON.parse(date_time2);
             if (date_time === date_time2){
-                //e.reply(`你今天已经捡过漂流瓶，每天只能捡一次哦~`)
-                //return true;
+                e.reply(`你今天已经捡过漂流瓶，每天只能捡一次哦~`)
+                return true;
             }
             const randomIndex = Math.floor(Math.random() * Piaoliu.length);
             plp2 = Piaoliu[randomIndex];
