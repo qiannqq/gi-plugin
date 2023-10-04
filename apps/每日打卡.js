@@ -1,6 +1,7 @@
 import plugin from '../../../lib/plugins/plugin.js';
 import { segment } from "icqq";
 import image from '../model/image.js';
+import img_ from '../model/message.js';
 
 export class meiridaka extends plugin {
     constructor(){
@@ -68,9 +69,10 @@ export class meiridaka extends plugin {
           zhi,
         })
         let msg = [segment.at(e.user_id),
-          `\n你今天的幸运值是……\n`,img
+          `\n你今天的幸运值是……\n`
         ]
-        e.reply(msg)
+        //e.reply(msg)
+        img_(e, msg, img)
         return true;//结束运行
     }
     async 今日欧皇(e) {

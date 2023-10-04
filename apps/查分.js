@@ -1,6 +1,7 @@
 import plugin from "../../../lib/plugins/plugin.js";
 import image from "../model/image.js";
 import { segment } from "icqq";
+import img_ from "../model/message.js";
 
 export class chafen extends plugin {
     constructor(){
@@ -42,10 +43,10 @@ export class chafen extends plugin {
           });
             let msg = [
                 segment.at(e.user_id),
-                `\n你已经查过分了\n`,
-                img
+                `\n你已经查过分了\n`
             ]
-            e.reply(msg)
+            //e.reply(msg)
+            img_(e, msg, img)
             return true;
         }
         let zhi = 8;
