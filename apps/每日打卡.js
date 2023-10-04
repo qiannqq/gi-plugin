@@ -1,5 +1,4 @@
 import plugin from '../../../lib/plugins/plugin.js';
-import { segment } from "icqq";
 import image from '../model/image.js';
 import img_ from '../model/message.js';
 

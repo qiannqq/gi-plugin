@@ -1,8 +1,6 @@
 import plugin from "../../../lib/plugins/plugin.js";
 import image from "../model/image.js";
-import { segment } from "icqq";
-import cfg from '../../../lib/config/config.js'
-import message from '../model/message.js'
+import img_ from '../model/message.js'
 
 export class example2 extends plugin {
     constructor(){
@@ -21,7 +19,7 @@ export class example2 extends plugin {
     }
     async help(e){
         const { img } = image(e, 'help', 'help')
-        await message(e, ``, img)
+        await img_(e, ``, img)
         return true;
     }
 }
