@@ -1,5 +1,4 @@
 import plugin from '../../../lib/plugins/plugin.js';
-import { segment } from "icqq";
 import duquFile from '../model/duquFile.js';
 import shanchu from '../model/shanchu.js';
 import fs from 'fs';
