@@ -28,6 +28,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 | 互动帮助 | 查看互动插件帮助                          | 用户 |
 | 互动更新 | 更新Gi-plugin插件                     | 主人 |
 | 互动强制更新 | 忽略本地冲突，直接更新Gi-plugin插件 | 主人 |
+| 答案之书+问题 | 答案之书会给出答案 | 用户 |
 
 
 <details>
