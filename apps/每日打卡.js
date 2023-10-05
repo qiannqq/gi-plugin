@@ -21,9 +21,34 @@ export class meiridaka extends plugin {
             {
                 reg: '^#?让我看看你的卡(.*)$',
                 fnc: 'looklookyou'
+            },
+            {
+                reg: '#?今日非酋$',
+                fnc: '今日非酋'
             }
         ]
       });
+    }
+    async 今日非酋(e) {
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = currentDate.getDate().toString().padStart(2, '0');
+      const date_time = `${year}-${month}-${day}`;
+      let date_time2 = await redis.get(`Yunzai:fqiuriqi_daka`);date_time2 = JSON.parse(date_time2);
+      if (date_time !== date_time2){
+        let msg = [
+          segment.at(e.user_id),
+          `\n今天的非酋还没诞生喵~`
+        ]
+        e.reply(msg)
+        return;
+      }
+      let fqiuname = await redis.get(`Yunzai:fqiuname_daka`);fqiuname = JSON.parse(fqiuname);
+      let fqiuqq = await redis.get(`Yunzai:fqiuqq_daka`);fqiuqq = JSON.parse(fqiuqq);
+      let msg = [`今日的首个非酋已诞生！！！！\nta的名字：【`+fqiuname+`】\nta的QQ号：(`+fqiuqq+`)\nta的幸运值是：0 ！！！`]
+      e.reply(msg)
+      return true;
     }
     async 每日打卡(e) {
         //获取当前日期
@@ -59,6 +84,16 @@ export class meiridaka extends plugin {
             redis.set(`Yunzai:ohuangqq_daka`, JSON.stringify(e.user_id));//写入欧皇的qq号
             redis.set(`Yunzai:ohuangqqun_daka`, JSON.stringify(e.group_id));//写入欧皇诞生的群号
             redis.set(`Yunzai:ohuangriqi_daka`, JSON.stringify(date_time));//写入欧皇诞生的时间（……
+          }
+        }
+        if (zhi === 0){
+          let date_time3 = await redis.get(`Yunzai:fqiuriqi_daka`);date_time3 = JSON.parse(date_time3);
+          if(date_time3 !== date_time){
+            redis.set(`Yunzai:fqiuzhi_daka`, JSON.stringify(zhi));
+            redis.set(`Yunzai:fqiuname_daka`, JSON.stringify(e.nickname));
+            redis.set(`Yunzai:fqiuqq_daka`, JSON.stringify(e.user_id));
+            redis.set(`Yunzai:fqiuqqun_daka`, JSON.stringify(e.group_id));
+            redis.set(`Yunzai:fqiuriqi_daka`, JSON.stringify(date_time));
           }
         }
         //e.reply(msg)//处理方式
