@@ -2,7 +2,6 @@ import plugin from '../../../lib/plugins/plugin.js';
 import duquFile from '../model/duquFile.js';
 import shanchu from '../model/shanchu.js';
 import fs from 'fs';
-import cfg from '../../../lib/config/config.js'
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
 const _path = process.cwd().replace(/\\/g, '/')
@@ -32,12 +31,14 @@ export class plp extends plugin {
         const day = currentDate.getDate().toString().padStart(2, '0');
         const date_time = `${year}-${month}-${day}`;
         let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp`);date_time2 = JSON.parse(date_time2);
-        if (date_time === date_time2) {
-            e.reply(`你今天已经扔过漂流瓶了，每天只能扔一次哦~`)
-            return true;
+        if (!e.isMaster) {
+            if (date_time === date_time2) {
+                e.reply(`你今天已经扔过漂流瓶了，每天只能扔一次哦~`)
+                return true;
+            }
         }
-        e.reply(`发送你想要扔漂流瓶的内容(仅支持文字和图片)`)
-        this.setContext(`扔漂流瓶1`)
+            e.reply(`发送你想要扔漂流瓶的内容(仅支持文字和图片)`)
+            this.setContext(`扔漂流瓶1`)
     }
     async 扔漂流瓶1(e){
         const currentDate = new Date();
@@ -88,15 +89,21 @@ export class plp extends plugin {
             const day = currentDate.getDate().toString().padStart(2, '0');
             const date_time = `${year}-${month}-${day}`;
             let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp2`);date_time2 = JSON.parse(date_time2);
-            if (date_time === date_time2){
-                e.reply(`你今天已经捡过漂流瓶，每天只能捡一次哦~`)
-                return true;
+            if (!e.isMaster) {
+                if (date_time === date_time2) {
+                    e.reply(`你今天已经捡过漂流瓶，每天只能捡一次哦~`)
+                    return true;
+                }
             }
             const randomIndex = Math.floor(Math.random() * Piaoliu.length);
             plp2 = Piaoliu[randomIndex];
             const matches = plp2.match(/@(.*?)；(.*?)/);
             const plp3 = matches[1];
             const plp4 = matches[2];
+            if (plp4 == e.user_id) {
+                e.reply(`很可惜，这次没捡到漂流瓶呢~`)
+                return true;
+            }
             if (plp4 == undefined) {
                 e.reply(`很可惜，这次没捡到漂流瓶呢~`)
                 return true;
