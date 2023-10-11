@@ -39,6 +39,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 2.  增加帮助图片 [√]
 3.  打断+1和跟随+1(没跑路，在摸鱼……
 4.  支持漂流瓶图片内容[√]
+5.  增加群历史文献功能(记录群聊值得铭记的历史)
 
 </details>
 
