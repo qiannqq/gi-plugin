@@ -27,9 +27,13 @@ export class lishiwenxian extends plugin {
       return true;
     }
     let filePath = `plugins/Gi-plugin/resources/history/${e.group_id}.txt`
+    if (!fs.existsSync(filePath)) {
+      e.reply(`本群暂无历史文献，请发送“#贡献历史”以提交历史文献`)
+      return true;
+    }
     let msgList = [];
     msgList.push({
-      message: `群${e.group_name}(${e.group_id})的历史文献`,
+      message: `${e.group_name}(${e.group_id})的历史文献`,
       nickname: `Q群管家`
     })
     try {
