@@ -1,5 +1,4 @@
 import fs from 'node:fs'
-import chalk from 'chalk'
 import path from 'node:path'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';

@@ -1,7 +1,6 @@
 import plugin from '../../../lib/plugins/plugin.js';
 import fs from 'fs';
 import path from 'path';
-import duquFile from '../model/duquFile.js';
 
 export class lishiwenxian extends plugin {
   constructor() {
@@ -23,6 +22,10 @@ export class lishiwenxian extends plugin {
     })
   }
   async 本群历史(e) {
+    if(!e.isGroup){
+      e.reply(`该功能仅可在群聊中使用`)
+      return true;
+    }
     let filePath = `plugins/Gi-plugin/resources/history/${e.group_id}.txt`
     let msgList = [];
     msgList.push({
@@ -94,6 +97,10 @@ ${history}`
     return true;
   }
   async 贡献历史1(e) {
+    if(!e.isGroup){
+      e.reply(`该功能仅可在群聊中使用`)
+      return true;
+    }
     //let filePath = `plugins/Gi-plugin/resources/history/${e.group_id}.txt`
     const filePath = path.join('plugins', 'Gi-plugin', `resources`, `history`, `${e.group_id}.txt`);
     const folderPath = path.join('plugins', 'Gi-plugin', `resources`, `history`);
