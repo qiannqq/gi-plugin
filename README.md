@@ -30,6 +30,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 | 互动帮助 | 查看互动插件帮助                          | 用户 |
 | 贡献历史 | 记录当前群的历史大事件 | 用户 |
 | 本群历史 | 回顾当前群的历史大事件 | 用户 |
+| 删除文献+文献编号 | 删除该群指定文献 | 主人 |
 | 互动更新 | 更新Gi-plugin插件                     | 主人 |
 | 互动强制更新 | 忽略本地冲突，直接更新Gi-plugin插件 | 主人 |
 

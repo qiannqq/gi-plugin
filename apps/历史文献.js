@@ -17,8 +17,65 @@ export class lishiwenxian extends plugin {
         {
           reg: '^#?贡献历史$',
           fnc: '贡献历史1'
+        },
+        {
+          reg: /^#?删除文献\s*([0-9]+)\s*$/,
+          fnc: '删除文献',
+          Permission: 'master'
         }
       ]
+    })
+  }
+  async 删除文献(e) {
+    if (!e.isGroup) {
+      e.reply(`该功能仅在群聊中可用`)
+      return true;
+    }
+    let filePath = `plugins/Gi-plugin/resources/history/${e.group_id}.txt`
+    const history_number = e.raw_message.match(/^#?删除文献\s*([0-9]+)\s*$/)[1]
+    if (!fs.existsSync(filePath)) {
+      e.reply(`本群暂无历史文献`)
+      return true;
+    }
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        logger.error(err)
+      }
+      const lines = data.split('@');
+      let matchingHistory = [];
+
+      lines.forEach((line) => {
+        line = line.slice(0, -1);
+        const parts = line.split('；');
+        const number_ = parts[0];
+        const history = parts[1];
+        if (history_number == number_) {
+          matchingHistory.push(`${history}`)
+        }
+
+      })
+      if (matchingHistory.length > 0) {
+        let history_ = `@${history_number}；${matchingHistory}`
+        fs.readFile(filePath, 'utf8', (err, data) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          const regex = new RegExp(history_ + '\\r?\\n?', 'g');
+          const updatedData = data.replace(regex, '');
+          fs.writeFile(filePath, updatedData, 'utf8', (err) => {
+            if (err) {
+              logger.error(err);
+              e.reply(`发生错误` + err)
+              return;
+            }
+          });
+        });
+        e.reply(`文献编号${history_number}删除成功！`)
+        return true;
+      } else {
+        e.reply(`文献编号${history_number}不存在！`)
+      }
     })
   }
   async 本群历史(e) {
@@ -121,11 +178,15 @@ ${history}`
         }
       }
     })();
-    e.reply(`贡献历史仅支持发送文字，请发送内容`)
+    e.reply(`贡献历史仅支持发送文字，请发送内容\n发送[0]取消贡献历史`)
     this.setContext(`贡献历史`)
   }
   async 贡献历史(e) {
     this.finish(`贡献历史`)
+    if(this.e.msg == 0){
+      e.reply(`已取消贡献`)
+      return true;
+    }
     let history;
     const currentDate = new Date();
     const year = currentDate.getFullYear();
