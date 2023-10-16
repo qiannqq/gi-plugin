@@ -18,7 +18,7 @@ export class example2 extends plugin {
         })
     }
     async help(e){
-        const { img } = image(e, 'help', 'help')
+        const { img } = await image(e, 'help', 'help')
         await img_(e, ``, img)
         return true;
     }
