@@ -29,7 +29,7 @@ export class chafen extends plugin {
           let zongfen = await redis.get(`Yunzai:chafen${e.user_id}_zongfen`);zongfen = JSON.parse(zongfen);
           const user_id = e.user_id;
           const user_name = e.nickname;
-          const { img } = image(e, 'chafen', 'chafen',{
+          const { img } = await image(e, 'chafen', 'chafen',{
             user_id,
             user_name,
             yuwen,
@@ -59,7 +59,7 @@ export class chafen extends plugin {
         const zongfen = yuwen + shuxue + yingyu + wuli + zhengzhi + huaxue;
         const user_name = e.nickname;
         const user_id = e.user_id;
-        const { img } = image(e, 'chafen', 'chafen',{
+        const { img } = await image(e, 'chafen', 'chafen',{
           user_id,
           user_name,
           yuwen,

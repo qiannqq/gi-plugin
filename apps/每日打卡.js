@@ -99,7 +99,7 @@ export class meiridaka extends plugin {
         //e.reply(msg)//处理方式
         redis.set(`Yunzai:meiridaka3qn:${e.user_id}_daka`, JSON.stringify(date_time));//将当前日期写入redis防止重复抽取
         redis.set(`Yunzai:meiridakazhi:${e.user_id}_daka`, JSON.stringify(zhi));//将打卡获取的幸运值写入redis
-        const { img } = image(e, 'mrdk', 'mrdk', {
+        const { img } = await image(e, 'mrdk', 'mrdk', {
           zhi,
         })
         let msg = [segment.at(e.user_id),
