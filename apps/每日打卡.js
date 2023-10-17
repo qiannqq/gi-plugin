@@ -103,10 +103,10 @@ export class meiridaka extends plugin {
           zhi,
         })
         let msg = [segment.at(e.user_id),
-          `\n你今天的幸运值是……\n`
+          `\n你今天的幸运值是……\n`,
+          img
         ]
-        //e.reply(msg)
-        img_(e, msg, img)
+        e.reply(msg)
         return true;//结束运行
     }
     async 今日欧皇(e) {

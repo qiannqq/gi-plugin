@@ -42,10 +42,9 @@ export class chafen extends plugin {
           });
             let msg = [
                 segment.at(e.user_id),
-                `\n你已经查过分了\n`
+                `\n你已经查过分了\n`,img
             ]
-            //e.reply(msg)
-            img_(e, msg, img)
+            e.reply(msg)
             return true;
         }
         let zhi = 8;
@@ -72,9 +71,8 @@ export class chafen extends plugin {
         });
         let msg = [
             segment.at(e.user_id),
-            `\n你的分数是……\n`]
-        //e.reply(msg)
-        img_(e, msg, img)
+            `\n你的分数是……\n`,img]
+        e.reply(msg)
         redis.set(`Yunzai:chafen${e.user_id}_yuwen`, JSON.stringify(yuwen));//语文
         redis.set(`Yunzai:chafen${e.user_id}_shuxue`, JSON.stringify(shuxue));//数学
         redis.set(`Yunzai:chafen${e.user_id}_yingyu`, JSON.stringify(yingyu));//英语

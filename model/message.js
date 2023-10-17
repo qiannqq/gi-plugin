@@ -1,6 +1,8 @@
 import cfg from '../../../lib/config/config.js'
 
 function img_(e, msg, img) {
+    console.log(`已废弃。`)
+    /**
     if (cfg.package.name == `trss-yunzai`) {
         img.then(async result => {
             const file = result.file;
@@ -21,6 +23,7 @@ function img_(e, msg, img) {
         let msg_ = [msg, img]
         e.reply(msg_)
     }
+    */
 }
 
 export default img_
