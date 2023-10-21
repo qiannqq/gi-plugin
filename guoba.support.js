@@ -34,7 +34,7 @@ export function supportGuoba() {
         {
           field: 'mrdkOH',
           label: '每日打卡欧皇阈值',
-          helpMessage: '某人幸运值高于或等于该值将成为当天的“今日欧皇',
+          helpMessage: '某人幸运值高于或等于该值将成为当天的“今日欧皇”',
           component: 'InputNumber',
           componentProps: {
             min: 0,
@@ -45,7 +45,7 @@ export function supportGuoba() {
         {
           field: 'mrdkFQ',
           label: '每日打卡非酋阈值',
-          helpMessage: '某人幸运值低于或等于该值将成为当天的“今日非酋',
+          helpMessage: '某人幸运值低于或等于该值将成为当天的“今日非酋”',
           component: 'InputNumber',
           componentProps: {
             min: 0,
