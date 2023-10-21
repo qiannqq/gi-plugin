@@ -121,7 +121,7 @@ export class meiridaka extends plugin {
         }
         let ohuangname = await redis.get(`Yunzai:ohuangname_daka`);ohuangname = JSON.parse(ohuangname);//获取欧皇的名字
         let ohuangqq = await redis.get(`Yunzai:ohuangqq_daka`);ohuangqq = JSON.parse(ohuangqq);//获取欧皇QQ号
-        let zhi =  await redis.get(`Yunzai:ohuangzhi_daka`);zhi = JSon.parse(zhi)
+        let zhi =  await redis.get(`Yunzai:ohuangzhi_daka`);zhi = JSON.parse(zhi)
         let msg = [`今日的首个欧皇已诞生！！！！\nta的名字：【${ohuangname}】\nta的QQ号：(${ohuangqq})\nta的幸运值是：${zhi} ！！！`]
         e.reply(msg)
         return true;
