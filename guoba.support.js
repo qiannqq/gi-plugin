@@ -31,6 +31,28 @@ export function supportGuoba() {
           bottomHelpMessage: '是否自动更新',
           component: 'Switch',
         },
+        {
+          field: 'mrdkOH',
+          label: '每日打卡欧皇阈值',
+          helpMessage: '某人幸运值高于或等于该值将成为当天的“今日欧皇',
+          component: 'InputNumber',
+          componentProps: {
+            min: 0,
+            max: 100,
+            placeholder: '请输入阈值',
+          }
+        },
+        {
+          field: 'mrdkFQ',
+          label: '每日打卡非酋阈值',
+          helpMessage: '某人幸运值低于或等于该值将成为当天的“今日非酋',
+          component: 'InputNumber',
+          componentProps: {
+            min: 0,
+            max: 100,
+            placeholder: '请输入阈值',
+          }
+        },
       ],
       getConfigData() {
         let { config } = getconfig(`config`, `config`)
@@ -51,6 +73,7 @@ export function supportGuoba() {
         // 3. 将更新后的配置对象写回文件
         const updatedConfigYAML = yaml.stringify(config);
         fs.writeFileSync(configFilePath, updatedConfigYAML, 'utf8');
+        logger.mark(`[Gi互动:config配置项]配置文件更新`)
         return Result.ok({}, '保存成功~');
       }
     }

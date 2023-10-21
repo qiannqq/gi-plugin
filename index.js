@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import yaml from 'yaml'
 
 if (!global.segment) {
   global.segment = (await import("oicq")).segment
@@ -31,6 +32,18 @@ const configFilePath = path.join(configFolder, 'config.yaml');
 if (!fs.existsSync(configFilePath)) {
   const defConfigFilePath = path.join(defSetFolder, 'config.yaml');
   fs.copyFileSync(defConfigFilePath, configFilePath);
+} else {
+  const configFilePath = path.join(configFolder, 'config.yaml');
+  const defConfigFilePath = path.join(defSetFolder, 'config.yaml');
+  const defConfig = yaml.parse(fs.readFileSync(defConfigFilePath, 'utf8'));
+  let config = yaml.parse(fs.readFileSync(configFilePath, 'utf8'));
+  for (const key in defConfig) {
+    if (!config.hasOwnProperty(key)) {
+      config[key] = defConfig[key];
+    }
+  }
+  const updatedConfigYAML = yaml.stringify(config);
+  fs.writeFileSync(configFilePath, updatedConfigYAML, 'utf8');
 }
 const pokeFilePath = path.join(configFolder, 'poke.yaml');
 if (!fs.existsSync(pokeFilePath)) {

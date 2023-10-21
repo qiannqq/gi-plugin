@@ -1,6 +1,6 @@
 import plugin from '../../../lib/plugins/plugin.js';
 import image from '../model/image.js';
-import img_ from '../model/message.js';
+import getconfig from '../model/cfg.js';
 
 export class meiridaka extends plugin {
     constructor(){
@@ -46,7 +46,8 @@ export class meiridaka extends plugin {
       }
       let fqiuname = await redis.get(`Yunzai:fqiuname_daka`);fqiuname = JSON.parse(fqiuname);
       let fqiuqq = await redis.get(`Yunzai:fqiuqq_daka`);fqiuqq = JSON.parse(fqiuqq);
-      let msg = [`今日的首个非酋已诞生！！！！\nta的名字：【`+fqiuname+`】\nta的QQ号：(`+fqiuqq+`)\nta的幸运值是：0 ！！！`]
+      let zhi =  await redis.get(`Yunzai:fqiuzhi_daka`);zhi = JSon.parse(zhi)
+      let msg = [`今日的首个非酋已诞生！！！！\nta的名字：【${fqiuname}】\nta的QQ号：(${fqiuqq})\nta的幸运值是：${zhi} ！！！`]
       e.reply(msg)
       return true;
     }
@@ -67,36 +68,29 @@ export class meiridaka extends plugin {
             ]
             e.reply(msg)
             return;
-          }
-          const zhi = Math.floor(Math.random() * 101);//随机抽取数字,数字范围可以自己调
-          console.log(zhi);
-
-          //let msg = [
-            //segment.at(e.user_id),
-            //`\n打卡成功！！\n你今天抽到的幸运值为`+zhi+`点`
-        //]
-
-        if (zhi === 100){//判断本次抽取的幸运值是否为100
+        }
+        const zhi = Math.floor(Math.random() * 101);
+        console.log(zhi);
+        let { config } = getconfig(`config`, `config`)
+        if (zhi >= config.mrdkOH){
           let date_time3 = await redis.get(`Yunzai:ohuangriqi_daka`);date_time3 = JSON.parse(date_time3); //获取上一次欧皇诞生时间
           if (date_time3 !== date_time){ //判断上一次欧皇诞生时间是否为今天
-            redis.set(`Yunzai:ohuangzhi_daka`, JSON.stringify(zhi)); //写入幸运值（感觉有点多此一举了
+            redis.set(`Yunzai:ohuangzhi_daka`, JSON.stringify(zhi)); //写入幸运值
             redis.set(`Yunzai:ohuangname_daka`, JSON.stringify(e.nickname));//写入欧皇名字
             redis.set(`Yunzai:ohuangqq_daka`, JSON.stringify(e.user_id));//写入欧皇的qq号
             redis.set(`Yunzai:ohuangqqun_daka`, JSON.stringify(e.group_id));//写入欧皇诞生的群号
-            redis.set(`Yunzai:ohuangriqi_daka`, JSON.stringify(date_time));//写入欧皇诞生的时间（……
+            redis.set(`Yunzai:ohuangriqi_daka`, JSON.stringify(date_time));//写入欧皇诞生的时间
+          }
+        } else if (zhi <= config.mrdkFQ){
+          let date_time3 = await redis.get(`Yunzai:fqiuriqi_daka`);date_time3 = JSON.parse(date_time3);//获取：时间
+          if(date_time3 !== date_time){//判断：日期
+            redis.set(`Yunzai:fqiuzhi_daka`, JSON.stringify(zhi));//写入：幸运值
+            redis.set(`Yunzai:fqiuname_daka`, JSON.stringify(e.nickname));//写入：非酋名字
+            redis.set(`Yunzai:fqiuqq_daka`, JSON.stringify(e.user_id));//写入：非酋QQ
+            redis.set(`Yunzai:fqiuqqun_daka`, JSON.stringify(e.group_id));//写入：非酋groupid
+            redis.set(`Yunzai:fqiuriqi_daka`, JSON.stringify(date_time));//写入：非酋日期
           }
         }
-        if (zhi === 0){
-          let date_time3 = await redis.get(`Yunzai:fqiuriqi_daka`);date_time3 = JSON.parse(date_time3);
-          if(date_time3 !== date_time){
-            redis.set(`Yunzai:fqiuzhi_daka`, JSON.stringify(zhi));
-            redis.set(`Yunzai:fqiuname_daka`, JSON.stringify(e.nickname));
-            redis.set(`Yunzai:fqiuqq_daka`, JSON.stringify(e.user_id));
-            redis.set(`Yunzai:fqiuqqun_daka`, JSON.stringify(e.group_id));
-            redis.set(`Yunzai:fqiuriqi_daka`, JSON.stringify(date_time));
-          }
-        }
-        //e.reply(msg)//处理方式
         redis.set(`Yunzai:meiridaka3qn:${e.user_id}_daka`, JSON.stringify(date_time));//将当前日期写入redis防止重复抽取
         redis.set(`Yunzai:meiridakazhi:${e.user_id}_daka`, JSON.stringify(zhi));//将打卡获取的幸运值写入redis
         const { img } = await image(e, 'mrdk', 'mrdk', {
@@ -127,7 +121,8 @@ export class meiridaka extends plugin {
         }
         let ohuangname = await redis.get(`Yunzai:ohuangname_daka`);ohuangname = JSON.parse(ohuangname);//获取欧皇的名字
         let ohuangqq = await redis.get(`Yunzai:ohuangqq_daka`);ohuangqq = JSON.parse(ohuangqq);//获取欧皇QQ号
-        let msg = [`今日的首个欧皇已诞生！！！！\nta的名字：【`+ohuangname+`】\nta的QQ号：(`+ohuangqq+`)\nta的幸运值是：100 ！！！`]
+        let zhi =  await redis.get(`Yunzai:ohuangzhi_daka`);zhi = JSon.parse(zhi)
+        let msg = [`今日的首个欧皇已诞生！！！！\nta的名字：【${ohuangname}】\nta的QQ号：(${ohuangqq})\nta的幸运值是：${zhi} ！！！`]
         e.reply(msg)
         return true;
       }
