@@ -27,15 +27,29 @@ export function supportGuoba() {
         {
           field: 'autoupdate',
           label: '自动更新',
-          helpMessage: '启用时每天1:20自动更新',
+          helpMessage: '启用时默认每天1:20自动更新',
           bottomHelpMessage: '是否自动更新',
           component: 'Switch',
         },
         {
+          field: 'updatetime',
+          label: '自动更新时间',
+          helpMessage: '不会正则表达式？百度搜索在线生成cron表达式(默认每天1:20)',
+          bottomHelpMessage: '填入cron表达式，该项保存后重启生效(格式错了自动更新就寄喽)',
+          component: 'Input',
+          required: true,
+          componentProps: {
+            min: 0,
+            max: 100,
+            placeholder: '请输入cron表达式',
+          }
+        },
+        {
           field: 'mrdkOH',
           label: '每日打卡欧皇阈值',
-          helpMessage: '某人幸运值高于或等于该值将成为当天的“今日欧皇”',
+          bottomHelpMessage: '某人幸运值高于或等于该值将成为当天的“今日欧皇”',
           component: 'InputNumber',
+          required: true,
           componentProps: {
             min: 0,
             max: 100,
@@ -45,8 +59,9 @@ export function supportGuoba() {
         {
           field: 'mrdkFQ',
           label: '每日打卡非酋阈值',
-          helpMessage: '某人幸运值低于或等于该值将成为当天的“今日非酋”',
+          bottomHelpMessage: '某人幸运值低于或等于该值将成为当天的“今日非酋”',
           component: 'InputNumber',
+          required: true,
           componentProps: {
             min: 0,
             max: 100,
@@ -73,7 +88,7 @@ export function supportGuoba() {
         // 3. 将更新后的配置对象写回文件
         const updatedConfigYAML = yaml.stringify(config);
         fs.writeFileSync(configFilePath, updatedConfigYAML, 'utf8');
-        logger.mark(`[Gi互动:config配置项]配置文件更新`)
+        logger.mark(`[Gi互动:配置文件]配置文件更新`)
         return Result.ok({}, '保存成功~');
       }
     }

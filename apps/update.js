@@ -7,6 +7,8 @@ import getconfig from '../model/cfg.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const { config } = getconfig(`config`, `config`)
+
 export class update extends plugin {
     constructor() {
         super({
@@ -23,7 +25,7 @@ export class update extends plugin {
             ]
         });
         this.task = {
-            cron: '0 20 1 * * ?',
+            cron: config.updatetime,
             name: '自动更新',
             fnc: this.自动更新.bind(this)
           }
