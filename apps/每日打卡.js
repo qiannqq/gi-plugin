@@ -71,10 +71,23 @@ export class meiridaka extends plugin {
         }
         const zhi = Math.floor(Math.random() * 101);
         console.log(zhi);
+        const { img } = await image(e, 'mrdk', 'mrdk', {
+          zhi,
+        })
+        let msg = [segment.at(e.user_id),
+          `\n你今天的幸运值是……\n`,
+          img
+        ]
         let { config } = getconfig(`config`, `config`)
         if (zhi >= config.mrdkOH){
+          
           let date_time3 = await redis.get(`Yunzai:ohuangriqi_daka`);date_time3 = JSON.parse(date_time3); //获取上一次欧皇诞生时间
           if (date_time3 !== date_time){ //判断上一次欧皇诞生时间是否为今天
+            msg = [segment.at(e.user_id),
+              `\n你今天的幸运值是……\n`,
+              img,
+              `恭喜你成为今天首个${config.mrdkOH}幸运值以上的欧皇！`
+            ]
             redis.set(`Yunzai:ohuangzhi_daka`, JSON.stringify(zhi)); //写入幸运值
             redis.set(`Yunzai:ohuangname_daka`, JSON.stringify(e.nickname));//写入欧皇名字
             redis.set(`Yunzai:ohuangqq_daka`, JSON.stringify(e.user_id));//写入欧皇的qq号
@@ -84,6 +97,11 @@ export class meiridaka extends plugin {
         } else if (zhi <= config.mrdkFQ){
           let date_time3 = await redis.get(`Yunzai:fqiuriqi_daka`);date_time3 = JSON.parse(date_time3);//获取：时间
           if(date_time3 !== date_time){//判断：日期
+            msg = [segment.at(e.user_id),
+              `\n你今天的幸运值是……\n`,
+              img,
+              `恭喜你成为今天首个${config.mrdkFQ}幸运值以上的非酋！`
+            ]
             redis.set(`Yunzai:fqiuzhi_daka`, JSON.stringify(zhi));//写入：幸运值
             redis.set(`Yunzai:fqiuname_daka`, JSON.stringify(e.nickname));//写入：非酋名字
             redis.set(`Yunzai:fqiuqq_daka`, JSON.stringify(e.user_id));//写入：非酋QQ
@@ -93,13 +111,6 @@ export class meiridaka extends plugin {
         }
         redis.set(`Yunzai:meiridaka3qn:${e.user_id}_daka`, JSON.stringify(date_time));//将当前日期写入redis防止重复抽取
         redis.set(`Yunzai:meiridakazhi:${e.user_id}_daka`, JSON.stringify(zhi));//将打卡获取的幸运值写入redis
-        const { img } = await image(e, 'mrdk', 'mrdk', {
-          zhi,
-        })
-        let msg = [segment.at(e.user_id),
-          `\n你今天的幸运值是……\n`,
-          img
-        ]
         e.reply(msg)
         return true;//结束运行
     }
