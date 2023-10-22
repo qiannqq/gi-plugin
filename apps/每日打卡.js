@@ -100,7 +100,7 @@ export class meiridaka extends plugin {
             msg = [segment.at(e.user_id),
               `\n你今天的幸运值是……\n`,
               img,
-              `恭喜你成为今天首个${config.mrdkFQ}幸运值以上的非酋！`
+              `恭喜你成为今天首个${config.mrdkFQ}幸运值以下的非酋！`
             ]
             redis.set(`Yunzai:fqiuzhi_daka`, JSON.stringify(zhi));//写入：幸运值
             redis.set(`Yunzai:fqiuname_daka`, JSON.stringify(e.nickname));//写入：非酋名字
