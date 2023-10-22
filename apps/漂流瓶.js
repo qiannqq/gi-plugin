@@ -82,7 +82,7 @@ export class plp extends plugin {
     }
     async 捡漂流瓶(e){
         let plp2;
-        let Piaoliu = await Gimodel.NewduquFile(filePath)
+        let Piaoliu = await Gimodel.NewduquFile(filePath, e)
         const currentDate = new Date();
         const year = currentDate.getFullYear();
         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
