@@ -1,5 +1,5 @@
 import plugin from '../../../lib/plugins/plugin.js';
-import duquFile from '../model/duquFile.js';
+import Gimodel from '../model/duquFile.js';
 import shanchu from '../model/shanchu.js';
 import fs from 'fs';
 
@@ -82,55 +82,58 @@ export class plp extends plugin {
     }
     async 捡漂流瓶(e){
         let plp2;
-        duquFile(filePath, async (Piaoliu) => {
-            const currentDate = new Date();
-            const year = currentDate.getFullYear();
-            const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-            const day = currentDate.getDate().toString().padStart(2, '0');
-            const date_time = `${year}-${month}-${day}`;
-            let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp2`);date_time2 = JSON.parse(date_time2);
-            if (!e.isMaster) {
-                if (date_time === date_time2) {
-                    e.reply(`你今天已经捡过漂流瓶，每天只能捡一次哦~`)
-                    return true;
-                }
-            }
-            const randomIndex = Math.floor(Math.random() * Piaoliu.length);
-            plp2 = Piaoliu[randomIndex];
-            const matches = plp2.match(/@(.*?)；(.*?)/);
-            const plp3 = matches[1];
-            const plp4 = matches[2];
-            if (plp4 == e.user_id) {
-                e.reply(`很可惜，这次没捡到漂流瓶呢~`)
+        let Piaoliu = await Gimodel.NewduquFile(filePath)
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = currentDate.getDate().toString().padStart(2, '0');
+        const date_time = `${year}-${month}-${day}`;
+        let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp2`);date_time2 = JSON.parse(date_time2);
+        if (!e.isMaster) {
+            if (date_time === date_time2) {
+                e.reply(`你今天已经捡过漂流瓶，每天只能捡一次哦~`)
                 return true;
             }
-            if (plp4 == undefined) {
-                e.reply(`很可惜，这次没捡到漂流瓶呢~`)
-                return true;
-            } else if (plp3 == ``) {
-                e.reply(`很可惜，这次没捡到漂流瓶呢~`)
-                return true;
-            }
-            let msg = 
+        }
+        const randomIndex = Math.floor(Math.random() * Piaoliu.length);
+        if(Piaoliu.length === 0){
+            e.reply(`海里空空的，似乎没有漂流瓶呢`)
+            return true;
+        }
+        plp2 = Piaoliu[randomIndex];
+        const matches = plp2.match(/@(.*?)；(.*?)/);
+        const plp3 = matches[1];
+        const plp4 = matches[2];
+        if (plp4 == e.user_id) {
+            e.reply(`很可惜，这次没捡到漂流瓶呢~`)
+            return true;
+        }
+        if (plp4 == undefined) {
+            e.reply(`很可惜，这次没捡到漂流瓶呢~`)
+            return true;
+        } else if (plp3 == ``) {
+            e.reply(`很可惜，这次没捡到漂流瓶呢~`)
+            return true;
+        }
+        let msg = 
 [`正在查看漂流瓶……
 这个漂流瓶里有封信哎
 【漂流瓶】
 ${plp3}`]
-            const regex = /https:\/\/(\w+\.)?qpic\.cn/;
-            const regexHttp = /http:\/\/(\w+\.)?qpic\.cn/;
-            if (plp3.match(regex)) {
-                msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
-                logger.mark(plp3)
-                e.reply(msg)
-            } else if(plp3.match(regexHttp)){
-                msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
-                logger.mark(plp3)
-                e.reply(msg)
-            } else {
-                e.reply(msg)
-            }
-            redis.set(`Yunzai:giplugin-${e.user_id}_plp2`, JSON.stringify(date_time));
-            shanchu(filePath, plp2)
-        });
+        const regex = /https:\/\/(\w+\.)?qpic\.cn/;
+        const regexHttp = /http:\/\/(\w+\.)?qpic\.cn/;
+        if (plp3.match(regex)) {
+            msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
+            logger.mark(plp3)
+            e.reply(msg)
+        } else if(plp3.match(regexHttp)){
+            msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
+            logger.mark(plp3)
+            e.reply(msg)
+        } else {
+            e.reply(msg)
+        }
+        redis.set(`Yunzai:giplugin-${e.user_id}_plp2`, JSON.stringify(date_time));
+        shanchu(filePath, plp2)
     }
 }
