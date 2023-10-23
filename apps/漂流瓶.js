@@ -32,14 +32,29 @@ export class plp extends plugin {
         const day = currentDate.getDate().toString().padStart(2, '0');
         const date_time = `${year}-${month}-${day}`;
         let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp`);date_time2 = JSON.parse(date_time2);
-        if (!e.isMaster) {
-            if (date_time === date_time2) {
-                e.reply(`你今天已经扔过漂流瓶了，每天只能扔一次哦~`)
-                return true;
+        let times_;
+        let { config } = getconfig(`config`, `config`)
+        if(date_time2){
+            const parts = date_time2.split('；');
+            const date_time3 = parts[0].substring(1);
+            times_ = parseInt(parts[1], 10);
+            logger.mark(times_)
+            if (!e.isMaster) {
+                if (date_time === date_time3) {
+                    if(times_ >= config.Rplp) {
+                        e.reply(`你今天已经扔过${times_}次漂流瓶，每天只能捡${config.Rplp}次哦~`)
+                        return true;
+                    }
+                } else {
+                    times_ = `0`;
+                }
             }
+        } else {
+            times_ = `0`;
         }
-            e.reply(`发送你想要扔漂流瓶的内容(仅支持文字和图片)`)
-            this.setContext(`扔漂流瓶1`)
+        e.reply(`发送你想要扔漂流瓶的内容(仅支持文字和图片)`)
+        redis.set(`Yunzai:Giplp_${e.user_id}_times`, JSON.stringify(times_))
+        this.setContext(`扔漂流瓶1`)
     }
     async 扔漂流瓶1(e){
         const currentDate = new Date();
@@ -49,6 +64,8 @@ export class plp extends plugin {
         const date_time = `${year}-${month}-${day}`;
         this.finish(`扔漂流瓶1`)
         let plp;
+        let times_ = await redis.get(`Yunzai:Giplp_${e.user_id}_times`)
+        times_ = JSON.parse(times_)
         /**if(this.e.msg == undefined){
             logger.warn(`[Gi互动:扔漂流瓶]检测到图片或卡片`);
             e.reply(`扔漂流瓶失败了，无法在漂流瓶内塞进图片卡片等内容。`)
@@ -79,7 +96,9 @@ export class plp extends plugin {
           })
         e.reply(`你的漂流瓶成功扔出去了~`)
         logger.mark(`[Gi互动:扔漂流瓶]用户${e.user_id}扔了一个漂流瓶【${plp_}】`)
-        redis.set(`Yunzai:giplugin-${e.user_id}_plp`, JSON.stringify(date_time));
+        times_++;
+        let times = `@${date_time}；${times_}`
+        redis.set(`Yunzai:giplugin-${e.user_id}_plp`, JSON.stringify(times));
     }
     async 捡漂流瓶(e){
         let plp2;

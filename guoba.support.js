@@ -78,6 +78,16 @@ export function supportGuoba() {
             placeholder: '请输入数字',
           }
         },
+        {
+          field: 'Rplp',
+          label: '每日可扔漂流瓶次数',
+          bottomHelpMessage: '每天可扔漂流瓶次数，主人不受限制',
+          component: 'InputNumber',
+          required: true,
+          componentProps: {
+            placeholder: '请输入数字',
+          }
+        },
       ],
       getConfigData() {
         let { config } = getconfig(`config`, `config`)
