@@ -42,7 +42,7 @@ export class plp extends plugin {
             if (!e.isMaster) {
                 if (date_time === date_time3) {
                     if(times_ >= config.Rplp) {
-                        e.reply(`你今天已经扔过${times_}次漂流瓶，每天只能捡${config.Rplp}次哦~`)
+                        e.reply(`你今天已经扔过${times_}次漂流瓶，每天只能扔${config.Rplp}次哦~`)
                         return true;
                     }
                 } else {
