@@ -68,6 +68,16 @@ export function supportGuoba() {
             placeholder: '请输入阈值',
           }
         },
+        {
+          field: 'Jplp',
+          label: '每日可捡漂流瓶次数',
+          bottomHelpMessage: '每天可捡漂流瓶次数，主人不受限制',
+          component: 'InputNumber',
+          required: true,
+          componentProps: {
+            placeholder: '请输入数字',
+          }
+        },
       ],
       getConfigData() {
         let { config } = getconfig(`config`, `config`)

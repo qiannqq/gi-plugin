@@ -1,6 +1,7 @@
 import plugin from '../../../lib/plugins/plugin.js';
 import Gimodel from '../model/duquFile.js';
 import shanchu from '../model/shanchu.js';
+import getconfig from '../model/cfg.js';
 import {promises as fs} from 'fs';
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
@@ -87,18 +88,30 @@ export class plp extends plugin {
             type: `plp`
         }
         let Piaoliu = await Gimodel.NewduquFile(dc, e)
-        
+        let { config } = getconfig(`config`, `config`)
         const currentDate = new Date();
         const year = currentDate.getFullYear();
         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
         const day = currentDate.getDate().toString().padStart(2, '0');
         const date_time = `${year}-${month}-${day}`;
         let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp2`);date_time2 = JSON.parse(date_time2);
-        if (!e.isMaster) {
-            if (date_time === date_time2) {
-                e.reply(`你今天已经捡过漂流瓶，每天只能捡一次哦~`)
-                return true;
+        let times_;
+        if(date_time2){
+            const parts = date_time2.split('；');
+            const date_time3 = parts[0].substring(1);
+            times_ = parseInt(parts[1], 10);
+            if (!e.isMaster) {
+                if (date_time === date_time3) {
+                    if(times_ >= config.Jplp) {
+                        e.reply(`你今天已经捡过${times_}次漂流瓶，每天只能捡${config.Jplp}次哦~`)
+                        return true;
+                    }
+                } else {
+                    times_ = `0`;
+                }
             }
+        } else {
+            times_ = `0`;
         }
         const randomIndex = Math.floor(Math.random() * Piaoliu.length);
         if(Piaoliu.length === 0){
@@ -138,7 +151,9 @@ ${plp3}`]
         } else {
             e.reply(msg)
         }
-        redis.set(`Yunzai:giplugin-${e.user_id}_plp2`, JSON.stringify(date_time));
+        times_++;
+        let times = `@${date_time}；${times_}`
+        redis.set(`Yunzai:giplugin-${e.user_id}_plp2`, JSON.stringify(times));
         shanchu(filePath, plp2)
     }
 }
