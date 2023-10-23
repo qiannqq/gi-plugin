@@ -23,19 +23,48 @@ class Gimodel {
       callback(Piaoliu);
     });**/
   }
-  async NewduquFile(filePath, e) {
-    let data = await fs.readFile(filePath, 'utf-8')
+  async NewduquFile(dc, e) {
+    let data = await fs.readFile(dc.filePath, 'utf-8')
     const lines = data.split('@');
     const Piaoliu = [];
-    lines.forEach((line) => {
+    let msgList = [];
+    msgList.push({
+      message: `${e.group_name}(${e.group_id})的历史文献`,
+      nickname: `Q群管家`
+    })
+    lines.forEach(async (line) => {
       line = line.slice(0, -1);
       const parts = line.split('；');
       const plp = parts[0];
       const userId = parts[1];
-      if (userId != undefined) Piaoliu.push(`@${plp}；${userId}`)
+      if(dc.type == 'plp'){
+        if (userId != undefined && userId != e.user_id) Piaoliu.push(`@${plp}；${userId}`)
+      } else if(dc.type == 'history'){
+        if(plp > 100000){
+          let history = userId
+          let userid_ = await redis.get(`Yunzai:giplugin-${plp}_history_userid`);
+          userid_ = JSON.parse(userid_);
+          let username = await redis.get(`Yunzai:giplugin-${plp}_history_username`);
+          username = JSON.parse(username);
+          let date = await redis.get(`Yunzai:giplugin-${plp}_history_date`);
+          date = JSON.parse(date);
+          history = history.replace(/换行/g, '\n');
+          let history_text =
+            `文献编号:${plp}
+贡献者:${username}(${userid_})
+贡献时间:${date}
+文献正文:
+${history}`
+          msgList.push({
+            message: history_text,
+            nickname: `${username}(${userid_})`
+          })
+        }
+      }
     })
-    return Piaoliu
-  }
+    if(dc.type == 'plp') return Piaoliu
+    if(dc.type == 'history') return msgList
+   }
 }
 
 export default new Gimodel
