@@ -25,7 +25,6 @@ class Gimodel {
   }
   async NewduquFile(filePath, e) {
     let data = await fs.readFile(filePath, 'utf-8')
-    //logger.mark(data)
     const lines = data.split('@');
     const Piaoliu = [];
     lines.forEach((line) => {
@@ -33,7 +32,7 @@ class Gimodel {
       const parts = line.split('；');
       const plp = parts[0];
       const userId = parts[1];
-      if (userId != undefined && userId != e.user_id) Piaoliu.push(`@${plp}；${userId}`)
+      if (userId != undefined) Piaoliu.push(`@${plp}；${userId}`)
     })
     return Piaoliu
   }

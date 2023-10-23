@@ -1,7 +1,7 @@
 import plugin from '../../../lib/plugins/plugin.js';
 import Gimodel from '../model/duquFile.js';
 import shanchu from '../model/shanchu.js';
-import fs from 'fs';
+import {promises as fs} from 'fs';
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
 const _path = process.cwd().replace(/\\/g, '/')
@@ -82,7 +82,17 @@ export class plp extends plugin {
     }
     async 捡漂流瓶(e){
         let plp2;
-        let Piaoliu = await Gimodel.NewduquFile(filePath, e)
+        //let Piaoliu_ = await Gimodel.NewduquFile(ds, e)
+        let Piaoliu = [];
+        let data = await fs.readFile(filePath, `utf-8`)
+        const lines = data.split('@');
+        lines.forEach((line) => {
+            line = line.slice(0, -1);
+            const parts = line.split('；');
+            const plp = parts[0];
+            const userId = parts[1];
+            if (userId != undefined && userId != e.user_id) Piaoliu.push(`@${plp}；${userId}`)
+        })
         const currentDate = new Date();
         const year = currentDate.getFullYear();
         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
