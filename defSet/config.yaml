@@ -8,3 +8,5 @@ mrdkFQ: 5
 updatetime: '0 20 1 * * ?'
 #每日可捡漂流瓶次数
 Jplp: 1
+#每日可扔漂流瓶次数
+Rplp: 1
