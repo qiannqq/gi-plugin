@@ -39,8 +39,6 @@ export function supportGuoba() {
           component: 'Input',
           required: true,
           componentProps: {
-            min: 0,
-            max: 100,
             placeholder: '请输入cron表达式',
           }
         },
