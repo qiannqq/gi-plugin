@@ -1,4 +1,8 @@
 import { promises as fs } from 'fs';
+import { readFile, writeFile } from 'fs';
+import { promisify } from 'util';
+const readFileAsync = promisify(readFile);
+const writeFileAsync = promisify(writeFile);
 
 class Gimodel {
   async duquFile(filePath, callback) {
@@ -65,6 +69,17 @@ ${history}`
     if(dc.type == 'plp') return Piaoliu
     if(dc.type == 'history') return msgList
    }
+  async shanchu(filePath, shuju1) {
+    try {
+      const data = await readFileAsync(filePath, 'utf8');
+      const regex = new RegExp(shuju1 + '\\r?\\n?', 'g');
+      const updatedData = data.replace(regex, '');
+      await writeFileAsync(filePath, updatedData, 'utf8');
+    } catch (error) {
+      logger.error(error);
+    }
+
+  }
 }
 
 export default new Gimodel

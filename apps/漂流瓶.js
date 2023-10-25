@@ -173,6 +173,6 @@ ${plp3}`]
         times_++;
         let times = `@${date_time}；${times_}`
         redis.set(`Yunzai:giplugin-${e.user_id}_plp2`, JSON.stringify(times));
-        shanchu(filePath, plp2)
+        Gimodel.shanchu(filePath, plp2)
     }
 }

@@ -1,6 +1,7 @@
 import fs from 'fs';
 function shanchu(filePath, plp2) {
-    fs.readFile(filePath, 'utf8', (err, data) => {
+  console.log(`已废弃。`)
+    /**fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
           console.error(err);
           return;
@@ -15,7 +16,7 @@ function shanchu(filePath, plp2) {
             return;
           }
         });
-      });
+      });**/
 }
 
 export default shanchu
