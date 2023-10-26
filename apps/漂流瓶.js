@@ -1,5 +1,5 @@
 import plugin from '../../../lib/plugins/plugin.js';
-import Gimodel from '../model/duquFile.js';
+import Gimodel from '../model/getFile.js';
 import shanchu from '../model/shanchu.js';
 import getconfig from '../model/cfg.js';
 import {promises as fs} from 'fs';
@@ -106,7 +106,7 @@ export class plp extends plugin {
             filePath: filePath,
             type: `plp`
         }
-        let Piaoliu = await Gimodel.NewduquFile(dc, e)
+        let Piaoliu = await Gimodel.NewgetFile(dc, e)
         let { config } = getconfig(`config`, `config`)
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -173,6 +173,6 @@ ${plp3}`]
         times_++;
         let times = `@${date_time}；${times_}`
         redis.set(`Yunzai:giplugin-${e.user_id}_plp2`, JSON.stringify(times));
-        Gimodel.shanchu(filePath, plp2)
+        Gimodel.delfile(filePath, plp2)
     }
 }
