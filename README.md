@@ -52,6 +52,20 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 2.  向2632139786@qq.com发送邮件，附上BUG造成的影响，复现过程以及错误日志截图
 3.  通过添加我的QQ私聊我反馈问题(邮箱即QQ号
 
+#### 相关索引
+| 名称 | 描述 | 作者 |
+|------|------|------|
+| [Miao-Yunzai](https://gitee.com/yoimiya-kokomi/Miao-Yunzai) | 喵版Yunzai，源自Le-niao/Yunzai-Bot V3 | [@yoimiya-kokomi](https://gitee.com/yoimiya-kokomi) |
+| [TRSS-Yunzai](https://gitee.com/TimeRainStarSky/Yunzai) | Yunzai 应用端，支持多账号，支持协议端：go-cqhttp、ComWeChat、GSUIDCore、ICQQ、QQ频道、微信、KOOK、Telegram、Discord | [@时雨星空](https://gitee.com/TimeRainStarSky) |
+| [Yunzai-Bot 索引库](https://gitee.com/yhArcadia/Yunzai-Bot-plugins-index) | 云崽相关内容索引库 | [@渔火Arcadia](https://gitee.com/yhArcadia) |
+
+#### 致谢
+| Nickname | 贡献 |
+| [@Zyy955](https://gitee.com/Zyy955) | fix：浏览器截图问题 |
+| [@白狐](https://gitee.com/baihu433) | fix：锅巴引入链接错误 |
+| [@酸菜咸鱼](https://gitee.com/suancaixianyu) | 提供插件相关思路 |
+
+
 #### 参与贡献
 
 1.  Fork 本仓库
