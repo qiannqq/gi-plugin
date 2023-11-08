@@ -61,6 +61,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 
 #### 致谢
 | Nickname | 贡献 |
+|-----|-----|
 | [@Zyy955](https://gitee.com/Zyy955) | fix：浏览器截图问题 |
 | [@白狐](https://gitee.com/baihu433) | fix：锅巴引入链接错误 |
 | [@酸菜咸鱼](https://gitee.com/suancaixianyu) | 提供插件相关思路 |
