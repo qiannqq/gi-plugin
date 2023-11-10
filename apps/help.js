@@ -1,6 +1,6 @@
 import plugin from "../../../lib/plugins/plugin.js";
 import image from "../model/image.js";
-import img_ from '../model/message.js'
+import getconfig from "../model/cfg.js";
 
 export class example2 extends plugin {
     constructor(){
@@ -18,8 +18,14 @@ export class example2 extends plugin {
         })
     }
     async help(e){
-        const { img } = await image(e, 'help', 'help')
-        e.reply(img)
-        return true;
+       let _path = process.cwd().replace(/\\/g, '/')
+       const { config } = getconfig(`defSet`, `help`)
+       let { img } = await image(e, 'help', 'help', {
+            saveId: 'help',
+            cwd: _path,
+            genshinPath: `${_path}/plugins/genshin/resources/`,
+            helpData: config,
+       })
+       e.reply(img)
     }
 }

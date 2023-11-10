@@ -1,71 +1,192 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>help</title>
-<style>
-  html, body {
-    height: 700px; /* 15 * 100 */
-    width: 700px; /* 14 * 100 */
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  hr {
-    width: 50%;
-    margin: 20px auto;
-  }
-  
-  .content {
-    text-align: center;
-    margin: 10px;
-    padding: 0;
-  }
-</style>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <link rel="shortcut icon" href="#" />
 </head>
+<style>
+  @font-face {
+  font-family: "HYWenHei";
+  src: url("../../../plugins/Gi-plugin/resources/font/HYWenHei-55W.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0; 
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  font-family: sans-serif;
+  font-size: 16px;
+  width: 530px;
+  color: #1e1f20;
+  transform: scale(1.5);
+  transform-origin: 0 0;
+}
+
+.container {
+  width: 660px;
+  padding: 20px 15px 10px 15px;
+  background-color: #f5f6fb;
+}
+
+.head_box {
+  border-radius: 15px;
+  font-family: HYWenHei;
+  padding: 20px 15px;
+  position: relative;
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
+  background: url('../../../plugins/genshin/resources/img/roleIndex/namecard/7.png') center center no-repeat;
+}
+
+.head_box .id_text {
+  font-size: 28px;
+}
+
+.head_box .day_text {
+  font-size: 24px;
+}
+
+.head_box .Gi_logo {
+  position: absolute;
+  top: -1px;
+  right: 15px;
+  width: 130px;
+}
+
+.base_info {
+  position: relative;
+  padding-left: 10px;
+}
+
+.uid {
+  font-family: HYWenHei;
+}
+
+.data_box {
+  border-radius: 15px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  padding: 20px 0px 5px 0px;
+  background: #fff;
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
+  position: relative;
+}
+
+.tab_lable {
+  position: absolute;
+  top: -10px;
+  left: -8px;
+  background: #d4b98c;
+  color: #fff;
+  font-size: 14px;
+  padding: 3px 10px;
+  border-radius: 15px 0px 15px 15px;
+  z-index: 20;
+}
+
+.data_line {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 14px;
+}
+
+.data_line_item {
+  width: 100px;
+  text-align: center;
+  /*margin: 0 20px;*/
+}
+
+.num {
+  font-family: HYWenHei;
+  font-size: 24px;
+}
+
+.data_box .lable {
+  font-size: 14px;
+  color: #7f858a;
+  line-height: 1;
+  margin-top: 3px;
+}
+
+.list {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.list .item {
+  width: 300px;
+  display: flex;
+  align-items: center;
+  background: #f1f1f1;
+  padding: 8px 6px 8px 6px;
+  border-radius: 8px;
+  margin: 0 0px 10px 10px;
+}
+
+.list .item .icon {
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.list .item .title {
+  font-size: 16px;
+  margin-left: 6px;
+  line-height: 20px;
+}
+
+/* .list .item .title .text{
+  white-space: nowrap;
+} */
+.list .item .title .dec {
+  font-size: 12px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.logo {
+  font-size: 14px;
+  font-family: "HYWenHei";
+  text-align: center;
+  color: #7994a7;
+}
+</style>
+
 <body>
-  <div class="container">
-    <h1>群互动插件使用帮助 | Gi Help</h1>
-    <hr>
-    <div class="content">
-      <p>【扔漂流瓶】扔出一个漂流瓶，每天只能扔一次</p>
-      <p>【捡漂流瓶】捞出一个漂流瓶，每天只能捡一次</p>
-      <p>【每日打卡】随机抽取幸运值，每天只能抽一次</p>
-      <p>【今日欧皇】查看今天首位抽到100幸运值的幸运儿</p>
-      <p>【今日非酋】查看今天首位抽到0幸运值的“幸运儿”</p>
-      <p>【查分】模拟高考查分，看看你的分数能不能上清北吧</p>
-      <p>【答案之书+问题】答案之书会给出答案</p>
-      <p>【贡献历史】记录当前群的历史大事件</p>
-      <p>【本群历史】回顾当前群的历史大事件</p>
+  <div class="container" id="container">
+    <div class="head_box">
+      <div class="id_text">Gi-plugin帮助</div>
+      <h2 class="day_text">使用说明-v1.0.0</h2>
+      <!-- <img class="Gi_logo" src="../../../plugins/Gi-plugin/resources/logo.png"/> -->
     </div>
-    <hr>
-    <div class="content">
-      <p>【删除文献+文献编号】删除该群指定文献</p>
-      <p>【互动更新】互动插件更新</p>
-      <p>【互动强制更新】忽略本地冲突，强制互动插件更新</p>
+    {{each helpData val}}
+    <div class="data_box">
+      <div class="tab_lable">{{val.group}}</div>
+      <div class="list">
+        {{each val.list item}}
+        <div class="item">
+          <img class="icon" src="{{genshinPath}}img/icon/{{item.icon}}.png" />
+          <div class="title">
+            <div class="text">{{item.title}}</div>
+            <div class="dec">{{item.desc}}</div>
+          </div>
+        </div>
+        {{/each}}
+      </div>
     </div>
-    <hr>
+    {{/each}}
+    <div class="logo">Created By Miao-Yunzai & Gi-plugin</div>
   </div>
 </body>
+
 </html>

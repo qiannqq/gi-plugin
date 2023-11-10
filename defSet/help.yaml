@@ -1,0 +1,46 @@
+- group: 漂流瓶
+  list:
+    - icon: paimon
+      title: '扔漂流瓶'
+      desc: '扔出一个漂流瓶'
+    - icon: paimon
+      title: '捡漂流瓶'
+      desc: '捞出一个漂流瓶'
+- group: 打卡
+  list:
+    - icon: paimon
+      title: '每日打卡'
+      desc: '随机抽取幸运值，每天只能抽一次'
+    - icon: paimon
+      title: '今日欧皇'
+      desc: '查看今天首位抽到100幸运值的幸运儿 '
+    - icon: paimon
+      title: '今日非酋'
+      desc: '查看今天首位抽到0幸运值的“幸运儿”'
+- group: 历史文献
+  list:
+    - icon: paimon
+      title: '贡献历史'
+      desc: '记录当前群的历史大事件'
+    - icon: paimon
+      title: '本群历史'
+      desc: '回顾当前群的历史大事件'
+- group: 杂项
+  list:
+    - icon: paimon
+      title: '查分'
+      desc: '模拟高考查分，看看你的分数能不能上清北吧'
+    - icon: paimon
+      title: '答案之书+问题'
+      desc: '答案之书会给出答案'
+- group: 管理功能
+  list:
+    - icon: paimon
+      title: '删除文献+编号'
+      desc: '删除该群指定文献'
+    - icon: paimon
+      title: '互动更新'
+      desc: '更新互动插件'
+    - icon: paimon
+      title: '互动强制更新'
+      desc: '忽略本地冲突，强制更新互动插件'
