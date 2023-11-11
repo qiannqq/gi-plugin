@@ -66,9 +66,10 @@ body {
     margin-top: 20px;
     margin-bottom: 15px;
     padding: 20px 0px 5px 0px;
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    background: rgba(169, 169, 169, 0.1); /* 使用半透明的灰色作为背景 */
+    box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
     position: relative;
+    backdrop-filter: blur(10px); /* 设置模糊半径，调整这个值以达到你想要的效果 */
 }
 
 .tab_lable {
