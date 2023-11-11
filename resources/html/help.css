@@ -148,5 +148,8 @@ body {
     font-size: 14px;
     font-family: "HYWenHei";
     text-align: center;
-    color: #7994a7;
+    color: #fff;
+    background-color: #7994a7;
+    padding: 10px;
+    border-radius: 8px;
 }
