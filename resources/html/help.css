@@ -24,7 +24,8 @@ body {
 .container {
     width: 660px;
     padding: 20px 15px 10px 15px;
-    background-color: #f5f6fb;
+    background-color: #ff00ae;
+    background: url('../img/help_2.jpg') center center no-repeat;
 }
 
 .head_box {
@@ -33,7 +34,7 @@ body {
     padding: 20px 15px;
     position: relative;
     box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
-    background: url('../../../genshin/resources/img/roleIndex/namecard/7.png') center center no-repeat;
+    background: url('../img/help_1.png') center center no-repeat;
 }
 
 .head_box .id_text {
@@ -65,8 +66,8 @@ body {
     margin-top: 20px;
     margin-bottom: 15px;
     padding: 20px 0px 5px 0px;
-    background: #fff;
-    box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
     position: relative;
 }
 
