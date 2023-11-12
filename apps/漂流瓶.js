@@ -21,9 +21,15 @@ export class plp extends plugin {
                 },{
                     reg: '^#?捡漂流瓶$',
                     fnc: '捡漂流瓶'
+                },{
+                    reg: '^#?撤回漂流瓶$',
+                    fnc: 'recall_floating_bottle'
                 }
             ]
         })
+    }
+    async recall_floating_bottle(e){
+        console.log(`施工中……`)
     }
     async 扔漂流瓶(e){
         const currentDate = new Date();
@@ -52,11 +58,15 @@ export class plp extends plugin {
         } else {
             times_ = `0`;
         }
-        e.reply(`发送你想要扔漂流瓶的内容(仅支持文字和图片)`)
+        e.reply(`发送你想要扔漂流瓶的内容(仅支持文字和图片)\n发送[0]取消扔漂流瓶`)
         redis.set(`Yunzai:Giplp_${e.user_id}_times`, JSON.stringify(times_))
         this.setContext(`扔漂流瓶1`)
     }
     async 扔漂流瓶1(e){
+        if(e.msg == `0`|| e.msg == `[0]`){
+            e.reply(`已取消扔漂流瓶`)
+            return true;
+        }
         const currentDate = new Date();
         const year = currentDate.getFullYear();
         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
