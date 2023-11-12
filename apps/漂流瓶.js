@@ -2,7 +2,8 @@ import plugin from '../../../lib/plugins/plugin.js';
 import Gimodel from '../model/getFile.js';
 import shanchu from '../model/shanchu.js';
 import getconfig from '../model/cfg.js';
-import {promises as fs} from 'fs';
+import { promises as fs } from 'fs';
+import fs_ from 'fs'
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
 const _path = process.cwd().replace(/\\/g, '/')
@@ -29,7 +30,28 @@ export class plp extends plugin {
         })
     }
     async recall_floating_bottle(e){
-        console.log(`施工中……`)
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = currentDate.getDate().toString().padStart(2, '0');
+        const date_time = `${year}-${month}-${day}`;
+        let dc = {
+            filePath: `plugins/Gi-plugin/resources/plp/${date_time}.txt`,
+            type: 'rfb'
+        }
+        let plp = await Gimodel.NewgetFile(dc, e)
+        if(plp.length == 0){
+            e.reply(`海里似乎没有你今天扔的漂流瓶呢~`)
+            return true;
+        } else if(plp.length > 1){
+            e.reply(`你今天已经扔了超过一个漂流瓶，不支持撤回哦~`)
+            return true;
+        }
+        Gimodel.delfile(filePath, plp)
+        await Gimodel.delfile(dc.filePath, plp)
+        fs.appendFile(dc.filePath, plp + `已撤回\n`, `utf-8`)
+        e.reply(`已经撤回了哦~`)
+        //console.log(`施工中……`)
     }
     async 扔漂流瓶(e){
         const currentDate = new Date();
@@ -97,6 +119,13 @@ export class plp extends plugin {
             plp_ = plp_.replace(/⁧/g, '');
         }
         plp = `@${plp_}；${e.user_id}`
+        let plpfile = `plugins/Gi-plugin/resources/plp/${date_time}.txt`
+        let plpfile_ = `plugins/Gi-plugin/resources/plp`
+        if (!fs_.existsSync(plpfile_)) {
+            fs_.mkdirSync(plpfile_);
+        }
+        await Gimodel.mdfile(plpfile)
+        fs.appendFile(plpfile, plp + `\n`, `utf-8`)
         fs.appendFile(filePath, plp + '\n', 'utf8', (err) => {
             if (err) {
               logger.error(err);

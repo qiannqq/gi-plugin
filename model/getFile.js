@@ -64,9 +64,11 @@ ${history}`
             nickname: `${username}(${userid_})`
           })
         }
+      } else if(dc.type == `rfb`){
+        if(userId == e.user_id) Piaoliu.push(`@${plp}；${userId}`)
       }
     })
-    if(dc.type == 'plp') return Piaoliu
+    if(dc.type == 'plp' || dc.type == 'rfb') return Piaoliu
     if(dc.type == 'history') return msgList
    }
   async delfile(filePath, shuju1) {
@@ -79,6 +81,16 @@ ${history}`
       logger.error(error);
     }
 
+  }
+  async mdfile(filePath){
+    try {
+      await fs.access(filePath, fs.constants.F_OK);
+    } catch (err) {
+      try {
+        await fs.writeFile(filePath, '');
+      } catch (writeErr) {
+      }
+    }
   }
 }
 
