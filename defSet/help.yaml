@@ -6,6 +6,9 @@
     - icon: paimon
       title: '捡漂流瓶'
       desc: '捞出一个漂流瓶'
+    - icon: paimon
+      title: '撤回漂流瓶'
+      desc: '撤回今天扔的漂流瓶'
 - group: 打卡
   list:
     - icon: paimon
