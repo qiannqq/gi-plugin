@@ -20,7 +20,7 @@ export class update extends plugin {
                 {
                     reg: '^(#|/)?(互动|Gi|gi|gI|GI)(强制)?更新$',
                     fnc: '互动插件更新',
-                    Permission: 'master'
+                    //Permission: 'master'
                 }
             ]
         });
@@ -46,6 +46,10 @@ export class update extends plugin {
         });
     }
     async 互动插件更新(e) {
+        if(!e.isMaster){
+            e.reply(`暂无权限，只有主人才能操作`)
+            return true;
+        }
         let botname = cfg.package.name
         e.reply(`[Gi-plugin]正在执行更新操作，请稍等`)
         const parentDir = path.join(__dirname, '..'); // 上级目录路径
