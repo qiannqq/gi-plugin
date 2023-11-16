@@ -18,7 +18,7 @@ export class update extends plugin {
             priority: 5000,
             rule: [
                 {
-                    reg: '^#?(互动|Gi|gi|gI|GI)(强制)?更新$',
+                    reg: '^(#|/)?(互动|Gi|gi|gI|GI)(强制)?更新$',
                     fnc: '互动插件更新',
                     Permission: 'master'
                 }

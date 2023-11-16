@@ -11,7 +11,7 @@ export class chafen extends plugin {
             priority: 5000,
             rule: [
                 {
-                    reg: '#?查分$',
+                    reg: '^(#|/)?查分$',
                     fnc: '查分'
                 }
             ]

@@ -4,6 +4,7 @@ import shanchu from '../model/shanchu.js';
 import getconfig from '../model/cfg.js';
 import { promises as fs } from 'fs';
 import fs_ from 'fs'
+import { config } from 'process';
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
 const _path = process.cwd().replace(/\\/g, '/')
@@ -17,13 +18,13 @@ export class plp extends plugin {
             priority: 1,
             rule:[
                 {
-                    reg: '^#?扔漂流瓶$',
+                    reg: '^(#|/)?扔漂流瓶$',
                     fnc: '扔漂流瓶'
                 },{
-                    reg: '^#?捡漂流瓶$',
+                    reg: '^(#|/)?捡漂流瓶$',
                     fnc: '捡漂流瓶'
                 },{
-                    reg: '^#?撤回漂流瓶$',
+                    reg: '^(#|/)?撤回漂流瓶$',
                     fnc: 'recall_floating_bottle'
                 }
             ]
@@ -51,7 +52,7 @@ export class plp extends plugin {
         await Gimodel.delfile(dc.filePath, plp)
         fs.appendFile(dc.filePath, plp + `已撤回\n`, `utf-8`)
         e.reply(`已经撤回了哦~`)
-        //console.log(`施工中……`)
+        return true;
     }
     async 扔漂流瓶(e){
         const currentDate = new Date();
@@ -125,6 +126,22 @@ export class plp extends plugin {
             fs_.mkdirSync(plpfile_);
         }
         await Gimodel.mdfile(plpfile)
+        /**let { config } = getconfig(`config`, `config`)
+        if(config.plpshenhe){
+            let PLPnumber = await redis.get(`Yunzai:Gi-plugin:PLPnumber`)
+            if(!PLPnumber){
+                PLPnumber = 10000;
+            } else {
+                PLPnumber = JSON.parse(PLPnumber)
+            }
+            let plpsh_ = `plugins/Gi-plugin/resources/plp/shenhe.txt`
+            await Gimodel.mdfile(plpsh_)
+            fs.appendFile(plpsh_, plp + `；${PLPnumber}`, `utf-8`)
+            PLPnumber++;
+            await redis.set(`Yunzai:Gi-plugin:PLPnumber`, JSON.stringify(PLPnumber))
+            e.reply(`你的瓶子已经成功交由港口管理员审核了，审核通过后就可以送进海洋哦~`)
+            return true;
+        }**/
         fs.appendFile(plpfile, plp + `\n`, `utf-8`)
         fs.appendFile(filePath, plp + '\n', 'utf8', (err) => {
             if (err) {

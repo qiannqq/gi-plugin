@@ -10,7 +10,7 @@ export class daanzhishu extends plugin {
             priority: 1,
             rule:[
                 {
-                    reg: '^#?答案之书(.*)$',
+                    reg: '^(#|/)?答案之书(.*)$',
                     fnc: '答案之书'
                 }
             ]

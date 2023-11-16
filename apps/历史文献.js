@@ -11,15 +11,15 @@ export class lishiwenxian extends plugin {
       priority: 1,
       rule: [
         {
-          reg: '^#?本群历史$',
+          reg: '^(#|/)?本群历史$',
           fnc: '本群历史'
         },
         {
-          reg: '^#?贡献历史$',
+          reg: '^(#|/)?贡献历史$',
           fnc: '贡献历史1'
         },
         {
-          reg: /^#?删除文献\s*([0-9]+)\s*$/,
+          reg: /^[#/]删除文献\s*([0-9]+)\s*$/,
           fnc: '删除文献',
           Permission: 'master'
         }
@@ -32,7 +32,7 @@ export class lishiwenxian extends plugin {
       return true;
     }
     let filePath = `plugins/Gi-plugin/resources/history/${e.group_id}.txt`
-    const history_number = e.raw_message.match(/^#?删除文献\s*([0-9]+)\s*$/)[1]
+    const history_number = e.raw_message.match(/^[#/]删除文献\s*([0-9]+)\s*$/)[1]
     if (!fs.existsSync(filePath)) {
       e.reply(`本群暂无历史文献`)
       return true;
