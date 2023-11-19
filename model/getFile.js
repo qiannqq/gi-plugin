@@ -73,12 +73,12 @@ ${history}`
    }
   async delfile(filePath, shuju1) {
     try {
-      const data = await readFileAsync(filePath, 'utf8');
-      const regex = new RegExp(shuju1 + '\\r?\\n?', 'g');
+      const data = await fs.readFile(filePath, 'utf8');
+      const regex = new RegExp(shuju1.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '\\r?\\n?', 'g');
       const updatedData = data.replace(regex, '');
-      await writeFileAsync(filePath, updatedData, 'utf8');
+      await fs.writeFile(filePath, updatedData, 'utf8');
     } catch (error) {
-      logger.error(error);
+      console.error(error);
     }
 
   }

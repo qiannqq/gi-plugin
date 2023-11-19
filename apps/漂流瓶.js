@@ -86,7 +86,7 @@ export class plp extends plugin {
         this.setContext(`扔漂流瓶1`)
     }
     async 扔漂流瓶1(e){
-        if(e.msg == `0`|| e.msg == `[0]`){
+        if(this.e.msg == `0`|| this.e.msg == `[0]`){
             e.reply(`已取消扔漂流瓶`)
             return true;
         }
@@ -129,8 +129,8 @@ export class plp extends plugin {
         let plpfile_ = `plugins/Gi-plugin/resources/plp`
         if (!fs_.existsSync(plpfile_)) {
             fs_.mkdirSync(plpfile_);
+            await Gimodel.mdfile(plpfile)
         }
-        await Gimodel.mdfile(plpfile)
         /**let { config } = getconfig(`config`, `config`)
         if(config.plpshenhe){
             let PLPnumber = await redis.get(`Yunzai:Gi-plugin:PLPnumber`)
@@ -222,7 +222,6 @@ ${plp3}`]
         const regexHttp = /http:\/\/(\w+\.)?qpic\.cn/;
         if (plp3.match(regex)) {
             msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
-            logger.mark(plp3)
             e.reply(msg)
         } else if(plp3.match(regexHttp)){
             msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
