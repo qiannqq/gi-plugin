@@ -106,7 +106,7 @@ export class plp extends plugin {
         }**/
         let plpmsg;
         for (let i = 0; i < this.e.message.length; i++) {
-            const msg = e.message[i];
+            const msg = this.e.message[i];
             if (msg.type === 'text') {
                 plpmsg = msg.text;
             } else if(msg.type === `image`){
