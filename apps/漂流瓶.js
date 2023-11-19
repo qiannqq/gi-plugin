@@ -107,11 +107,9 @@ export class plp extends plugin {
         let plp_ = this.e.msg
         logger.mark(plp_)
         if(plp_ == ``){
-            logger.mark(`1`)
             for (let i = 0; i < this.e.message.length; i++) {
                 const msg = this.e.message[i];
                 if (msg.type == `image`) {
-                    logger.mark(`0`)
                     plp_ = msg.url
                 }
             }
