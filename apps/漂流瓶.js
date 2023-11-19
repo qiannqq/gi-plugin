@@ -104,8 +104,16 @@ export class plp extends plugin {
             e.reply(`扔漂流瓶失败了，无法在漂流瓶内塞进图片卡片等内容。`)
             return true;
         }**/
-        const message = this.e.message[0]
-        if(message.type != 'text' && message.type != 'image'){
+        let plpmsg;
+        for (let i = 0; i < this.e.message.length; i++) {
+            const msg = e.message[i];
+            if (msg.type === 'text') {
+                plpmsg = msg.text;
+            } else if(msg.type === `image`){
+                plpmsg = msg.url
+            }
+          }
+        if(!plpmsg){
             e.reply(`扔漂流瓶失败了，无法在漂流瓶内塞进卡片内容。`)
             return true;
         }
