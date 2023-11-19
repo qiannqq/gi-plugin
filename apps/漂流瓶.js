@@ -104,28 +104,24 @@ export class plp extends plugin {
             e.reply(`扔漂流瓶失败了，无法在漂流瓶内塞进图片卡片等内容。`)
             return true;
         }**/
-        let plpmsg;
-        for (let i = 0; i < this.e.message.length; i++) {
-            const msg = this.e.message[i];
-            if (msg.type === 'text') {
-                plpmsg = msg.text;
-            } else if(msg.type === `image`){
-                plpmsg = msg.url
-            }
-          }
-        if(!plpmsg){
-            e.reply(`扔漂流瓶失败了，无法在漂流瓶内塞进卡片内容。`)
-            return true;
-        }
         let plp_ = this.e.msg
-        if (message.type == 'image') {
-            plp_ = message.url
+        if(plp_ == undefined){
+            for (let i = 0; i < this.e.message.length; i++) {
+                const msg = this.e.message[i];
+                if (msg.type === `image`) {
+                    plp_ = msg.url
+                }
+            }
         } else {
             plp_ = plp_.replace(/@/g, '');
             plp_ = plp_.replace(/\n/g, '');
             plp_ = plp_.replace(/；/g, '');
             plp_ = plp_.replace(/https/g, '');
             plp_ = plp_.replace(/⁧/g, '');
+        }
+        if(!plp_){
+            e.reply(`扔漂流瓶失败了，无法在漂流瓶内塞进卡片内容。`)
+            return true;
         }
         plp = `@${plp_}；${e.user_id}`
         let plpfile = `plugins/Gi-plugin/resources/plp/${date_time}.txt`
