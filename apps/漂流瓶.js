@@ -106,12 +106,15 @@ export class plp extends plugin {
             return true;
         }**/
         let plp_ = this.e.msg
-        logger.mark(plp_)
-        if(plp_ == `` || plp_ == undefined){
+        if(!plp_ || plp_ == undefined){
             for (let i = 0; i < this.e.message.length; i++) {
                 const msg = this.e.message[i];
                 if (msg.type == `image`) {
-                    plp_ = msg.url
+                    if(!msg.url){
+                        plp_ = msg.file
+                    } else {
+                        plp_ = msg.url
+                    }
                 }
             }
         } else {
