@@ -155,7 +155,8 @@ export class plp extends plugin {
         let dcpost = {
             user_id: e.user_id,
             plpdata: plp_,
-            botid: e.self_id
+            botid: e.self_id,
+            group_id: e.group_id
         }
         post(dcpost)
         fs.appendFile(filePath, plp + '\n', 'utf8', (err) => {
