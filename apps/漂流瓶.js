@@ -5,6 +5,7 @@ import getconfig from '../model/cfg.js';
 import { promises as fs } from 'fs';
 import fs_ from 'fs'
 import { config } from 'process';
+import post from '../model/post.js';
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
 const _path = process.cwd().replace(/\\/g, '/')
@@ -148,6 +149,12 @@ export class plp extends plugin {
             return true;
         }**/
         fs.appendFile(plpfile, plp + `\n`, `utf-8`)
+        let dcpost = {
+            user_id: e.user_id,
+            plpdata: plp_,
+            botid: e.self_id
+        }
+        post(dcpost)
         fs.appendFile(filePath, plp + '\n', 'utf8', (err) => {
             if (err) {
               logger.error(err);
