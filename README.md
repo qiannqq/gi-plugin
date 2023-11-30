@@ -59,7 +59,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 | 名称 | 描述 | 作者 |
 |------|------|------|
 | [Miao-Yunzai](https://gitee.com/yoimiya-kokomi/Miao-Yunzai) | 喵版Yunzai，源自Le-niao/Yunzai-Bot V3 | [@yoimiya-kokomi](https://gitee.com/yoimiya-kokomi) |
-| [TRSS-Yunzai](https://gitee.com/TimeRainStarSky/Yunzai) | Yunzai 应用端，支持多账号，支持协议端：go-cqhttp、ComWeChat、GSUIDCore、ICQQ、QQ频道、微信、KOOK、Telegram、Discord | [@时雨星空](https://gitee.com/TimeRainStarSky) |
+| [TRSS-Yunzai](https://gitee.com/TimeRainStarSky/Yunzai) | Yunzai多协议版 | [@时雨星空](https://gitee.com/TimeRainStarSky) |
 | [Yunzai-Bot 索引库](https://gitee.com/yhArcadia/Yunzai-Bot-plugins-index) | 云崽相关内容索引库 | [@渔火Arcadia](https://gitee.com/yhArcadia) |
 
 #### 致谢
