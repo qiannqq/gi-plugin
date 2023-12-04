@@ -30,6 +30,8 @@ export class example2 extends plugin {
         botname = `TRSS-Yunzai`
        } else if (cfg.package.name == `a-yunzai`){
         botname = `A-Yunzai`
+       } else if (cfg.package.name == `biscuit-yunzai`){
+        botname = `Biscuit-Yunzai`
        }
        let { img } = await image(e, 'help', 'help', {
             saveId: 'help',
