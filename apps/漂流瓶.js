@@ -32,23 +32,30 @@ export class plp extends plugin {
         })
     }
     async recall_floating_bottle(e){
+        //获取日期，用于读取漂流瓶日志文件
         const currentDate = new Date();
         const year = currentDate.getFullYear();
         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
         const day = currentDate.getDate().toString().padStart(2, '0');
         const date_time = `${year}-${month}-${day}`;
+        //获取用户在今天发送的漂流瓶
         let dc = {
             filePath: `plugins/Gi-plugin/resources/plp/${date_time}.txt`,
             type: 'rfb'
         }
         let plp = await Gimodel.NewgetFile(dc, e)
+        //检查用户扔过漂流瓶没有
         if(plp.length == 0){
             e.reply(`海里似乎没有你今天扔的漂流瓶呢~`)
             return true;
         } else if(plp.length > 1){
+            //今天扔过超过一个漂流瓶则不再撤回。别问为什么，问就是懒得写 （摆烂
             e.reply(`你今天已经扔了超过一个漂流瓶，不支持撤回哦~`)
             return true;
         }
+        //从漂流瓶数据文件中删除漂流瓶
+        await Gimodel.delfile(filePath, plp)
+        //删除漂流瓶日志中的漂流瓶，将其后面加上“已撤回”
         await Gimodel.delfile(dc.filePath, plp[0])
         fs.appendFile(dc.filePath, plp + `已撤回\n`, `utf-8`)
         e.reply(`已经撤回了哦~`)
