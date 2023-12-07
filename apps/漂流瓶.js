@@ -54,7 +54,7 @@ export class plp extends plugin {
             return true;
         }
         //从漂流瓶数据文件中删除漂流瓶
-        await Gimodel.delfile(filePath, plp)
+        await Gimodel.delfile(filePath, plp[0])
         //删除漂流瓶日志中的漂流瓶，将其后面加上“已撤回”
         await Gimodel.delfile(dc.filePath, plp[0])
         fs.appendFile(dc.filePath, plp + `已撤回\n`, `utf-8`)
