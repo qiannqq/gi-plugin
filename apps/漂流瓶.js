@@ -49,8 +49,7 @@ export class plp extends plugin {
             e.reply(`你今天已经扔了超过一个漂流瓶，不支持撤回哦~`)
             return true;
         }
-        Gimodel.delfile(filePath, plp)
-        await Gimodel.delfile(dc.filePath, plp)
+        await Gimodel.delfile(dc.filePath, plp[0])
         fs.appendFile(dc.filePath, plp + `已撤回\n`, `utf-8`)
         e.reply(`已经撤回了哦~`)
         return true;
@@ -87,6 +86,7 @@ export class plp extends plugin {
         this.setContext(`扔漂流瓶1`)
     }
     async 扔漂流瓶1(e){
+        this.finish(`扔漂流瓶1`)
         if(this.e.msg == `0`|| this.e.msg == `[0]`){
             e.reply(`已取消扔漂流瓶`)
             return true;
@@ -96,7 +96,6 @@ export class plp extends plugin {
         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
         const day = currentDate.getDate().toString().padStart(2, '0');
         const date_time = `${year}-${month}-${day}`;
-        this.finish(`扔漂流瓶1`)
         let plp;
         let times_ = await redis.get(`Yunzai:Giplp_${e.user_id}_times`)
         times_ = JSON.parse(times_)
