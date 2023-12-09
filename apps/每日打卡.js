@@ -75,7 +75,7 @@ export class meiridaka extends plugin {
           zhi,
         })
         let msg = [segment.at(e.user_id),
-          `\n你今天的幸运值是……\n`,
+          `\n你今天的幸运值是……`,
           img
         ]
         let { config } = getconfig(`config`, `config`)

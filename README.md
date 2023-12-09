@@ -6,6 +6,9 @@
   <img src="https://gitee.com/qiannqq/gi-plugin/raw/master/resources/logo.png" alt="Image" width="200" height="200">
 </p>
 
+#### 简介
+本插件多用于群聊中群友之间互动娱乐，因此叫做群互动插件。<br>
+本插件主要开发方向为提升群友与群友与bot之间的互动性，让bot不止是个冰冷只会查询数据的机器人。
 #### 安装教程
 在Yunzai-Bot根目录执行以下命令   **安装时请注意文件夹大小写！** <br>
 ##### Gitee源（国内推荐使用）
@@ -62,7 +65,6 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 | [Miao-Yunzai](https://gitee.com/yoimiya-kokomi/Miao-Yunzai) | 喵版Yunzai，源自Le-niao/Yunzai-Bot V3 | [@yoimiya-kokomi](https://gitee.com/yoimiya-kokomi) |
 | [TRSS-Yunzai](https://gitee.com/TimeRainStarSky/Yunzai) | Yunzai多协议版 | [@时雨星空](https://gitee.com/TimeRainStarSky) |
 | [A-Yunzai](https://gitee.com/ningmengchongshui/a-yunzai) | 基于AlemonJS的Miao-Yunzai环境 | [@柠檬冲水](https://gitee.com/ningmengchongshui)<br>[@地球生物](https://gitee.com/diqiushengwu) |
-| [Biscuit-Yunzai](https://gitee.com/Yummy-cookie/Yunzai-Bot) | 此版本根据Yunzai+miao结合组成的Yunzai<br>并不依赖miao-plugin | [@饼干](https://gitee.com/Yummy-cookie) |
 | [Yunzai-Bot 索引库](https://gitee.com/yhArcadia/Yunzai-Bot-plugins-index) | 云崽相关内容索引库 | [@渔火Arcadia](https://gitee.com/yhArcadia) |
 
 #### 致谢
