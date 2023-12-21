@@ -1,6 +1,5 @@
 import plugin from "../../../lib/plugins/plugin.js";
 import image from "../model/image.js";
-import img_ from "../model/message.js";
 
 export class chafen extends plugin {
     constructor(){
