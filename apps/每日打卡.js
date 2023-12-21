@@ -1,6 +1,8 @@
 import plugin from '../../../lib/plugins/plugin.js';
 import image from '../model/image.js';
 import getconfig from '../model/cfg.js';
+import { promises as fs } from 'fs'
+import fs_ from 'fs'
 
 export class meiridaka extends plugin {
     constructor(){
@@ -25,9 +27,22 @@ export class meiridaka extends plugin {
             {
                 reg: '^(#|/)?今日非酋$',
                 fnc: '今日非酋'
+            },
+            {
+                reg: '^(#|/)?历史幸运值$',
+                fnc: '历史幸运值'
             }
         ]
       });
+    }
+    async 历史幸运值(e){
+      if(!fs_.existsSync(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`)){
+        e.reply(`你似乎没有打过卡呢~`)
+        return true;
+      }
+      let data = await fs.readFile(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`, `utf-8`)
+      e.reply(`你的历史幸运值是……\n${data}`)
+      return true;
     }
     async 今日非酋(e) {
       const currentDate = new Date();
@@ -52,6 +67,7 @@ export class meiridaka extends plugin {
       return true;
     }
     async 每日打卡(e) {
+      logger.mark(e.user_id)
         //获取当前日期
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -112,6 +128,13 @@ export class meiridaka extends plugin {
         redis.set(`Yunzai:meiridaka3qn:${e.user_id}_daka`, JSON.stringify(date_time));//将当前日期写入redis防止重复抽取
         redis.set(`Yunzai:meiridakazhi:${e.user_id}_daka`, JSON.stringify(zhi));//将打卡获取的幸运值写入redis
         e.reply(msg)
+        let zhidata
+        if(!fs_.existsSync(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`)){
+          zhidata = ``
+        } else {
+          zhidata = await fs.readFile(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`, `utf-8`)
+        }
+        fs.writeFile(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`, `日期：${date_time}；幸运值${zhi}\n${zhidata}`, `utf-8`)
         return true;//结束运行
     }
     async 今日欧皇(e) {
