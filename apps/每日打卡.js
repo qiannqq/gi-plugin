@@ -3,6 +3,7 @@ import image from '../model/image.js';
 import getconfig from '../model/cfg.js';
 import { promises as fs } from 'fs'
 import fs_ from 'fs'
+import Gimodel from '../model/getFile.js'
 
 export class meiridaka extends plugin {
     constructor(){
@@ -45,11 +46,7 @@ export class meiridaka extends plugin {
       return true;
     }
     async 今日非酋(e) {
-      const currentDate = new Date();
-      const year = currentDate.getFullYear();
-      const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-      const day = currentDate.getDate().toString().padStart(2, '0');
-      const date_time = `${year}-${month}-${day}`;
+      const date_time = await Gimodel.date_time()
       let date_time2 = await redis.get(`Yunzai:fqiuriqi_daka`);date_time2 = JSON.parse(date_time2);
       if (date_time !== date_time2){
         let msg = [
@@ -69,11 +66,7 @@ export class meiridaka extends plugin {
     async 每日打卡(e) {
       logger.mark(e.user_id)
         //获取当前日期
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-        const day = currentDate.getDate().toString().padStart(2, '0');
-        const date_time = `${year}-${month}-${day}`;
+        const date_time = await Gimodel.date_time()
         let date_time2 = await redis.get(`Yunzai:meiridaka3qn:${e.user_id}_daka`);date_time2 = JSON.parse(date_time2);//获取用户最后一次打卡日期
         const zhi1 = await redis.get(`Yunzai:meiridakazhi:${e.user_id}_daka`);//获取用户最后一次打卡的幸运值
         //判断该用户的上一次抽取时间是否是今天
@@ -139,11 +132,7 @@ export class meiridaka extends plugin {
     }
     async 今日欧皇(e) {
         //获取当前日期
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-        const day = currentDate.getDate().toString().padStart(2, '0');
-        const date_time = `${year}-${month}-${day}`;
+        const date_time = await Gimodel.date_time()
         let date_time2 = await redis.get(`Yunzai:ohuangriqi_daka`);date_time2 = JSON.parse(date_time2);//获取欧皇最后一次诞生时间
         if (date_time !== date_time2){
           let msg = [
@@ -169,11 +158,7 @@ export class meiridaka extends plugin {
         if(at == `undefined`) return true;
         logger.mark(at)
         //获取当前日期
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-        const day = currentDate.getDate().toString().padStart(2, '0');
-        const date_time = `${year}-${month}-${day}`;
+        const date_time = await Gimodel.date_time()
         let date_time2 = await redis.get(`Yunzai:meiridaka3qn:${e.at}_daka`);date_time2 = JSON.parse(date_time2);
         const zhi1 = await redis.get(`Yunzai:meiridakazhi:${e.at}_daka`);
         if (date_time !== date_time2) {

@@ -15,11 +15,14 @@
       title: '每日打卡'
       desc: '随机抽取幸运值，每天只能抽一次'
     - icon: paimon
+      title: '历史幸运值'
+      desc: '查看你都抽到过多少幸运值'
+    - icon: paimon
       title: '今日欧皇'
-      desc: '查看今天首位抽到100幸运值的幸运儿 '
+      desc: '查看今天首位抽到95(默认)以上幸运值的幸运儿 '
     - icon: paimon
       title: '今日非酋'
-      desc: '查看今天首位抽到0幸运值的“幸运儿”'
+      desc: '查看今天首位抽到5(默认)以下幸运值的“幸运儿”'
 - group: 历史文献
   list:
     - icon: paimon
