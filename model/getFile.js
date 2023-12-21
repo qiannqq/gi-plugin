@@ -7,6 +7,11 @@ const readFileAsync = promisify(readFile);
 const writeFileAsync = promisify(writeFile);
 
 class Gimodel {
+  /**
+   * 已废弃
+   * @param {*} filePath 
+   * @param {*} callback 
+   */
   async duquFile(filePath, callback) {
     console.log(`已废弃。`)
     /**fs.readFile(filePath, 'utf8', (err, data) => {
@@ -29,6 +34,12 @@ class Gimodel {
       callback(Piaoliu);
     });**/
   }
+  /**
+   * 获取并解析文件内容
+   * @param {*} dc 包含type和filePath
+   * @param {*} e  e
+   * @returns 
+   */
   async NewgetFile(dc, e) {
     let data = await fs.readFile(dc.filePath, 'utf-8')
     const lines = data.split('@');
@@ -73,6 +84,11 @@ ${history}`
     if(dc.type == 'plp' || dc.type == 'rfb') return Piaoliu
     if(dc.type == 'history') return msgList
    }
+  /**
+   * 指定内容删除
+   * @param {*} filePath 文件路径
+   * @param {*} shuju1 内容
+   */
   async delfile(filePath, shuju1) {
     try {
       const data = await fs.readFile(filePath, 'utf8');
