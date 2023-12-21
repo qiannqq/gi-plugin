@@ -1,5 +1,7 @@
 import { promises as fs } from 'fs';
+import fs_ from 'fs'
 import { readFile, writeFile } from 'fs';
+import path from 'path';
 import { promisify } from 'util';
 const readFileAsync = promisify(readFile);
 const writeFileAsync = promisify(writeFile);
@@ -82,15 +84,17 @@ ${history}`
     }
 
   }
-  async mdfile(filePath){
-    try {
-      await fs.access(filePath, fs.constants.F_OK);
-    } catch (err) {
-      try {
-        await fs.writeFile(filePath, '');
-      } catch (writeErr) {
-      }
+  /**
+   * 创建文件夹和文件
+   * @param {*} filePath 文件路径，不包含文件名
+   * @param {*} filename 文件名，不包含文件路径
+   */
+  async mdfile(filePath, filename){
+    if(!fs_.existsSync(filePath)) {
+      fs.mkdirSync(filePath)
     }
+    let filePath_ = path.join(filePath, filename)
+    await fs.writeFile(filePath_, '');
   }
   async date_time(){
     const currentDate = new Date();

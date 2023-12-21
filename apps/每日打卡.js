@@ -124,7 +124,7 @@ export class meiridaka extends plugin {
         let zhidata
         if(!fs_.existsSync(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`)){
           zhidata = ``
-          await Gimodel.mdfile(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`)
+          await Gimodel.mdfile(`plugins/Gi-plugin/resources/mrdk`, `${e.user_id}.txt`)
         } else {
           zhidata = await fs.readFile(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`, `utf-8`)
         }
