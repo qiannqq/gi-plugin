@@ -45,10 +45,12 @@ class Gimodel {
     const lines = data.split('@');
     const Piaoliu = [];
     let msgList = [];
-    msgList.push({
-      message: `${e.group_name}(${e.group_id})的历史文献`,
-      nickname: `Q群管家`
-    })
+    if (dc.type != `init`) {
+      msgList.push({
+        message: `${e.group_name}(${e.group_id})的历史文献`,
+        nickname: `Q群管家`
+      })
+    }
     lines.forEach(async (line) => {
       line = line.slice(0, -1);
       const parts = line.split('；');
@@ -79,9 +81,11 @@ ${history}`
         }
       } else if(dc.type == `rfb`){
         if(userId == e.user_id) Piaoliu.push(`@${plp}；${userId}`)
+      } else if(dc.type == `init`){
+        if(userId != undefined) Piaoliu.push(`@${plp}；${userId}`)
       }
     })
-    if(dc.type == 'plp' || dc.type == 'rfb') return Piaoliu
+    if(dc.type == 'plp' || dc.type == 'rfb' || dc.type == `init`) return Piaoliu
     if(dc.type == 'history') return msgList
    }
   /**

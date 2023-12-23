@@ -184,11 +184,7 @@ export class plp extends plugin {
         }
         let Piaoliu = await Gimodel.NewgetFile(dc, e)
         let { config } = getconfig(`config`, `config`)
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-        const day = currentDate.getDate().toString().padStart(2, '0');
-        const date_time = `${year}-${month}-${day}`;
+        const date_time = await Gimodel.date_time()
         let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp2`);date_time2 = JSON.parse(date_time2);
         let times_;
         if(date_time2){
