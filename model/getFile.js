@@ -3,8 +3,10 @@ import fs_ from 'fs'
 import { readFile, writeFile } from 'fs';
 import path from 'path';
 import { promisify } from 'util';
+import yaml from 'yaml'
 const readFileAsync = promisify(readFile);
 const writeFileAsync = promisify(writeFile);
+import getconfig from './cfg.js';
 
 class Gimodel {
   /**
@@ -123,6 +125,26 @@ ${history}`
     const day = currentDate.getDate().toString().padStart(2, '0');
     const date_time = `${year}-${month}-${day}`;
     return date_time;
+  }
+  //废案
+  async getplpid(){
+    let { config } = getconfig(`resources`, `plp`)
+    let plpid = config
+    const randomIndex = Math.floor(Math.random() * plpid.plpid.length);
+    const plpid_ = plpid.plpid[randomIndex];
+    return plpid_
+  }
+  /**
+   * 删除指定yaml中的内容 废案
+   * @param {*} filePath 文件路径
+   * @param {*} content 文件内容
+   */
+  async delyaml_plpid(filePath, content){
+    const fileContent = await fs.readFile(filePath, 'utf-8');
+    const data = yaml.parse(fileContent);
+    data.plpid = data.plpid.filter(id => id !== content);
+    const updatedFileContent = yaml.stringify(data);
+    await fs.writeFile(filePath, updatedFileContent, 'utf-8');
   }
 }
 

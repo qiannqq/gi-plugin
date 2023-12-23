@@ -67,7 +67,7 @@ export class update extends plugin {
             } else if (stdout.includes('Already up to date.')) {
                 e.reply(`互动插件已经是最新的了`);
             } else {
-                e.reply(`互动插件更新成功，请重启${botname}以应用更新\n更新内容请查看：https://github.com/qiannqq/gi-plugin/commits/master`);
+                e.reply(`互动插件更新成功，请重启${botname}以应用更新\n更新内容请查看：https://gitee.com/qiannqq/gi-plugin/commits/master`);
             }
         });
     }

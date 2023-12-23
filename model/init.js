@@ -49,7 +49,7 @@ class init {
             redis.set(`Yunzai:giplugin-plpid`, JSON.stringify(plp_id))
 
             await Gimodel.delfile(dc.filePath, item)
-            await fs.appendFile(dc.filePath, plp_id + `\n`, `utf-8`)
+            await fs.appendFile(dc.filePath, `@${plp_id}；${plp_userid}\n`)
             
         }
 
