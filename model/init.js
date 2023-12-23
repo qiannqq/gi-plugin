@@ -10,6 +10,8 @@ class init {
         }
         let data = await Gimodel.NewgetFile(dc)
 
+        console.log(data)
+
         for (const item of data) {
             const matches = item.match(/@(.*)；(.*)/);
             let plp_content = matches[1];
@@ -47,6 +49,11 @@ class init {
 
             redis.set(`Yunzai:giplugin_plp_${plp_id}`, JSON.stringify(ok_data))
             redis.set(`Yunzai:giplugin-plpid`, JSON.stringify(plp_id))
+
+            console.log(data)
+
+            await Gimodel.delfile(dc.filePath, item)
+            await fs.appendFile(dc.filePath, plp_id + `\n`, `utf-8`)
             
         }
 
