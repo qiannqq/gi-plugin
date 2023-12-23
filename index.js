@@ -71,6 +71,10 @@ if (newplp != `ok`) {
   });
   redis.set(`Yunzai:giplugin-newplp`, JSON.stringify(`ok`));
 }
+//创建数据文件夹
+if(!fs.existsSync(`${_path}/plugins/Gi-plugin/resources/data`)) {
+  fs.mkdirSync(`${_path}/plugins/Gi-plugin/resources/data`)
+}
 //迁移旧版漂流瓶数据文件至新版
 if(!fs.existsSync(`${_path}/plugins/Gi-plugin/resources/data/dont_del`)) {
   //init.plp()
