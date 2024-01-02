@@ -7,6 +7,19 @@
 
 <body>
     <h1>幸运值排行榜 欧皇榜日榜</h1>
+    <div class="container">
+        <div class="personal_img">
+            <img src="{{iluckValue_data.user_img}}" alt="头像">
+        </div>
+        <div class="personal_text">
+            <span>✨ 你的名称~  :{{iluckValue_data.user_name}}</span>
+            <span>✨ 你的幸运值:{{iluckValue_data.user_luckvalue}}</span>
+            <span>✨ 你的排名~  :{{iluckValue_data.rankings}}</span>
+        </div>
+    </div>
+    <div>
+        <p> </p>
+    </div>
     <ul class="leaderboard">
         <li class="name"> 名次 | 用户信息 | 幸运值 </li>
         <!-- 排行榜项 -->

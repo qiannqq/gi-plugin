@@ -48,6 +48,7 @@ export class meiridaka extends plugin {
       }
       let luckValue_data = await fs.readFile(`plugins/Gi-plugin/resources/mrdk/${date_time}.json`, `utf-8`)
       luckValue_data = JSON.parse(luckValue_data)
+      let i_luckValue_data = luckValue_data
       luckValue_data.sort((a, b) => b.user_luckvalue - a.user_luckvalue);
       luckValue_data = luckValue_data.slice(0, 20)
       let new_luckValue_data = [];
@@ -62,8 +63,28 @@ export class meiridaka extends plugin {
         })
         rankings++;
       }
+      let iluckValue_data;
+      for (let item of i_luckValue_data) {
+        if(item.user_id == e.user_id) {
+          iluckValue_data = {
+            user_id: e.user_id,
+            user_img: item.user_img,
+            user_name: item.user_name,
+            user_luckvalue: item.user_luckvalue
+          }
+        }
+      }
+      for (let item of new_luckValue_data){
+        if(item.user_id == e.user_id) {
+          iluckValue_data.rankings = item.rankings
+        }
+      }
 
-      let {img} = await image(e, `luckValue_list`, `luckValue_list`, {new_luckValue_data})
+      if(!iluckValue_data.rankings){
+        iluckValue_data.rankings = `未上榜`
+      }
+
+      let {img} = await image(e, `luckValue_list`, `luckValue_list`, {new_luckValue_data, iluckValue_data})
       e.reply(img)
     }
     async 历史幸运值(e){

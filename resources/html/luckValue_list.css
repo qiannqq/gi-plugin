@@ -5,17 +5,62 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: "FangZhen";
+    src: url("../font/FangZhen.TTF");
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-image: url('https://t.mwm.moe/mp/');
     background-size: cover;
     text-align: center;
+    transform: scale(2);
+    transform-origin: 0 0;
 }
 
 h1 {
-    color: #f6d635;
+    background-image: linear-gradient(to right, blue, pink);
+    color: transparent; /* 使文字颜色透明，显示背景渐变 */
+    -webkit-background-clip: text;
     -webkit-text-stroke: 1px red;
     -webkit-fill-color: #f2f261;
+}
+
+.container {
+    display: flex;
+}
+
+.personal_img {
+    max-width: 125px;
+    position: relative;
+    left: 75px;
+}
+
+.personal_img img {
+    border-radius: 50%;
+}
+
+.personal_text {
+    width: 510px;
+    position: relative;
+    left: 100px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    text-align: left;
+    font-family: "FangZhen";
+    font-size: 17px;
+}
+
+.personal_text span {
+    display: block; 
+    margin-top: 10px; 
+    margin-bottom: 10px; 
+    margin-left: 10px;
 }
 
 .leaderboard {
@@ -50,6 +95,7 @@ h1 {
 }
 
 .leaderboard .luck-value {
+    font-family: "FangZhen";
     font-size: 200%;
     background-image: linear-gradient(to right, red, blue);
     -webkit-background-clip: text;
@@ -63,6 +109,7 @@ h1 {
 
 .business_card {
     position: relative;
+    font-family: "HYWenHei";
 }
 
 .business_card:before {
