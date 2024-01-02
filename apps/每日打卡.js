@@ -50,7 +50,20 @@ export class meiridaka extends plugin {
       luckValue_data = JSON.parse(luckValue_data)
       luckValue_data.sort((a, b) => b.user_luckvalue - a.user_luckvalue);
       luckValue_data = luckValue_data.slice(0, 20)
-      let {img} = await image(e, `luckValue_list`, `luckValue_list`, {luckValue_data})
+      let new_luckValue_data = [];
+      let rankings = 1
+      for (let item of luckValue_data){
+        new_luckValue_data.push({
+          rankings,
+          user_id: item.user_id,
+          user_img: item.user_img,
+          user_name: item.user_name,
+          user_luckvalue: item.user_luckvalue
+        })
+        rankings++;
+      }
+
+      let {img} = await image(e, `luckValue_list`, `luckValue_list`, {new_luckValue_data})
       e.reply(img)
     }
     async 历史幸运值(e){

@@ -8,11 +8,12 @@
 <body>
     <h1>幸运值排行榜 欧皇榜日榜</h1>
     <ul class="leaderboard">
-        <li class="name"> 用户信息 | 幸运值 </li>
+        <li class="name"> 名次 | 用户信息 | 幸运值 </li>
         <!-- 排行榜项 -->
-        {{each luckValue_data item}}
+        {{each new_luckValue_data item}}
         <div>
             <li class="business_card" data-text="{{item.user_id}}">
+                <span class="name">第{{item.rankings}}名</span>
                 <img src="{{item.user_img}}" alt="头像">
                 <span class="name">{{item.user_name}}</span>
                 <span class="luck-value">{{item.user_luckvalue}}</span>
