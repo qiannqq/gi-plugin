@@ -21,25 +21,11 @@ export class example2 extends plugin {
     async help(e){
        let _path = process.cwd().replace(/\\/g, '/')
        const { config } = getconfig(`defSet`, `help`)
-       let botname = cfg.package.name
-       if (cfg.package.name == `yunzai`) {
-        botname = `Yunzai-Bot`
-       } else if (cfg.package.name == `miao-yunzai`){
-        botname = `Miao-Yunzai`
-       } else if (cfg.package.name == `trss-yunzai`){
-        botname = `TRSS-Yunzai`
-       } else if (cfg.package.name == `a-yunzai`){
-        botname = `A-Yunzai`
-       } else if (cfg.package.name == `biscuit-yunzai`){
-        botname = `Biscuit-Yunzai`
-       }
        let { img } = await image(e, 'help', 'help', {
             saveId: 'help',
             cwd: _path,
             genshinPath: `${_path}/plugins/genshin/resources/`,
-            helpData: config,
-            MiaoV: cfg.package.version,
-            botname: botname
+            helpData: config
        })
        e.reply(img)
     }
