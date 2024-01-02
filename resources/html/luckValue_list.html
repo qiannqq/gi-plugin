@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../../plugins/Gi-plugin/resources/html/luckValue_list.css" />
+</head>
+
+<body>
+    <h1>幸运值排行榜 欧皇榜日榜</h1>
+    <div class="testdiv"></div>
+    <ul class="leaderboard">
+        <li class="name"> 用户信息 | 幸运值 </li>
+        <!-- 排行榜项 -->
+        {{each luckValue_data item}}
+        <div>
+            <li class="business_card" data-text="{{item.user_id}}">
+                <img src="{{item.user_img}}" alt="头像">
+                <span class="name">{{item.user_name}}</span>
+                <span class="luck-value">{{item.user_luckvalue}}</span>
+            </li>
+        </div>
+        {{/each}}
+    </ul>
+    <div class="testdiv"></div>
+</body>
+
+</html>

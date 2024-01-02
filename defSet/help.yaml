@@ -23,6 +23,9 @@
     - icon: paimon
       title: '今日非酋'
       desc: '查看今天首位抽到5(默认)以下幸运值的“幸运儿”'
+    - icon: paimon
+      title: '幸运值排行榜'
+      desc: '查看当天的幸运值排行榜'
 - group: 历史文献
   list:
     - icon: paimon

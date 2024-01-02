@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('https://t.mwm.moe/mp/');
+    background-size: cover;
+    text-align: center;
+}
+
+h1 {
+    color: #f6d635;
+    -webkit-text-stroke: 1px red;
+    -webkit-fill-color: #f2f261;
+}
+
+.leaderboard {
+    margin: 0 auto;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    list-style: none;
+}
+
+.leaderboard li {
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.leaderboard img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.leaderboard .name {
+    flex-grow: 1;
+    margin-left: 20px;
+    text-align: left;
+}
+
+.leaderboard .luck-value {
+    font-size: 200%;
+    background-image: linear-gradient(to right, red, blue);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.leaderboard .qq {
+    margin-right: 20px;
+}
+
+.business_card {
+    position: relative;
+}
+
+.business_card:before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(to right, red, blue);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 6em;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+.testdiv {
+    width: 10px;
+    height: 10px;
+}
+
+.luck {
+    text-align: right;
+}

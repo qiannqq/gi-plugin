@@ -32,9 +32,26 @@ export class meiridaka extends plugin {
             {
                 reg: '^(#|/)?历史幸运值$',
                 fnc: '历史幸运值'
+            },
+            {
+                reg: '^(#|/)?幸运值排行榜$',
+                fnc: 'luckValue_list'
             }
         ]
       });
+    }
+    async luckValue_list(e){
+      let date_time = await Gimodel.date_time()
+      if(!fs_.existsSync(`plugins/Gi-plugin/resources/mrdk/${date_time}.json`)){
+        await e.reply(`今天好像还没有人打卡呢`)
+        return true;
+      }
+      let luckValue_data = await fs.readFile(`plugins/Gi-plugin/resources/mrdk/${date_time}.json`, `utf-8`)
+      luckValue_data = JSON.parse(luckValue_data)
+      luckValue_data.sort((a, b) => b.user_luckvalue - a.user_luckvalue);
+      luckValue_data = luckValue_data.slice(0, 20)
+      let {img} = await image(e, `luckValue_list`, `luckValue_list`, {luckValue_data})
+      e.reply(img)
     }
     async 历史幸运值(e){
       if(!fs_.existsSync(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`)){
@@ -128,7 +145,20 @@ export class meiridaka extends plugin {
         } else {
           zhidata = await fs.readFile(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`, `utf-8`)
         }
-        fs.writeFile(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`, `日期：${date_time}；幸运值${zhi}\n${zhidata}`, `utf-8`)
+        if(!fs_.existsSync(`plugins/Gi-plugin/resources/mrdk/${date_time}.json`)){
+          await fs.writeFile(`plugins/Gi-plugin/resources/mrdk/${date_time}.json`, ``, `utf-8`)
+        }
+        let today_mrdkdata = await fs.readFile(`plugins/Gi-plugin/resources/mrdk/${date_time}.json`, `utf-8`)
+        if(today_mrdkdata == ``){
+          today_mrdkdata = []
+        } else {
+          today_mrdkdata = JSON.parse(today_mrdkdata)
+        }
+
+        today_mrdkdata.push({user_id: e.user_id, user_img: `https://q1.qlogo.cn/g?b=qq&s=100&nk=${e.user_id}`, user_name: e.member.nickname, user_luckvalue: zhi})
+        today_mrdkdata = JSON.stringify(today_mrdkdata)
+        await fs.writeFile(`plugins/Gi-plugin/resources/mrdk/${date_time}.json`, today_mrdkdata, `utf-8`)
+        await fs.writeFile(`plugins/Gi-plugin/resources/mrdk/${e.user_id}.txt`, `日期：${date_time}；幸运值${zhi}\n${zhidata}`, `utf-8`)
         return true;//结束运行
     }
     async 今日欧皇(e) {

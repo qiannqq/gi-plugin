@@ -4,7 +4,7 @@ import puppeteer from "../../../lib/puppeteer/puppeteer.js"
  * @param {*} e E
  * @param {*} file html模板名称
  * @param {*} name 
- * @param {*} obj 数据
+ * @param {object} obj 渲染变量，类型为对象
  * @returns 
  */
 async function image(e, file, name, obj) {
