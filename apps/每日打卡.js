@@ -47,7 +47,7 @@ export class meiridaka extends plugin {
         return true;
       }
       let date_time2 = await redis.get(`Yunzai:meiridaka3qn:${e.user_id}_daka`);date_time2 = JSON.parse(date_time2);
-      if (date_time === date_time2) {
+      if (date_time !== date_time2) {
         e.reply(`你今天还没有打卡，无法查看幸运值排行榜哦~`)
         return;
       }
