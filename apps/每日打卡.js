@@ -46,6 +46,11 @@ export class meiridaka extends plugin {
         await e.reply(`今天好像还没有人打卡呢`)
         return true;
       }
+      let date_time2 = await redis.get(`Yunzai:meiridaka3qn:${e.user_id}_daka`);date_time2 = JSON.parse(date_time2);
+      if (date_time === date_time2) {
+        e.reply(`你今天还没有打卡，无法查看幸运值排行榜哦~`)
+        return;
+      }
       let luckValue_data = await fs.readFile(`plugins/Gi-plugin/resources/mrdk/${date_time}.json`, `utf-8`)
       luckValue_data = JSON.parse(luckValue_data)
       let i_luckValue_data = luckValue_data
