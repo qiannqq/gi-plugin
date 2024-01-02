@@ -17,8 +17,6 @@ body {
     background-image: url('https://t.mwm.moe/mp/');
     background-size: cover;
     text-align: center;
-    transform: scale(2);
-    transform-origin: 0 0;
 }
 
 h1 {
