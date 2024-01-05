@@ -99,9 +99,9 @@ export class meiridaka extends plugin {
       let title;
 
       if(msg[2] == `欧皇` || !msg[2]) {
-        title = `#幸运值排行榜-欧皇日榜`
+        title = `#幸运值排行-欧皇日榜`
       } else if(msg[2] == `非酋`) {
-        title = `#幸运值排行榜-非酋日榜`
+        title = `#幸运值排行-非酋日榜`
       }
 
       let {img} = await image(e, `luckValue_list`, `luckValue_list`, {new_luckValue_data, iluckValue_data, title})
