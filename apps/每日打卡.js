@@ -34,13 +34,14 @@ export class meiridaka extends plugin {
                 fnc: '历史幸运值'
             },
             {
-                reg: '^(#|/)?幸运值排行榜$',
+                reg: '^(#|/)?幸运值排行榜(欧皇|非酋)?榜?$',
                 fnc: 'luckValue_list'
             }
         ]
       });
     }
     async luckValue_list(e){
+      let msg = e.msg.match(/^(#|\/)?幸运值排行榜(欧皇|非酋)?榜?$/)
       let date_time = await Gimodel.date_time()
       if(!fs_.existsSync(`plugins/Gi-plugin/resources/mrdk/${date_time}.json`)){
         await e.reply(`今天好像还没有人打卡呢`)
@@ -54,7 +55,13 @@ export class meiridaka extends plugin {
       let luckValue_data = await fs.readFile(`plugins/Gi-plugin/resources/mrdk/${date_time}.json`, `utf-8`)
       luckValue_data = JSON.parse(luckValue_data)
       let i_luckValue_data = luckValue_data
-      luckValue_data.sort((a, b) => b.user_luckvalue - a.user_luckvalue);
+      if(msg[2] == `欧皇` || !msg[2]) {
+        luckValue_data.sort((a, b) => b.user_luckvalue - a.user_luckvalue);
+      } else if(msg[2] == `非酋`) {
+        luckValue_data.sort((b, a) => b.user_luckvalue - a.user_luckvalue);
+      } else {
+        return true;
+      }
       luckValue_data = luckValue_data.slice(0, 20)
       let new_luckValue_data = [];
       let rankings = 1
@@ -75,8 +82,7 @@ export class meiridaka extends plugin {
             user_id: e.user_id,
             user_img: item.user_img,
             user_name: item.user_name,
-            user_luckvalue: item.user_luckvalue,
-            title: `#幸运值排行-欧皇日榜`
+            user_luckvalue: item.user_luckvalue
           }
         }
       }
@@ -89,8 +95,14 @@ export class meiridaka extends plugin {
       if(!iluckValue_data.rankings){
         iluckValue_data.rankings = `未上榜`
       }
+      
+      let title;
 
-      let title = `#幸运值排行-欧皇日榜`
+      if(msg[2] == `欧皇` || !msg[2]) {
+        title = `#幸运值排行榜-欧皇日榜`
+      } else if(msg[2] == `非酋`) {
+        title = `#幸运值排行榜-非酋日榜`
+      }
 
       let {img} = await image(e, `luckValue_list`, `luckValue_list`, {new_luckValue_data, iluckValue_data, title})
       e.reply(img)
