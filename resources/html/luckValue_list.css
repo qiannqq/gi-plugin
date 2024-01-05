@@ -12,6 +12,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: "NZBZ";
+    src: url("../font/NZBZ.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-image: url('https://t.mwm.moe/mp/');
@@ -19,12 +26,12 @@ body {
     text-align: center;
 }
 
-h1 {
-    background-image: linear-gradient(to right, blue, pink);
-    color: transparent; /* 使文字颜色透明，显示背景渐变 */
-    -webkit-background-clip: text;
-    -webkit-text-stroke: 1px red;
-    -webkit-fill-color: #f2f261;
+.title {
+    font-size: 35px;
+    font-family: "NZBZ" !important;
+    max-width: 500px;
+    position: relative;
+    left: 0px;
 }
 
 .container {
