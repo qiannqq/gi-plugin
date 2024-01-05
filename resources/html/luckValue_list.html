@@ -6,9 +6,11 @@
 </head>
 
 <body>
-    <div><p> </p></div>
-    <div class="title"><span>#幸运值排行-欧皇日榜</span></div>
-    <div><p> </p></div>
+    <div><p> </p></div> <!-- 占位 -->
+    <div class="title">
+        <span>{{title}}</span>
+    </div>
+    <div><p> </p></div><!-- 占位 -->
     <div class="container">
         <div class="personal_img">
             <img src="{{iluckValue_data.user_img}}" alt="头像">
@@ -19,8 +21,15 @@
             <span>✨ 你的排名~  :{{iluckValue_data.rankings}}</span>
         </div>
     </div>
+    <div><p> </p></div><!-- 占位 -->
+    <div class="ranking_description">
+        <span>排行说明</span>
+        <span> ● 榜单为日榜，每日重置</span>
+        <span> ● 榜单上限20名</span>
+        <span> ● 背景渐变色数字名片为QQ号</span>
+    </div>
     <div>
-        <p> </p>
+        <p> </p><!-- 占位 -->
     </div>
     <ul class="leaderboard">
         <li class="name"> 名次 | 用户信息 | 幸运值 </li>

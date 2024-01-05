@@ -75,7 +75,8 @@ export class meiridaka extends plugin {
             user_id: e.user_id,
             user_img: item.user_img,
             user_name: item.user_name,
-            user_luckvalue: item.user_luckvalue
+            user_luckvalue: item.user_luckvalue,
+            title: `#幸运值排行-欧皇日榜`
           }
         }
       }
@@ -89,7 +90,9 @@ export class meiridaka extends plugin {
         iluckValue_data.rankings = `未上榜`
       }
 
-      let {img} = await image(e, `luckValue_list`, `luckValue_list`, {new_luckValue_data, iluckValue_data})
+      let title = `#幸运值排行-欧皇日榜`
+
+      let {img} = await image(e, `luckValue_list`, `luckValue_list`, {new_luckValue_data, iluckValue_data, title})
       e.reply(img)
     }
     async 历史幸运值(e){

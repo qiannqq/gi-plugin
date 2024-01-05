@@ -68,6 +68,27 @@ body {
     margin-left: 10px;
 }
 
+.ranking_description {
+    margin: 0 auto;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    list-style: none;
+    text-align: left;
+    font-family: "HYWenHei";
+    font-size: 17px;
+}
+
+.ranking_description span {
+    display: block; 
+    margin-top: 10px; 
+    margin-bottom: 10px; 
+    margin-left: 10px;
+}
+
 .leaderboard {
     margin: 0 auto;
     max-width: 600px;
