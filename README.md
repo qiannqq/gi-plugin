@@ -1,7 +1,7 @@
 # 群互动插件 Gi-plugin
 
 
-
+<!--测试1-->
 <p align="center">
   <img src="https://gitee.com/qiannqq/gi-plugin/raw/master/resources/logo.png" alt="Image" width="200" height="200">
 </p>
