@@ -93,7 +93,7 @@ export class update extends plugin {
         if (/(Already up[ -]to[ -]date|已经是最新的)/.test(ret.stdout)){
             await e.reply(`互动插件已经是最新的了\n最后更新时间:${time}`)
         } else {
-            await e.reply(`互动插件\n最后更新时间:${time}`)
+            await e.reply(`[Gi-plugin]互动插件 更新成功\n最后更新时间:${time}`)
             let log = await getLog(`Gi-plugin`, oldCommitId)
             for (let item of log) {
                 msgList.push({
