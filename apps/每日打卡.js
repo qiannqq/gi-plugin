@@ -212,7 +212,7 @@ export class meiridaka extends plugin {
         if(!e.nickname){
           username = e.member.nickname
         } else if(!e.member.nickname){
-          username = e.nickname
+          username = e.sender.nickname
         }
         today_mrdkdata.push({user_id: e.user_id, user_img: `https://q1.qlogo.cn/g?b=qq&s=100&nk=${e.user_id}`, user_name: username, user_luckvalue: zhi})
         today_mrdkdata = JSON.stringify(today_mrdkdata)
