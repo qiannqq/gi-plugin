@@ -107,7 +107,8 @@ export class update extends plugin {
             } catch(err) {
                 msgList = await e.friend.makeForwardMsg(msgList)
             }
-            e.reply(msgList)
+            await e.reply(msgList)
+            await e.reply(`请重启Yunzai以应用更新\n【#重启】`)
         }
 
     }
