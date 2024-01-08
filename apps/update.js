@@ -74,7 +74,7 @@ export class update extends plugin {
 
         if (e.msg.includes("强制")) {
             e.reply(`[Gi-plugin]正在执行强制更新操作，请稍等`)
-            command = `git -C ./plugins/earth-k-plugin/ checkout . && ${gitPullCmd}`
+            command = `git -C ./plugins/Gi-plugin/ checkout . && ${gitPullCmd}`
         } else {
             e.reply(`[Gi-plugin]正在执行更新操作，请稍等`)
         }
