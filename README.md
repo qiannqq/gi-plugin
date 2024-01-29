@@ -6,7 +6,7 @@
   <img src="https://gitee.com/qiannqq/gi-plugin/raw/master/resources/logo.png" alt="Image" width="200" height="200">
 </p>
 
-![Gi-plugin](https://socialify.git.ci/qiannqq/Gi-plugin/image?description=1&font=KoHo&forks=1&issues=1&language=1&logo=https://avatars.githubusercontent.com/u/145051402?v=4&name=1&owner=1&pattern=Plus&pulls=1&stargazers=1&theme=Light)
+<!-- ![Gi-plugin](https://socialify.git.ci/qiannqq/Gi-plugin/image?description=1&font=KoHo&forks=1&issues=1&language=1&logo=https://avatars.githubusercontent.com/u/145051402?v=4&name=1&owner=1&pattern=Plus&pulls=1&stargazers=1&theme=Light) -->
 
 #### 简介
 本插件多用于群聊中群友之间互动娱乐，因此叫做群互动插件。<br>
