@@ -94,7 +94,7 @@ export class update extends plugin {
             await e.reply(`互动插件已经是最新的了\n最后更新时间:${time}`)
         } else {
             await e.reply(`[Gi-plugin]互动插件 更新成功\n最后更新时间:${time}`)
-            let log = await getLog(`Gi-plugin`, oldCommitId)
+            let log = await getLog(`Gi-plugin`, oldCommitId, e)
             for (let item of log) {
                 msgList.push({
                     user_id: Bot.uin,
@@ -115,7 +115,7 @@ export class update extends plugin {
 }
 
 
-async function getLog(plugin, oldCommitId) {
+async function getLog(plugin, oldCommitId, e) {
     let cm = `cd ./plugins/${plugin}/ && git log  -20 --oneline --pretty=format:"%h||[%cd]  %s" --date=format:"%m-%d %H:%M"`;
     let logAll;
 
@@ -137,7 +137,9 @@ async function getLog(plugin, oldCommitId) {
         if (str[1].includes("Merge branch")) continue;
         log.push(str[1]);
     }
-    log.push(`更多详细信息，请前往gitee查看\nhttps://gitee.com/qiannqq/gi-plugin/commits/master\n或者前往github查看\nhttps://github.com/qiannqq/gi-plugin/commits/master`)
+    if(Bot[e.self_id].adapter != `QQBot` && Bot[e.self_id].adapter != `QQGuild`) {
+        log.push(`更多详细信息，请前往gitee查看\nhttps://gitee.com/qiannqq/gi-plugin/commits/master\n或者前往github查看\nhttps://github.com/qiannqq/gi-plugin/commits/master`)
+    }
     return log;
 }
 /**
