@@ -6,6 +6,8 @@
   <img src="https://gitee.com/qiannqq/gi-plugin/raw/master/resources/logo.png" alt="Image" width="200" height="200">
 </p>
 
+<!-- ![Gi-plugin](https://socialify.git.ci/qiannqq/Gi-plugin/image?description=1&font=KoHo&forks=1&issues=1&language=1&logo=https://avatars.githubusercontent.com/u/145051402?v=4&name=1&owner=1&pattern=Plus&pulls=1&stargazers=1&theme=Light) -->
+
 #### 简介
 本插件多用于群聊中群友之间互动娱乐，因此叫做群互动插件。<br>
 本插件主要开发方向为提升群友与群友与bot之间的互动性，让bot不止是个冰冷只会查询数据的机器人。
@@ -75,6 +77,8 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 | [@Zyy955](https://gitee.com/Zyy955) | fix：浏览器截图问题 |
 | [@白狐](https://gitee.com/baihu433) | fix：锅巴引入链接错误 |
 | [@酸菜咸鱼](https://gitee.com/suancaixianyu) | 提供插件相关思路 |
+| @安分 | 特别贡献 |
+| [@山水](https://gitee.com/dengshanshui) | 特别赞助 |
 
 
 #### 参与贡献
