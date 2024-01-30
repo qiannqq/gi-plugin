@@ -5,7 +5,6 @@ import { promises as fs } from 'fs';
 import fs_ from 'fs'
 import post from '../model/post.js';
 import fetch from 'node-fetch';
-import { segment } from 'icqq';
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
 const _path = process.cwd().replace(/\\/g, '/')
