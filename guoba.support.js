@@ -25,6 +25,10 @@ export function supportGuoba() {
     configInfo: {
       schemas: [
         {
+          component: 'Divider',
+          label: '自动更新设置'
+        },
+        {
           field: 'autoupdate',
           label: '自动更新',
           helpMessage: '启用时默认每天1:20自动更新',
@@ -41,6 +45,10 @@ export function supportGuoba() {
           componentProps: {
             placeholder: '请输入cron表达式',
           }
+        },
+        {
+          component: 'Divider',
+          label: '每日打卡设置'
         },
         {
           field: 'mrdkOH',
@@ -67,6 +75,10 @@ export function supportGuoba() {
           }
         },
         {
+          component: 'Divider',
+          label: '漂流瓶设置'
+        },
+        {
           field: 'Jplp',
           label: '每日可捡漂流瓶次数',
           bottomHelpMessage: '每天可捡漂流瓶次数，主人不受限制',
@@ -86,6 +98,13 @@ export function supportGuoba() {
             placeholder: '请输入数字',
           }
         },
+        {
+          field: 'plpapi',
+          label: 'API获取漂流瓶',
+          helpMessage: '警告：来自API的漂流瓶的信息不受审核，可能会获取到违规内容，请谨慎开启',
+          bottomHelpMessage: '是否从API获取漂流瓶？仅在本地无漂流瓶的情况下生效',
+          component: 'Switch'
+        }
       ],
       getConfigData() {
         let { config } = getconfig(`config`, `config`)
