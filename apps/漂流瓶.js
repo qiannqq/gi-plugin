@@ -4,6 +4,8 @@ import getconfig from '../model/cfg.js';
 import { promises as fs } from 'fs';
 import fs_ from 'fs'
 import post from '../model/post.js';
+import fetch from 'node-fetch';
+import { segment } from 'icqq';
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
 const _path = process.cwd().replace(/\\/g, '/')
@@ -275,6 +277,10 @@ export class plp extends plugin {
         }
         const randomIndex = Math.floor(Math.random() * Piaoliu.length);
         if(Piaoliu.length === 0){
+            if(config.plpapi) {
+                this.捡漂流瓶API(e)
+                return true
+            }
             e.reply(`海里空空的，似乎没有漂流瓶呢`)
             return true;
         }
@@ -314,5 +320,25 @@ ${plp3}`]
         let times = `@${date_time}；${times_}`
         redis.set(`Yunzai:giplugin-${e.user_id}_plp2`, JSON.stringify(times));
         Gimodel.delfile(filePath, plp2)
+    }
+    async 捡漂流瓶API(e){
+        let plp = await fetch(`https://free.wqwlkj.cn/wqwlapi/drift.php?select=&type=json`)
+        try {
+            plp = await plp.json()
+        } catch {
+            e.reply(`海里空空的，似乎没有漂流瓶呢`)
+            return
+        }
+        if(plp.code != 1) {
+            e.reply(`海里空空的，似乎没有漂流瓶呢`)
+            return
+        }
+        let msg =
+`正在查看漂流瓶
+这个漂流瓶里有封信哎
+【漂流瓶】
+标题：${plp.title}
+正文：${plp.content}`
+        await e.reply(msg)
     }
 }
