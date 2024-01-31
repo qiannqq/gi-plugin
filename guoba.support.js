@@ -38,7 +38,7 @@ export function supportGuoba() {
         {
           field: 'updatetime',
           label: '自动更新时间',
-          helpMessage: '不会正则表达式？百度搜索在线生成cron表达式(默认每天1:20)',
+          helpMessage: '不会cron表达式？百度搜索在线生成cron表达式(默认每天1:20)',
           bottomHelpMessage: '填入cron表达式，该项保存后重启生效(格式错了自动更新就寄喽)',
           component: 'Input',
           required: true,
