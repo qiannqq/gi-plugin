@@ -80,6 +80,13 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 | @安分 | 特别贡献 |
 | [@山水](https://gitee.com/dengshanshui) | 特别赞助 |
 
+#### 感谢赞助
+| Nickname |
+|---|
+| 皮梦 |
+| 爱发电用户_pRBn |
+| 休比 |
+
 
 #### 参与贡献
 
@@ -89,11 +96,8 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 4.  新建 Pull Request
 
 
-#### 声明
-
- - 严禁用于任何商业用途和非法行为
- - 严禁使用本插件进行盈利等行为
-
 #### 其他
 
-[我的个人博客，欢迎光临](http://blog.moqy.top)
+  - [我的个人博客，欢迎光临](http://blog.moqy.top)
+  - 点个star或者[爱发电](https://afdian.net/a/QianNQQ)，是你支持本项目继续维护的动力~
+  - 严禁用于任何商业用途和非法行为
