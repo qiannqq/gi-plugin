@@ -9,6 +9,11 @@
     - icon: paimon
       title: '撤回漂流瓶'
       desc: '撤回今天扔的漂流瓶'
+- group: 钓鱼
+  list:
+    - icon: paimon
+      title: '钓鱼'
+      desc: '没什么实用性的休闲小游戏，鱼竿冷却时间120秒'
 - group: 打卡
   list:
     - icon: paimon

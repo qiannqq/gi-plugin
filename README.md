@@ -6,8 +6,6 @@
   <img src="https://gitee.com/qiannqq/gi-plugin/raw/master/resources/logo.png" alt="Image" width="200" height="200">
 </p>
 
-<!-- ![Gi-plugin](https://socialify.git.ci/qiannqq/Gi-plugin/image?description=1&font=KoHo&forks=1&issues=1&language=1&logo=https://avatars.githubusercontent.com/u/145051402?v=4&name=1&owner=1&pattern=Plus&pulls=1&stargazers=1&theme=Light) -->
-
 #### 简介
 本插件多用于群聊中群友之间互动娱乐，因此叫做群互动插件。<br>
 本插件主要开发方向为提升群友与群友与bot之间的互动性，让bot不止是个冰冷只会查询数据的机器人。
@@ -27,6 +25,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 |------|-----------------------------------|----|
 | 扔漂流瓶 | 扔出漂流瓶，等待有缘人捡到（可在锅巴中配置用户可扔漂流瓶次数）            | 用户 |
 | 捡漂流瓶 | 捞出漂流瓶，查看漂流瓶里的内容（可在锅巴中配置用户可捡漂流瓶次数）<br>(捡到就销毁)    | 用户 |
+| 钓鱼 | 没什么实用性的休闲小游戏，鱼竿冷却时间120秒(灵感来源 云·冰祈) | 用户 | 
 | 答案之书+问题 | 答案之书会给出答案 | 用户 |
 | 每日打卡 | 随机抽取幸运值（每天只能抽取一次，重复使用可查看当天抽到的幸运值） | 用户 |
 | 今日欧皇 | 查看当天诞生的首位95(默认)以上幸运值的欧皇                | 用户 |
@@ -53,6 +52,8 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 - [x] 增加群历史文献功能(记录群聊值得铭记的历史)
 - [ ] 漂流瓶全云崽互通(互动插件)
 - [ ] 重构漂流瓶数据文件的相关操作
+- [ ] 让钓鱼水桶不再是摆设
+- [x] 咕咕咕
 
 
 </details>

@@ -9,7 +9,7 @@ export class Gi_yu extends plugin {
         priority: 5000,
         rule: [
           {
-            reg: '^#钓鱼$',
+            reg: '^(#|/)?(钓鱼|🎣)$',
             fnc: 'diaoyu'
           }
         ]
