@@ -103,6 +103,53 @@ if(!fs.existsSync(`${_path}/plugins/Gi-plugin/resources/data/dont_del`)) {
   //init.plp()
 }
 
+class CountdownTimer {
+  constructor(duration) {
+      this.duration = duration;
+  }
+
+  start() {
+      return new Promise((resolve, reject) => {
+          const interval = setInterval(() => {
+              this.duration--;
+
+              if (this.duration <= 0) {
+                  clearInterval(interval);
+                  resolve();
+              }
+          }, 1000);
+      });
+  }
+
+  getRemainingTime() {
+      return this.duration;
+  }
+}
+
+class TimerManager {
+  constructor() {
+      this.timers = {};
+  }
+
+  createTimer(user_id, duration) {
+      this.timers[user_id] = new CountdownTimer(duration);
+      return this.timers[user_id];
+  }
+
+  getRemainingTime(user_id) {
+      const timer = this.timers[user_id];
+      if (timer) {
+          return timer.getRemainingTime();
+      } else {
+          return null;
+      }
+  }
+}
+
+let timerManager = new TimerManager();
+global.timerManager = timerManager
+
+
 let ret = []
 
 logger.info(`---------ヾ(✿ﾟ▽ﾟ)ノ---------`)
