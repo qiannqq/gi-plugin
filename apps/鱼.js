@@ -19,7 +19,7 @@ export class Gi_yu extends plugin {
           fnc: 'user_bucket'
         },
         {
-          reg: '^(#|/)?出售(.*)\s?[0-9]?$',
+          reg: '^(#|\/)?出售(.*)\*(.*)?$',
           fnc: '出售'
         },
         {
@@ -40,7 +40,7 @@ export class Gi_yu extends plugin {
       return true
     }
     let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑"]
-    let msg = e.msg.match(/^(#|\/)?出售(.*)\s?[0-9]?$/)
+    let msg = e.msg.match(/^(#|\/)?出售(.*)\*(.*)?$/)
     if(!fishArray.includes(msg[2])) {
       await e.reply(`啊嘞，生物百科好像没有你说的鱼呢~`)
       return true
@@ -51,7 +51,7 @@ export class Gi_yu extends plugin {
         fish_sale.push(item)
       }
     }
-    if(fish_sale.length == 0  || fish_sale.number == 0) {
+    if(fish_sale[0].number == 0 || fish_sale.length == 0) {
       e.reply(`啊嘞，你好像没有${msg[2]}呢~`)
       return true
     }

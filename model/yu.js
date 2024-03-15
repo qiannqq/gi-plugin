@@ -97,7 +97,11 @@ class Fish {
             await Gimodel.deljson(playerInfo[0], GiPath + `/data/fishing/PlayerListMoney.json`)
             playerInfo[0].money = playerInfo[0].money + number
         }
-        playerList_money = JSON.parse(fs.readFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, a))
+        try {
+            playerList_money = JSON.parse(fs.readFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, a))
+        } catch (error) {
+            playerList_money = []
+        }
         playerList_money.push(playerInfo[0])
         fs.writeFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, JSON.stringify(playerList_money, null, 3), a) //打字的时候越看这个M越像猫猫，看来我是缺猫了()
         return true
