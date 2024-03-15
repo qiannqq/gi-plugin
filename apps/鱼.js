@@ -13,11 +13,30 @@ export class Gi_yu extends plugin {
           {
             reg: '^(#|/)?(钓鱼|🎣)$',
             fnc: 'diaoyu'
+          },
+          {
+            reg: '^(#|/)?(我的)?水桶$',
+            fnc: 'user_bucket'
           }
         ]
       })
     }
-    async diaoyu(e){
+    async user_bucket(e) {
+        let playerBucket = await Fish.getinfo_bucket(e.user_id)
+        if(playerBucket.length == 0) {
+          await e.reply(`你的水桶里好像是空的呢，钓点鱼进来再查看水桶吧！`)
+          return true
+        }
+        let msgList = [`你的水桶里有……`]
+        for (let item of playerBucket) {
+          if(item.number > 0) {
+            msgList.push(`\n${item.fishType} x ${item.number}`)
+          }
+        }
+        await e.reply(msgList)
+        return true
+    }
+    async diaoyu(e) {
         // let time = await timerManager.getRemainingTime(e.user_id) 获取该用户的倒计时器
         // let timeSet = timerManager.createTimer(e.user_id, 120); timeSet.start(); 设置该用户的倒计时器
         let time = await timerManager.getRemainingTime(e.user_id)

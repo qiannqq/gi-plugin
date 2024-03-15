@@ -14,8 +14,8 @@ class Fish {
     }
     /**
      * 存鱼
-     * @param {*} uid e.user_id 用户QQ
-     * @param {*} yu 鱼，fish
+     * @param {number} uid e.user_id 用户QQ
+     * @param {string} yu 鱼，fish
      */
     async wr_bucket(uid, yu) {
         let a = `utf-8`
@@ -45,6 +45,24 @@ class Fish {
         playerInfo = JSON.stringify(playerInfo, null, 3)
         fs.writeFileSync(GiPath + `/data/fishing/${uid}.json`, playerInfo, a)
         return true
+    }
+    /**
+     * 水桶信息
+     * @param {number} uid e.user_id 用户QQ
+     * @returns 
+     */
+    async getinfo_bucket(uid) {
+        let a = 'utf-8'
+        if(!fs.existsSync(GiPath + '/data/fishing') || !fs.existsSync(GiPath + `/data/fishing/${uid}.json`)) {
+            return []
+        }
+        let playerBucket
+        try {
+            playerBucket = JSON.parse(fs.readFileSync(GiPath + `/data/fishing/${uid}.json`), a)
+        } catch (error) {
+            playerBucket = []
+        }
+        return playerBucket
     }
 
 }
