@@ -74,6 +74,13 @@ if (!fs.existsSync(pokeFilePath)) {
   const defPokeFilePath = path.join(defSetFolder, 'poke.yaml');
   fs.copyFileSync(defPokeFilePath, pokeFilePath);
 }
+
+const fishTextFilePath = path.join(configFolder, 'fishText.yaml');
+if (!fs.existsSync(fishTextFilePath)) {
+  const deffishTextFilePath = path.join(defSetFolder, 'fishText.yaml');
+  fs.copyFileSync(deffishTextFilePath, fishTextFilePath);
+}
+
 //旧版漂流瓶符号替换为新版漂流瓶符号
 let newplp = await redis.get(`Yunzai:giplugin-newplp`);
 newplp = JSON.parse(newplp);
