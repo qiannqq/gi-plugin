@@ -146,7 +146,8 @@ export class Gi_yu extends plugin {
         msgList.push(`\n${item.fishType} x ${item.number}`)
       }
     }
-    if(msgList <= 1) {
+    console.log(msgList.length)
+    if(msgList.length <= 2) {
       msgList.push(`\n空空如也~`)
     }
     await e.reply(msgList)

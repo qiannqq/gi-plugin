@@ -174,13 +174,11 @@ const files = fs
   .readdirSync('./plugins/Gi-plugin/apps')
   .filter((file) => file.endsWith('.js'))
 
-  files.forEach((file) => {
+files.forEach((file) => {
     ret.push(import(`./apps/${file}`))
 })
 
 ret = await Promise.allSettled(ret)
-
-
 
 let apps = {}
 for (let i in files) {
@@ -190,8 +188,8 @@ for (let i in files) {
     logger.error(`载入插件错误：${logger.red(name)}`)
     logger.error(ret[i].reason)
     continue
-    }
-    apps[name] = ret[i].value[Object.keys(ret[i].value)[0]]
+  }
+  apps[name] = ret[i].value[Object.keys(ret[i].value)[0]]
 }
 logger.info(`-----------------------------`)
 export { apps }
