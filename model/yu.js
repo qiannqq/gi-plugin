@@ -4,7 +4,7 @@ let GiPath = `./plugins/Gi-plugin`
 
 class Fish {
     async get_fish() {
-        let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑"]
+        let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑", "特殊事件"]
         return fishArray[Math.floor(Math.random() * fishArray.length)]
     }
     async fishing_text() {
