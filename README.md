@@ -15,7 +15,7 @@
 ```
 git clone --depth=1 https://gitee.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
 ```
-##### Github源
+##### Github源（镜像仓库同步更新，无需在意更新延迟）
 ```
 git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
 ```

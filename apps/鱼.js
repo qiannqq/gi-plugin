@@ -92,7 +92,7 @@ export class Gi_yu extends plugin {
         if(item.type == msg[2]) price = item.price
       }
       price = price * msg[3]
-      await Fish.wr_money(e.user_id, price, e.nickname)
+      await Fish.wr_money(e.user_id, price, e.member.nickname)
       await Fish.del_fish(e.user_id, msg[2], msg[3])
       await e.reply(`出售成功，获得了${price}鱼币`)
     } else {
