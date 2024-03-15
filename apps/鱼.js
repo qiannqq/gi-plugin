@@ -31,23 +31,6 @@ export class Gi_yu extends plugin {
             yu_text = yu_text.replace(/【鱼】/g, yu)
             await e.reply([segment.at(e.user_id), '\n' + yu_text])
             return true
-            switch(randomNumber) {
-                case 1:
-                    await e.reply([segment.at(e.user_id), `\n${yu}奋力挣扎着，却抵不过你拧不开瓶盖的力气。\n你将${yu}放到了水桶里。`])
-                    break;
-                case 2:
-                    await e.reply([segment.at(e.user_id), `\n危险与机遇并存，${yu}抓准你走神的这一刻，猛的咬向鱼钩，却不想被鱼钩挂住了嘴。\n你将${yu}放到了水桶里`])
-                    break;
-                case 3:
-                    await e.reply([segment.at(e.user_id), `\n“咦？挂底了？”\n就在你疑惑之时，鱼竿发觉到不对，猛地一起身，${yu}华丽的落到了你的水桶里。\n本场MVP：鱼竿`])
-                    break;
-                case 4:
-                    await e.reply([segment.at(e.user_id), `\n一条${yu}上钩了。\n你将${yu}放到了水桶里`])
-                    break;
-                case 5:
-                    await e.reply([segment.at(e.user_id), `\n早起的鸟有虫吃，早起的${yu}有饵吃~\n你将${yu}放到了水桶里`])
-                    break;
-            }
         } else {
             let randomNumber = Math.floor(Math.random() * 3) + 1;
             switch(randomNumber) {
