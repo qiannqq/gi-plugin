@@ -1,6 +1,7 @@
 import common from '../../../lib/common/common.js'
 import Fish from '../model/yu.js'
 import getconfig from '../model/cfg.js'
+import fs from 'fs'
 
 export class Gi_yu extends plugin {
   constructor() {
@@ -25,9 +26,35 @@ export class Gi_yu extends plugin {
         {
           reg: '^(#|/)?(我的)?(鱼币|金币|💰|钱包)$',
           fnc: 'user_money'
+        },
+        {
+          reg: '^(#|/)?(鱼布斯)?财富榜$',
+          fnc: 'wealth_list'
         }
       ]
     })
+  }
+  async wealth_list (e) {
+    let PlayerMoneyList
+    try {
+      PlayerMoneyList = JSON.parse(fs.readFileSync(`./plugins/Gi-plugin/data/fishing/PlayerListMoney.json`))
+    } catch (error) {
+      PlayerMoneyList = []
+    }
+    if(PlayerMoneyList.length <= 0) {
+      await e.reply(`还没有人上榜哦~`)
+      return true
+    }
+    PlayerMoneyList.sort((a, b) => b.money - a.money)
+    PlayerMoneyList = PlayerMoneyList.slice(0, 10)
+    let msg = [`鱼布斯最新A市财富榜前十名：`]
+    let paiming = 0
+    for (let item of PlayerMoneyList) {
+      paiming++;
+      msg.push(`\n第${paiming}名: ${item.uname || `侠名`} · ${item.money}鱼币`)
+    }
+    await e.reply(msg)
+    return true
   }
   async user_money(e) {
     await e.reply(`你的兜里还剩${await Fish.get_usermoneyInfo(e.user_id)}个鱼币~`)
