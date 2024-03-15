@@ -30,7 +30,7 @@ export class Gi_yu extends plugin {
             await common.sleep(2000)
             let yu_text = await Fish.fishing_text()
             yu_text = yu_text.replace(/【鱼】/g, yu)
-            yu_text = yu_text.replace(/\n$/g, yu)
+            yu_text = yu_text.replace(/\n$/g, '')
             await e.reply([segment.at(e.user_id), '\n' + yu_text])
             return true
         } else {
