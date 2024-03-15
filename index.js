@@ -75,10 +75,14 @@ if (!fs.existsSync(pokeFilePath)) {
   fs.copyFileSync(defPokeFilePath, pokeFilePath);
 }
 
-const fishTextFilePath = path.join(configFolder, 'fishText.yaml');
-if (!fs.existsSync(fishTextFilePath)) {
-  const deffishTextFilePath = path.join(defSetFolder, 'fishText.yaml');
-  fs.copyFileSync(deffishTextFilePath, fishTextFilePath);
+if(!fs.existsSync(`./plugins/Gi-plugin/config/fishText.yaml`)) {
+  fs.copyFileSync(`./plugins/Gi-plugin/defSet/fishText.yaml`, `./plugins/Gi-plugin/config/fishText.yaml`)
+} else {
+  let config = yaml.parse(fs.readFileSync(`./plugins/Gi-plugin/config/fishText.yaml`, `utf-8`))
+  config = config.fishText
+  let defcfg = yaml.parse(fs.readFileSync(`./plugins/Gi-plugin/defSet/fishText.yaml`, `utf-8`))
+  defcfg = defcfg.fishText
+  fs.writeFileSync(`./plugins/Gi-plugin/config/fishText.yaml`, yaml.stringify({ fishText: [...new Set(config.concat(defcfg))] }), `utf-8`)
 }
 
 //旧版漂流瓶符号替换为新版漂流瓶符号

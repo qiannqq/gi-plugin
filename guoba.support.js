@@ -104,6 +104,20 @@ export function supportGuoba() {
           helpMessage: '警告：来自API的漂流瓶的信息不受审核，可能会获取到违规内容，请谨慎开启',
           bottomHelpMessage: '是否从API获取漂流瓶？仅在本地无漂流瓶的情况下生效',
           component: 'Switch'
+        },
+        {
+          component: 'Divider',
+          label: '钓鱼设置'
+        },
+        {
+          field: 'fishcd',
+          label: '钓竿冷却时间',
+          bottomHelpMessage: '单位秒',
+          component: 'InputNumber',
+          required: true,
+          componentProps: {
+            placeholder: '单位秒',
+          }
         }
       ],
       getConfigData() {
