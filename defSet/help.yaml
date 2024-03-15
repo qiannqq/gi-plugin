@@ -13,7 +13,10 @@
   list:
     - icon: paimon
       title: '钓鱼'
-      desc: '没什么实用性的休闲小游戏，鱼竿冷却时间120秒'
+      desc: '没什么实用性的休闲小游戏'
+    - icon: paimon
+      title: '水桶'
+      desc: '看看你的水桶里有什么鱼'
 - group: 打卡
   list:
     - icon: paimon
