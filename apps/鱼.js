@@ -19,11 +19,11 @@ export class Gi_yu extends plugin {
           fnc: 'user_bucket'
         },
         {
-          reg: '^(#|\/)?出售(.*)\*(.*)?$',
+          reg: '^(#|\/)?出售(.*)\*(.*)$',
           fnc: '出售'
         },
         {
-          reg: '^(#|/)?(我的)?(鱼币|金币|💰)$',
+          reg: '^(#|/)?(我的)?(鱼币|金币|💰|钱包)$',
           fnc: 'user_money'
         }
       ]
@@ -65,17 +65,17 @@ export class Gi_yu extends plugin {
         if(item.type == msg[2]) price = item.price
       }
       price = price * msg[3]
-      await Fish.wr_money(e.user_id, price)
+      await Fish.wr_money(e.user_id, price, e.nickname)
       await Fish.del_fish(e.user_id, msg[2], msg[3])
-      await e.reply(`出售成功，获得了${price}金币`)
+      await e.reply(`出售成功，获得了${price}鱼币`)
     } else {
       let price;
       for(let item of config.fish_sale) {
         if(item.type == msg[2]) price = item.price
       }
-      await Fish.wr_money(e.user_id, price)
+      await Fish.wr_money(e.user_id, price, e.nickname)
       await Fish.del_fish(e.user_id, msg[2])
-      await e.reply(`出售成功，获得了${price}金币`)
+      await e.reply(`出售成功，获得了${price}鱼币`)
     }
   }
   async user_bucket(e) {
@@ -89,6 +89,9 @@ export class Gi_yu extends plugin {
       if (item.number > 0) {
         msgList.push(`\n${item.fishType} x ${item.number}`)
       }
+    }
+    if(msgList < 1) {
+      msgList.push(`\n空空如也~`)
     }
     await e.reply(msgList)
     return true

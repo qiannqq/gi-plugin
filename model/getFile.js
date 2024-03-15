@@ -156,7 +156,6 @@ ${history}`
         }
       }
       const tempData = JSON.stringify(filteredData, null, 3);
-      console.log(tempData)
       fs_.writeFileSync(filePath, tempData, 'utf-8');
       return true;
     } catch (error) {

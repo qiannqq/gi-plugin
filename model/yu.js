@@ -73,9 +73,10 @@ class Fish {
      * 为用户的钓鱼账户增加鱼币
      * @param {number} uid 用户QQ
      * @param {number} number 增加的鱼币数量
+     * @param {string} nickname e.nickname 用户名称，用于鱼布斯财富榜
      * @returns 
      */
-    async wr_money(uid, number) {
+    async wr_money(uid, number, nickname) {
         let a = 'utf-8'
         let playerList_money
         if(!fs.existsSync(GiPath + `/data/fishing`)) {
@@ -91,11 +92,18 @@ class Fish {
             if(item.uid == uid) playerInfo.push(item)
         }
         if(playerInfo.length == 0){
-            console.log(playerInfo)
-            playerInfo.push({ uid: uid, money: number })
+            playerInfo.push({ uid: uid, uname: nickname, money: number })
         } else {
             await Gimodel.deljson(playerInfo[0], GiPath + `/data/fishing/PlayerListMoney.json`)
-            playerInfo[0].money = playerInfo[0].money + number
+            if(!playerInfo[0].nickname){
+                playerInfo[0] = {
+                    uid,
+                    uname: nickname,
+                    money: playerInfo[0].money + number,
+                }
+            } else {
+                playerInfo[0].money = playerInfo[0].money + number
+            }
         }
         try {
             playerList_money = JSON.parse(fs.readFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, a))
