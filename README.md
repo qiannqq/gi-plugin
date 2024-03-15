@@ -56,7 +56,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 - [x] 增加群历史文献功能(记录群聊值得铭记的历史)
 - [ ] 漂流瓶全云崽互通(互动插件)
 - [ ] 重构漂流瓶数据文件的相关操作
-- [ ] 让钓鱼水桶不再是摆设
+- [x] 让钓鱼水桶不再是摆设(正在爆肝钓鱼功能
 - [x] 咕咕咕
 
 
