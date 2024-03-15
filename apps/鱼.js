@@ -15,7 +15,7 @@ export class Gi_yu extends plugin {
             fnc: 'diaoyu'
           },
           {
-            reg: '^(#|/)?(我的)?水桶$',
+            reg: '^(#|/)?(我的)?(水桶|🪣)$',
             fnc: 'user_bucket'
           }
         ]
