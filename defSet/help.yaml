@@ -23,6 +23,9 @@
     - icon: paimon
       title: '鱼币'
       desc: '查看你剩余的鱼币~'
+    - icon: paimon
+      title: '财富榜'
+      desc: '查看A市的鱼布斯财富榜~'
 - group: 打卡
   list:
     - icon: paimon
