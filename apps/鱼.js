@@ -1,4 +1,5 @@
 import common from'../../../lib/common/common.js'
+import Fish from '../model/yu.js'
 
 export class Gi_yu extends plugin {
     constructor () {
@@ -22,28 +23,14 @@ export class Gi_yu extends plugin {
         if(!time || time == 0) {
             let timeSet = timerManager.createTimer(e.user_id, 120)
             timeSet.start()
-            let randomNumber = Math.floor(Math.random() * 5) + 1;
-            let yu;
+            let yu = await Fish.get_fish()
             await e.reply(`你开始了钓鱼……`)
-            switch(randomNumber) {
-                case 1:
-                    yu = "🐟"
-                    break;
-                case 2:
-                    yu = "🐡"
-                    break;
-                case 3:
-                    yu = "🦐"
-                    break;
-                case 4:
-                    yu = "🦀"
-                    break;
-                case 5:
-                    yu = "🐠"
-                    break;
-            }
             await common.sleep(2000)
-            randomNumber = Math.floor(Math.random() * 5) + 1;
+            // randomNumber = Math.floor(Math.random() * 5) + 1;
+            let yu_text = await Fish.fishing_text()
+            yu_text = yu_text.replace(/【鱼】/g, yu)
+            await e.reply([segment.at(e.user_id), '\n' + yu_text])
+            return true
             switch(randomNumber) {
                 case 1:
                     await e.reply([segment.at(e.user_id), `\n${yu}奋力挣扎着，却抵不过你拧不开瓶盖的力气。\n你将${yu}放到了水桶里。`])
@@ -61,7 +48,6 @@ export class Gi_yu extends plugin {
                     await e.reply([segment.at(e.user_id), `\n早起的鸟有虫吃，早起的${yu}有饵吃~\n你将${yu}放到了水桶里`])
                     break;
             }
-            return true
         } else {
             let randomNumber = Math.floor(Math.random() * 3) + 1;
             switch(randomNumber) {
