@@ -32,6 +32,7 @@ export class Gi_yu extends plugin {
             yu_text = yu_text.replace(/【鱼】/g, yu)
             yu_text = yu_text.replace(/\n$/g, '')
             await e.reply([segment.at(e.user_id), '\n' + yu_text])
+            await Fish.wr_bucket(e.user_id, yu)
             return true
         } else {
             let randomNumber = Math.floor(Math.random() * 3) + 1;
