@@ -28,7 +28,7 @@ export class Gi_yu extends plugin {
           fnc: 'user_money'
         },
         {
-          reg: '^(#|/)?(鱼布斯)?财富榜$',
+          reg: '^(#|/)?(鱼布斯)?(财富|💰)榜$',
           fnc: 'wealth_list'
         }
       ]
