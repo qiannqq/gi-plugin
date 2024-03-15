@@ -28,7 +28,7 @@ export class Gi_yu extends plugin {
       await e.reply(`你的水桶里好像是空的呢，钓点鱼进来再查看水桶吧！`)
       return true
     }
-    let msgList = [segment.at(e.user_id)`\n你的水桶里有……`]
+    let msgList = [segment.at(e.user_id), `\n你的水桶里有……`]
     for (let item of playerBucket) {
       if (item.number > 0) {
         msgList.push(`\n${item.fishType} x ${item.number}`)
@@ -81,7 +81,7 @@ export class Gi_yu extends plugin {
     }
   }
   async se鲨鱼(e){
-    let msg = `水库中突然窜出一条🦈，将你咬伤后逃窜。`
+    let msg = [segment.at(e.user_id), `\n水库中突然窜出一条🦈，将你咬伤后逃窜。`]
     await e.reply(msg)
     await common.sleep(500)
     let { config } = getconfig(`config`, `config`)
