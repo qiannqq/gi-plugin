@@ -1,7 +1,6 @@
 import common from '../../../lib/common/common.js'
 import Fish from '../model/yu.js'
 import getconfig from '../model/cfg.js'
-import { segment } from 'oicq'
 
 export class Gi_yu extends plugin {
   constructor() {
@@ -18,9 +17,62 @@ export class Gi_yu extends plugin {
         {
           reg: '^(#|/)?(我的)?(水桶|🪣)$',
           fnc: 'user_bucket'
+        },
+        {
+          reg: '^(#|/)?出售(.*)\s?[0-9]?$',
+          fnc: '出售'
+        },
+        {
+          reg: '^(#|/)?(我的)?(鱼币|金币|💰)$',
+          fnc: 'user_money'
         }
       ]
     })
+  }
+  async user_money(e) {
+    await e.reply(`你的兜里还剩${await Fish.get_usermoneyInfo(e.user_id)}个鱼币~`)
+  }
+  async 出售(e) {
+    let { config } = getconfig(`config`, `config`)
+    let playerBucket = await Fish.getinfo_bucket(e.user_id)
+    if(playerBucket.length == 0) {
+      await e.reply(`你没有鱼可以出售哦~`)
+      return true
+    }
+    let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑"]
+    let msg = e.msg.match(/^(#|\/)?出售(.*)\s?[0-9]?$/)
+    if(!fishArray.includes(msg[2])) {
+      await e.reply(`啊嘞，生物百科好像没有你说的鱼呢~`)
+      return true
+    }
+    let fish_sale = []
+    for (let item of playerBucket) {
+      if(item.fishType == msg[2]) {
+        fish_sale.push(item)
+      }
+    }
+    if(fish_sale.length == 0  || fish_sale.number == 0) {
+      e.reply(`啊嘞，你好像没有${msg[2]}呢~`)
+      return true
+    }
+    if(msg[3] && msg[3] > 1) {
+      let price;
+      for(let item of config.fish_sale) {
+        if(item.type == msg[2]) price = item.price
+      }
+      price = price * msg[3]
+      await Fish.wr_money(e.user_id, price)
+      await Fish.del_fish(e.user_id, msg[2], msg[3])
+      await e.reply(`出售成功，获得了${price}金币`)
+    } else {
+      let price;
+      for(let item of config.fish_sale) {
+        if(item.type == msg[2]) price = item.price
+      }
+      await Fish.wr_money(e.user_id, price)
+      await Fish.del_fish(e.user_id, msg[2])
+      await e.reply(`出售成功，获得了${price}金币`)
+    }
   }
   async user_bucket(e) {
     let playerBucket = await Fish.getinfo_bucket(e.user_id)

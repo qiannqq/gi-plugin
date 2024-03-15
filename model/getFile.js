@@ -58,10 +58,10 @@ class Gimodel {
       const parts = line.split('；');
       const plp = parts[0];
       const userId = parts[1];
-      if(dc.type == 'plp'){
+      if (dc.type == 'plp') {
         if (userId != undefined && userId != e.user_id) Piaoliu.push(`@${plp}；${userId}`)
-      } else if(dc.type == 'history'){
-        if(plp > 100000){
+      } else if (dc.type == 'history') {
+        if (plp > 100000) {
           let history = userId
           let userid_ = await redis.get(`Yunzai:giplugin-${plp}_history_userid`);
           userid_ = JSON.parse(userid_);
@@ -81,15 +81,15 @@ ${history}`
             nickname: `${username}(${userid_})`
           })
         }
-      } else if(dc.type == `rfb`){
-        if(userId == e.user_id) Piaoliu.push(`@${plp}；${userId}`)
-      } else if(dc.type == `init`){
-        if(userId != undefined) Piaoliu.push(`@${plp}；${userId}`)
+      } else if (dc.type == `rfb`) {
+        if (userId == e.user_id) Piaoliu.push(`@${plp}；${userId}`)
+      } else if (dc.type == `init`) {
+        if (userId != undefined) Piaoliu.push(`@${plp}；${userId}`)
       }
     })
-    if(dc.type == 'plp' || dc.type == 'rfb' || dc.type == `init`) return Piaoliu
-    if(dc.type == 'history') return msgList
-   }
+    if (dc.type == 'plp' || dc.type == 'rfb' || dc.type == `init`) return Piaoliu
+    if (dc.type == 'history') return msgList
+  }
   /**
    * 指定内容删除
    * @param {*} filePath 文件路径
@@ -111,14 +111,14 @@ ${history}`
    * @param {*} filePath 文件路径，不包含文件名
    * @param {*} filename 文件名，不包含文件路径
    */
-  async mdfile(filePath, filename){
-    if(!fs_.existsSync(filePath)) {
+  async mdfile(filePath, filename) {
+    if (!fs_.existsSync(filePath)) {
       fs.mkdirSync(filePath)
     }
     let filePath_ = path.join(filePath, filename)
     await fs.writeFile(filePath_, '');
   }
-  async date_time(){
+  async date_time() {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
@@ -127,19 +127,50 @@ ${history}`
     return date_time;
   }
   //废案
-  async getplpid(){
+  async getplpid() {
     let { config } = getconfig(`resources`, `plp`)
     let plpid = config
     const randomIndex = Math.floor(Math.random() * plpid.plpid.length);
     const plpid_ = plpid.plpid[randomIndex];
     return plpid_
   }
+
+  /**
+ * 删除JSON数组内容
+ * @param {*} deldata 要删除的数据
+ * @param {string} filePath 路径
+ */
+  async deljson(deldata, filePath) {
+    try {
+      let data = fs_.readFileSync(filePath, 'utf-8');
+      data = JSON.parse(data);
+      if (!Array.isArray(data)) return false;
+      let filteredData = []
+      for (let item of data) {
+        item = JSON.stringify(item)
+        deldata = JSON.stringify(deldata)
+        if (item != deldata) {
+          item = JSON.parse(item)
+          filteredData.push(item)
+          deldata = JSON.parse(deldata)
+        }
+      }
+      const tempData = JSON.stringify(filteredData, null, 3);
+      console.log(tempData)
+      fs_.writeFileSync(filePath, tempData, 'utf-8');
+      return true;
+    } catch (error) {
+      console.error('Error processing the file', error);
+      return false;
+    }
+  }
+
   /**
    * 删除指定yaml中的内容 废案
    * @param {*} filePath 文件路径
    * @param {*} content 文件内容
    */
-  async delyaml_plpid(filePath, content){
+  async delyaml_plpid(filePath, content) {
     const fileContent = await fs.readFile(filePath, 'utf-8');
     const data = yaml.parse(fileContent);
     data.plpid = data.plpid.filter(id => id !== content);

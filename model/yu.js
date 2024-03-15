@@ -1,8 +1,13 @@
 import fs from 'fs'
 import getconfig from './cfg.js'
+import Gimodel from './getFile.js'
 let GiPath = `./plugins/Gi-plugin`
 
 class Fish {
+    /**
+     * 取鱼
+     * @returns 
+     */
     async get_fish() {
         let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑", "特殊事件"]
         return fishArray[Math.floor(Math.random() * fishArray.length)]
@@ -63,6 +68,64 @@ class Fish {
             playerBucket = []
         }
         return playerBucket
+    }
+    /**
+     * 为用户的钓鱼账户增加鱼币
+     * @param {number} uid 用户QQ
+     * @param {number} number 增加的鱼币数量
+     * @returns 
+     */
+    async wr_money(uid, number) {
+        let a = 'utf-8'
+        let playerList_money
+        if(!fs.existsSync(GiPath + `/data/fishing`)) {
+            fs.mkdirSync(GiPath + `/data/fishing`)
+        }
+        try {
+            playerList_money = JSON.parse(fs.readFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, a))
+        } catch {
+            playerList_money = []
+        }
+        let playerInfo = []
+        for (let item of playerList_money) {
+            if(item.uid == uid) playerInfo.push(item)
+        }
+        if(playerInfo.length == 0){
+            console.log(playerInfo)
+            playerInfo.push({ uid: uid, money: number })
+        } else {
+            await Gimodel.deljson(playerInfo[0], GiPath + `/data/fishing/PlayerListMoney.json`)
+            playerInfo[0].money = playerInfo[0].money + number
+        }
+        playerList_money = JSON.parse(fs.readFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, a))
+        playerList_money.push(playerInfo[0])
+        fs.writeFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, JSON.stringify(playerList_money, null, 3), a) //打字的时候越看这个M越像猫猫，看来我是缺猫了()
+        return true
+    }
+    
+    async del_fish(uid, fish, number = 1){
+        let a = `utf-8`
+        let playerBucket = await this.getinfo_bucket(uid)
+        let targetFish = []
+        for (let item of playerBucket) {
+            if(item.fishType == fish) targetFish.push(item)
+        }
+        await Gimodel.deljson(targetFish[0], GiPath + `/data/fishing/${uid}.json`)
+        targetFish[0].number = targetFish[0].number - number
+        playerBucket = await this.getinfo_bucket(uid)
+        playerBucket.push(targetFish[0])
+        fs.writeFileSync(GiPath + `/data/fishing/${uid}.json`, JSON.stringify(playerBucket, null, 3), a)
+        return true
+    }
+
+    async get_usermoneyInfo(uid){
+        let a = `utf-8`
+        let userNumber
+        for (let c of JSON.parse(fs.readFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, a))) {
+            if(c.uid == uid) userNumber = c.money
+        }
+        if(!userNumber) return 0
+        return userNumber
     }
 
 }
