@@ -114,7 +114,13 @@ class Fish {
         fs.writeFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, JSON.stringify(playerList_money, null, 3), a) //打字的时候越看这个M越像猫猫，看来我是缺猫了()
         return true
     }
-    
+    /**
+     * 删鱼
+     * @param {number} uid e.user_id 用户QQ
+     * @param {string} fish fish 鱼
+     * @param {number} number number 数量，不填默认1
+     * @returns 
+     */
     async del_fish(uid, fish, number = 1){
         let a = `utf-8`
         let playerBucket = await this.getinfo_bucket(uid)
@@ -129,8 +135,13 @@ class Fish {
         fs.writeFileSync(GiPath + `/data/fishing/${uid}.json`, JSON.stringify(playerBucket, null, 3), a)
         return true
     }
+    /**
+     * 获取用户的鱼币数量
+     * @param {number} uid e.user_id 用户QQ
+     * @returns
+     */
 
-    async get_usermoneyInfo(uid){
+    async get_usermoneyInfo(uid, cc = false){
         let a = `utf-8`
         let userNumber
         let b
@@ -140,10 +151,32 @@ class Fish {
             b = []
         }
         for (let c of b) {
-            if(c.uid == uid) userNumber = c.money
+            if(c.uid == uid) userNumber = c
         }
         if(!userNumber) return 0
-        return userNumber
+        if(cc) return userNumber
+        return userNumber.money
+    }
+    /**
+     * 扣钱
+     * @param {number} uid e.user_id 用户QQ
+     * @param {number} number 扣多少钱
+     * @returns 
+     */
+    async deduct_money(uid, number) {
+        let a = `utf-8`
+        let userMoney = await this.get_usermoneyInfo(uid, true)
+        await Gimodel.deljson(userMoney, GiPath + `/data/fishing/PlayerListMoney.json`)
+        let data
+        try {
+            data = JSON.parse(fs.readFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, a))
+        } catch (error) {
+            data = []
+        }
+        userMoney.money = userMoney.money - number;
+        data.push(userMoney)
+        fs.writeFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, JSON.stringify(data, null, 3), a)
+        return true
     }
 
 }

@@ -30,9 +30,38 @@ export class Gi_yu extends plugin {
         {
           reg: '^(#|/)?(鱼布斯)?(财富|💰)榜$',
           fnc: 'wealth_list'
+        },
+        {
+          reg: '^(#|/)?加急治疗$',
+          fnc: '加急治疗'
         }
       ]
     })
+  }
+  async 加急治疗(e) {
+    let time = await timerManager.getRemainingTime(e.user_id)
+    console.log(time)
+    if(!time || time == 0 ||!await redis.get(`Fishing:${e.user_id}:shayu`)) {
+      await e.reply(`你很健康，不需要加急治疗~`)
+      return true
+    }
+    await e.reply(`你需要支付5鱼币以加急治疗，是否支付？\n【#确认支付】`)
+    this.setContext('加急治疗_')
+  }
+  async 加急治疗_(e) {
+    this.finish(`加急治疗_`)
+    if(this.e.msg == `#确认支付`) {
+      if(await Fish.get_usermoneyInfo(e.user_id) < 5) {
+        await e.reply([segment.at(e.user_id), `\n医生疑惑的看向你兜里的${await Fish.get_usermoneyInfo(e.user_id)}个鱼币，你尴尬的笑了笑。`])
+        return true
+      }
+      let timeSet = timerManager.createTimer(e.user_id, 3)
+      timeSet.start()
+      await redis.del(`Fishing:${e.user_id}:shayu`)
+      await e.reply([segment.at(e.user_id), `\n在医生的全力以赴下，你健康的出了院~`])
+      await Fish.deduct_money(e.user_id, 5)
+      return true
+    }
   }
   async wealth_list (e) {
     let PlayerMoneyList
@@ -92,7 +121,7 @@ export class Gi_yu extends plugin {
         if(item.type == msg[2]) price = item.price
       }
       price = price * msg[3]
-      await Fish.wr_money(e.user_id, price, e.member.nickname)
+      await Fish.wr_money(e.user_id, price, e.nickname)
       await Fish.del_fish(e.user_id, msg[2], msg[3])
       await e.reply(`出售成功，获得了${price}鱼币`)
     } else {
@@ -128,6 +157,9 @@ export class Gi_yu extends plugin {
     // let timeSet = timerManager.createTimer(e.user_id, 120); timeSet.start(); 设置该用户的倒计时器
     let time = await timerManager.getRemainingTime(e.user_id)
     if (!time || time == 0) {
+      if(await redis.get(`Fishing:${e.user_id}:shayu`)) {
+        redis.del(`Fishing:${e.user_id}:shayu`)
+      }
       let { config } = getconfig(`config`, `config`)
       let timeSet = timerManager.createTimer(e.user_id, config.fishcd)
       timeSet.start()
@@ -151,6 +183,10 @@ export class Gi_yu extends plugin {
       await Fish.wr_bucket(e.user_id, yu)
       return true
     } else {
+      if(await redis.get(`Fishing:${e.user_id}:shayu`)) {
+        await e.reply(`你和你的鱼竿还在住院中，距离出院还有${time}s……\n你可以花费5鱼币提前出院【#加急治疗】`)
+        return true
+      }
       let randomNumber = Math.floor(Math.random() * 3) + 1;
       switch (randomNumber) {
         case 1:
@@ -171,7 +207,8 @@ export class Gi_yu extends plugin {
     await e.reply(msg)
     await common.sleep(500)
     let { config } = getconfig(`config`, `config`)
-    await e.reply(`你很疑惑，为什么淡水库会有鲨鱼？但医生告诉你：你和你的鱼竿需要住院休息。\n鱼竿的假期时间翻倍(${config.fishcd * 2}s)`)
+    await e.reply(`你很疑惑，为什么淡水库会有鲨鱼？但医生告诉你：你和你的鱼竿需要住院休息。\n鱼竿的假期时间翻倍(${config.fishcd * 2}s)\n你可以花费5鱼币提前出院【#加急治疗】`)
+    await redis.set(`Fishing:${e.user_id}:shayu`, `true`)
     let timeSet = timerManager.createTimer(e.user_id, config.fishcd * 2)
     timeSet.start()
     // e.group.muteMember(e.user_id, 60)
