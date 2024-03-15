@@ -17,6 +17,12 @@
     - icon: paimon
       title: '水桶'
       desc: '看看你的水桶里有什么鱼'
+    - icon: paimon
+      title: '出售🐟 1'
+      desc: '出售你钓到的鱼，后面的数字是数量~'
+    - icon: paimon
+      title: '鱼币'
+      desc: '查看你剩余的鱼币~'
 - group: 打卡
   list:
     - icon: paimon

@@ -121,7 +121,13 @@ class Fish {
     async get_usermoneyInfo(uid){
         let a = `utf-8`
         let userNumber
-        for (let c of JSON.parse(fs.readFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, a))) {
+        let b
+        try {
+            b = JSON.parse(fs.readFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, a))            
+        } catch (error) {
+            b = []
+        }
+        for (let c of b) {
             if(c.uid == uid) userNumber = c.money
         }
         if(!userNumber) return 0

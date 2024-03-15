@@ -14,3 +14,18 @@ Rplp: 1
 plpapi: false
 #钓竿冷却时间，单位秒
 fishcd: 120
+fish_sale:
+  - type: 🐟
+    price: 3
+  - type: 🐡
+    price: 5
+  - type: 🦐
+    price: 5
+  - type: 🦀
+    price: 5
+  - type: 🐠
+    price: 10
+  - type: 🐙
+    price: 8
+  - type: 🦑
+    price: 8
