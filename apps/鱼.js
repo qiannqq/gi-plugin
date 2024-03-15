@@ -51,11 +51,15 @@ export class Gi_yu extends plugin {
         fish_sale.push(item)
       }
     }
-    if(fish_sale[0].number == 0 || fish_sale.length == 0) {
+    if(fish_sale[0].number <= 0 || fish_sale.length == 0) {
       e.reply(`啊嘞，你好像没有${msg[2]}呢~`)
       return true
     }
     if(msg[3] && msg[3] > 1) {
+      if(fish_sale[0].number < msg[3]) {
+        e.reply(`啊嘞，数量不够哎？不要虚报数量哦~`)
+        return true
+      }
       let price;
       for(let item of config.fish_sale) {
         if(item.type == msg[2]) price = item.price
