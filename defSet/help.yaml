@@ -21,7 +21,7 @@
       title: '出售🐟*1'
       desc: '出售你钓到的鱼，后面的数字是数量~'
     - icon: paimon
-      title: '一键出售🐟'
+      title: '一键出售所有鱼'
       desc: '一键出售你水桶里所有的鱼~'
     - icon: paimon
       title: '鱼币'
