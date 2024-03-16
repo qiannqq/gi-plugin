@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs'
 import fs_ from 'fs'
 import Gimodel from './getFile.js'
+let GiPath = `./plugins/Gi-plugin`
 
 class init {
     async plp() {
@@ -13,7 +14,7 @@ class init {
         for (const item of data) {
             const matches = item.match(/@(.*)；(.*)/);
             let plp_content = matches[1];
-            let plp_userid = matches[2];
+            let plp_userid = Number(matches[2]);
             let plp_type = `text`
 
             const regex = /https:\/\/(\w+\.)?qpic\.cn/;
@@ -49,8 +50,17 @@ class init {
             redis.set(`Yunzai:giplugin-plpid`, JSON.stringify(plp_id))
 
             await Gimodel.delfile(dc.filePath, item)
-            await fs.appendFile(dc.filePath, `@${plp_id}；${plp_userid}\n`)
-            
+            let data;
+            try {
+                data = JSON.parse(fs_.readFileSync(GiPath + `/data/dbid.json`, `utf-8`))
+            } catch {
+                data = []
+            }
+            data.push({ number: plp_id, qq: plp_userid })
+            if(!fs_.existsSync(GiPath + `/data`)) {
+                fs_.mkdirSync(GiPath + `/data`)
+            }
+            fs_.writeFileSync(GiPath + `/data/dbid.json`, JSON.stringify(data, null, 3), `utf-8`)
         }
 
         try {

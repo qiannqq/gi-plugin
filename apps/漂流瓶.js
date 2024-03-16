@@ -102,7 +102,6 @@ export class plp extends plugin {
             e.reply(`已取消扔漂流瓶`)
             return true;
         }
-        const date_time = await Gimodel.date_time()
         let times_ = await redis.get(`Yunzai:Giplp_${e.user_id}_times`)
         times_ = JSON.parse(times_)
         let type;
@@ -177,7 +176,7 @@ export class plp extends plugin {
         }
         let plp_id1 = plpid[Math.floor(Math.random() * plpid.length)]
         let plpcontent = JSON.parse(await redis.get(`Yunzai:giplugin_plp_${plp_id1.number}`))
-        console.log(plp_id1.number)
+        // console.log(plp_id1.number)
         let msgList = []
         if(plpcontent.plp_type == `text`){
             msgList.push({

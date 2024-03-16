@@ -111,7 +111,7 @@ if(!fs.existsSync(`${_path}/plugins/Gi-plugin/resources/data`)) {
 }
 //迁移旧版漂流瓶数据文件至新版
 if(!fs.existsSync(`${_path}/plugins/Gi-plugin/resources/data/dont_del`)) {
-  //init.plp()
+  init.plp()
 }
 
 class CountdownTimer {
