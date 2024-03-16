@@ -7,8 +7,8 @@ import fs from 'fs'
 export class Gi_yu extends plugin {
   constructor() {
     super({
-      name: 'Gi互动:钓鱼',
-      dsc: 'Gi互动:钓鱼',
+      name: 'Gi小游戏:钓鱼',
+      dsc: 'Gi小游戏:钓鱼',
       event: 'message',
       priority: 5000,
       rule: [
@@ -43,9 +43,55 @@ export class Gi_yu extends plugin {
         {
           reg: '^(#|/)?一键出售所有鱼$',
           fnc: 'sell_all_fish'
+        },
+        {
+          reg: '^(#|/)?小卖铺(购买)?(.*)?$',
+          fnc: 'Fish_shop'
         }
       ]
     })
+  }
+  async Fish_shop(e) {
+    let command = e.msg.match(/^(#|\/)?(小卖铺|购买)(.*)?$/)
+    let { config } = getconfig(`defSet`, `shop`)
+    if(!command[2]) {
+      let msgList = [{nickname: Bot.nickname, user_id: Bot.uin, message: `水库边的小卖铺~`}]
+      for (let item of config.shop) {
+        msgList.push({
+          nickname: Bot.nickname,
+          user_id: Bot.uin,
+          message: `商品名称:${item.name}\n商品描述:${item.desc}\n商品价格:${item.price}鱼币\n购买方式:发送#小卖铺购买${item.name}`
+        })
+      }
+      await e.reply(await Bot.pickUser(e.user_id).makeForwardMsg(msgList))
+      return true
+    } else {
+      let product_info;
+      command[3] = command[3].replace(/购买/g, ``)
+      for (let item of config.shop) {
+        if(command[3] === item.name) product_info = item 
+      }
+      if(!product_info) {
+        await e.reply(`啊嘞，小卖铺好像没有找到你要买的东西呢`)
+        return true
+      }
+      switch(product_info.name) {
+        case('钓鱼竿润滑油'):
+          let data = {
+            buffname: `钓鱼竿润滑油`,
+            number: 5
+          }
+          await redis.set(`Fishing:${e.user_id}_buff`, JSON.stringify(data))
+          break;
+      }
+      if(await Fish.get_usermoneyInfo(e.user_id) < product_info.price) {
+        await e.reply([segment.at(e.user_id), `\n小卖铺疑惑的看向你兜里的${await Fish.get_usermoneyInfo(e.user_id)}个鱼币，你尴尬的笑了笑。`])
+        return true
+      }
+      await Fish.deduct_money(e.user_id, product_info.price)
+      await e.reply(`你花费了${product_info.price}鱼币购买了${product_info.name}~`)
+    }
+    return true
   }
   async sell_all_fish(e) {
     let userBucket = await Fish.getinfo_bucket(e.user_id)
@@ -239,6 +285,16 @@ export class Gi_yu extends plugin {
         redis.del(`Fishing:${e.user_id}:shayu`)
       }
       let { config } = getconfig(`config`, `config`)
+      let userBuff = JSON.parse(await redis.get(`Fishing:${e.user_id}_buff`))
+      if(userBuff) {
+        if(userBuff.number <= 0) {
+          await redis.del(`Fishing:${e.user_id}_buff`)
+        } else {
+          userBuff.number = userBuff.number - 1
+          config.fishcd = 10
+          await redis.set(`Fishing:${e.user_id}_buff`, JSON.stringify(userBuff))
+        }
+      }
       let timeSet = timerManager.createTimer(e.user_id, config.fishcd)
       timeSet.start()
       let yu = await Fish.get_fish()

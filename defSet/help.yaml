@@ -24,6 +24,9 @@
       title: '鱼币'
       desc: '查看你剩余的鱼币~'
     - icon: paimon
+      title: '小卖铺'
+      desc: '看看小卖铺都买些什么~'
+    - icon: paimon
       title: '财富榜'
       desc: '查看A市的鱼布斯财富榜~'
     - icon: paimon
