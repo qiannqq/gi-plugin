@@ -1,6 +1,7 @@
 import common from '../../../lib/common/common.js'
 import Fish from '../model/yu.js'
 import getconfig from '../model/cfg.js'
+import Gimodel from '../model/getFile.js'
 import fs from 'fs'
 
 export class Gi_yu extends plugin {
@@ -34,9 +35,56 @@ export class Gi_yu extends plugin {
         {
           reg: '^(#|/)?加急治疗$',
           fnc: '加急治疗'
+        },
+        {
+          reg: '^(#|/)?修改(钓鱼|🎣)昵称(.*)?$',
+          fnc: 'change_nickname'
         }
       ]
     })
+  }
+  async change_nickname(e){
+    if(!await Fish.get_usermoneyInfo(e.user_id, true)) {
+      await e.reply(`你还没有出售过鱼，请先出售一次鱼在尝试修改昵称吧~`)
+      return true
+    }
+    let msg = e.msg.match(/^(#|\/)?修改(钓鱼|🎣)昵称(.*)?$/)
+    if(!msg[3]) {
+      e.reply([segment.at(e.user_id), `\n请输入昵称后再尝试修改昵称呢\n例如：#修改🎣昵称张三`])
+      return true
+    }
+    await e.reply([segment.at(e.user_id), `\n修改昵称需要花费30鱼币的改名费，是否继续？\n【#确认支付】`])
+    this.setContext(`change_nickname_`)
+  }
+  async change_nickname_(e) {
+    this.finish(`change_nickname_`)
+    if(this.e.msg != `#确认支付`) {
+      e.reply(`你取消了支付`)
+      return true
+    }
+    if(await Fish.get_usermoneyInfo(e.user_id) < 5) {
+      await e.reply(`啊嘞，你的钱似乎不够支付改名费呢~`)
+      return true
+    }
+    await Fish.deduct_money(e.user_id, 30)
+    let userInfo = await Fish.get_usermoneyInfo(e.user_id, true)
+    await Gimodel.deljson(userInfo, `./plugins/Gi-plugin/data/fishing/PlayerListMoney.json`)
+    let nickname = e.msg.match(/^(#|\/)?修改(钓鱼|🎣)昵称(.*)?$/)[3]
+    userInfo = {
+      uid: userInfo.uid,
+      uname: nickname,
+      money: userInfo.money
+    }
+    let alluserInfo
+    try {
+      alluserInfo = JSON.parse(fs.readFileSync(`./plugins/Gi-plugin/data/fishing/PlayerListMoney.json`, `utf-8`))
+    } catch {
+      alluserInfo = []
+    }
+    alluserInfo.push(userInfo)
+    fs.writeFileSync(`./plugins/Gi-plugin/data/fishing/PlayerListMoney.json`, JSON.stringify(alluserInfo, null, 3), `utf-8`)
+    await e.reply(`你的🎣昵称已修改为【${nickname}】`)
+    return true
   }
   async 加急治疗(e) {
     let time = await timerManager.getRemainingTime(e.user_id)
@@ -61,6 +109,8 @@ export class Gi_yu extends plugin {
       await e.reply([segment.at(e.user_id), `\n在医生的全力以赴下，你健康的出了院~`])
       await Fish.deduct_money(e.user_id, 5)
       return true
+    } else {
+      await e.reply(`你取消了支付。`)
     }
   }
   async wealth_list (e) {

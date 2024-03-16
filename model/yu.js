@@ -153,8 +153,8 @@ class Fish {
         for (let c of b) {
             if(c.uid == uid) userNumber = c
         }
-        if(!userNumber) return 0
         if(cc) return userNumber
+        if(!userNumber) return 0
         return userNumber.money
     }
     /**

@@ -27,6 +27,9 @@
       title: '财富榜'
       desc: '查看A市的鱼布斯财富榜~'
     - icon: paimon
+      title: '修改🎣昵称'
+      desc: '花费30鱼币就可以修改你在鱼布斯财富榜上的昵称哦~'
+    - icon: paimon
       title: '加急治疗'
       desc: '如果你被鲨鱼咬伤了，那就来试试医院新推出的加急治疗服务吧！'
 - group: 打卡
