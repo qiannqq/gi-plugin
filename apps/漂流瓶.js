@@ -24,9 +24,6 @@ export class plp extends plugin {
                 },{
                     reg: '^(#|/)?捡漂流瓶$',
                     fnc: '捡漂流瓶'
-                },{
-                    reg: '^(#|/)?撤回漂流瓶$',
-                    fnc: 'recall_floating_bottle'
                 }
             ]
         })
