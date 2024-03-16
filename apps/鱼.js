@@ -68,7 +68,7 @@ export class Gi_yu extends plugin {
       return true
     }
     for (let item of u) {
-      this.出售(item)
+      await this.出售(item)
     }
   }
   async change_nickname(e){
