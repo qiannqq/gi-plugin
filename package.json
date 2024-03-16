@@ -1,6 +1,6 @@
 {
     "name": "gi-plugin",
-    "version": "1.2.6",
+    "version": "1.2.9",
     "description": "Yunzai-Bot互动插件",
     "main": "index.js",
     "type": "module",
