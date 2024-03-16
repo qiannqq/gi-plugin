@@ -63,7 +63,13 @@ export class Gi_yu extends plugin {
           message: `商品名称:${item.name}\n商品描述:${item.desc}\n商品价格:${item.price}鱼币\n购买方式:发送#小卖铺购买${item.name}`
         })
       }
-      await e.reply(await Bot.pickUser(e.user_id).makeForwardMsg(msgList))
+      let msg;
+      try {
+        msg = await Bot.pickUser(e.user_id).makeForwardMsg(msgList)
+      } catch {
+        msg = await e.group.makeForwardMsg(msgList)
+      }
+      await e.reply(msg)
       return true
     } else {
       let product_info;
