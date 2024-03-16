@@ -39,9 +39,36 @@ export class Gi_yu extends plugin {
         {
           reg: '^(#|/)?修改(钓鱼|🎣)昵称(.*)?$',
           fnc: 'change_nickname'
+        },
+        {
+          reg: '^(#|/)?一键出售🐟$',
+          fnc: 'sell_all_fish'
         }
       ]
     })
+  }
+  async sell_all_fish(e) {
+    let userBucket = await Fish.getinfo_bucket(e.user_id)
+    if(!userBucket || userBucket.length <= 0) {
+      await e.reply(`你水桶里似乎没有鱼呢`)
+    }
+    let u = []
+    for (let item of userBucket) {
+      if(item.number > 0) {
+        u.push({
+          user_id: e.user_id,
+          msg: `出售${item.fishType}*${item.number}`,
+          reply: e.reply
+        })
+      }
+    }
+    if(u.length <= 0) {
+      await e.reply(`你似乎没有鱼可以出售呢~`)
+      return true
+    }
+    for (let item of u) {
+      this.出售(item)
+    }
   }
   async change_nickname(e){
     if(!await Fish.get_usermoneyInfo(e.user_id, true)) {
