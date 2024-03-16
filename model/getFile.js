@@ -176,6 +176,23 @@ ${history}`
     const updatedFileContent = yaml.stringify(data);
     await fs.writeFile(filePath, updatedFileContent, 'utf-8');
   }
+  /**
+   * 计算天数
+   * @param {string} inputDate 日期
+   */
+  async date_calculation(inputDate) {
+    try {
+      const inputDateTime = new Date(inputDate);
+      const today = new Date();
+      const differenceInTime = inputDateTime - today;
+      const differenceInDays = Math.ceil(Math.abs(differenceInTime) / (1000 * 60 * 60 * 24));
+
+      return differenceInDays;
+  } catch (error) {
+      console.error("Error:", error);
+      return null;
+  }
+  }
 }
 
 export default new Gimodel

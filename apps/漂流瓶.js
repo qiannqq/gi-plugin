@@ -24,9 +24,63 @@ export class plp extends plugin {
                 },{
                     reg: '^(#|/)?捡漂流瓶$',
                     fnc: '捡漂流瓶'
+                },{
+                    reg: /^(#|\/)?评论漂流瓶(.*)$/,
+                    fnc: '评论漂流瓶'
                 }
             ]
         })
+    }
+    async 评论漂流瓶(e) {
+        let { config } = getconfig(`config`, `config`)
+        if(!config.dbcomment){
+            await e.reply(`港口管理员未开放评论区哦~`)
+            return true
+        }
+        let dbid = Number(e.msg.match(/^(#|\/)?评论漂流瓶(.*)$/)[2])
+        if(dbid == NaN) {
+            await e.reply(`港口管理员：“哎？漂流瓶ID应该是数字吧”`)
+            return true
+        }
+        let dbdata = await redis.get(`Yunzai:giplugin_plp_${dbid}`)
+        if(!dbdata) {
+            await e.reply(`没有找到你说的这个漂流瓶哦，请检查漂流瓶ID是否正确~`)
+            return true
+        }
+        await redis.set(`comment:${e.user_id}`, dbid)
+        await e.reply(`你正在评论漂流瓶ID为【${dbid}】的漂流瓶\n请发送你要评论的内容\n发送[0]取消评论`)
+        this.setContext(`评论漂流瓶_`)
+    }
+    async 评论漂流瓶_(e) {
+        this.finish(`评论漂流瓶_`)
+        if(this.e.msg == `0` || this.e.msg == `[0]`) {
+            await e.reply(`你已取消评论漂流瓶`)
+            await redis.del(`comment:${e.user_id}`)
+            return true
+        }
+        let dbid = await redis.get(`comment:${e.user_id}`)
+        await redis.del(`comment:${e.user_id}`)
+        if(!dbid) {
+            await e.reply(`获取漂流瓶ID失败`)
+            return true
+        }
+        let dbcomment;
+        try {
+            dbcomment = JSON.parse(await redis.get(`Yunzai:giplugin_dbcomment_${dbid}`))
+        } catch {
+            dbcomment = []
+        }
+        if(!dbcomment) {
+            dbcomment = []
+        }
+        dbcomment.push({
+            user_id: e.user_id,
+            message: this.e.message
+        })
+        await redis.set(`Yunzai:giplugin_dbcomment_${dbid}`, JSON.stringify(dbcomment, null, 3))
+        await e.reply(`港口管理员已将你的评论和漂流瓶一起扔向大海喽~`)
+        return true
+
     }
     async recall_floating_bottle(e){
         await e.reply(`该功能正在维护中……`) 
@@ -145,7 +199,8 @@ export class plp extends plugin {
         } catch {
             data = []
         }
-        data.push({ number: plp_id, qq: e.user_id })
+        let date = await Gimodel.date_time()
+        data.push({ number: plp_id, qq: e.user_id, date, })
         if(!fs_.existsSync(GiPath + `/data`)) {
             fs_.mkdirSync(GiPath + `/data`)
         }
@@ -161,8 +216,8 @@ export class plp extends plugin {
         } catch {
             plpid = []
         }
+        let { config } = getconfig(`config`, `config`)
         if(plpid.length === 0){
-            let { config } = getconfig(`config`, `config`)
             if(config.plpapi) {
                 this.捡漂流瓶API(e)
                 return true
@@ -174,38 +229,61 @@ export class plp extends plugin {
         let plpcontent = JSON.parse(await redis.get(`Yunzai:giplugin_plp_${plp_id1.number}`))
         // console.log(plp_id1.number)
         let msgList = []
+        let msg
+        msgList.push({
+            user_id: Bot.uin,
+            message: `漂流瓶ID：${plp_id1.number}`
+        })
         if(plpcontent.plp_type == `text`){
             msgList.push({
                 user_id: plp_id1.qq,
                 message: plpcontent.plp_text
             })
-            let msg = await Bot[Bot.uin].pickUser(e.self_id).makeForwardMsg(msgList)
-            let detail = msg.data?.meta?.detail
-            detail.news = [{ text: `点击查看漂流瓶` }]
-            await e.reply(msg)
         } else if(plpcontent.plp_type == `image`){
             msgList.push({
                 user_id: plp_id1.qq,
                 message: segment.image(plpcontent.plp_imgUrl[0])
             })
-            let msg = await Bot[Bot.uin].pickUser(e.self_id).makeForwardMsg(msgList)
-            let detail = msg.data?.meta?.detail
-            detail.news = [{ text: `点击查看漂流瓶` }]
-            await e.reply(msg)
         } else if(plpcontent.plp_type == `text_img`){
             msgList.push({
                 user_id: plp_id1.qq,
                 message: [plpcontent.plp_text, segment.image(plpcontent.plp_imgUrl[0])]
             })
-            let msg = await Bot[Bot.uin].pickUser(e.self_id).makeForwardMsg(msgList)
-            let detail = msg.data?.meta?.detail
-            detail.news = [{ text: `点击查看漂流瓶` }]
-            await e.reply(msg)
         }
-
-        await Gimodel.deljson(plp_id1, GiPath + `/data/dbid.json`)
-        await redis.del(`Yunzai:giplugin_plp_${plp_id1.number}`)
-
+        let comment;
+        try {
+            comment = JSON.parse(await redis.get(`Yunzai:giplugin_dbcomment_${plp_id1.number}`))
+        } catch {
+            comment = []
+        }
+        if(config.dbcomment){
+            msgList.push({
+                user_id: Bot.uin,
+                message: `漂流瓶的评论方法：#评论漂流瓶${plp_id1.number}`
+            })
+        }
+        if(comment && comment.length > 0) {
+            msgList.push({
+                user_id: Bot.uin,
+                message: `以下是这个漂流瓶的评论区`
+            })
+            for (let item of comment) {
+                msgList.push({
+                    user_id: Number(item.user_id),
+                    message: item.message
+                })
+            }
+        }
+        msg = await Bot[Bot.uin].pickUser(e.self_id).makeForwardMsg(msgList)
+        let detail = msg.data?.meta?.detail
+        detail.news = [{ text: `点击查看漂流瓶` }]
+        await e.reply(msg)
+        let day = await Gimodel.date_calculation(plp_id1.date)
+        
+        if(!day || day > 3 || !config.dbcomment) {
+            await Gimodel.deljson(plp_id1, GiPath + `/data/dbid.json`)
+            await redis.del(`Yunzai:giplugin_plp_${plp_id1.number}`)
+        }
         return true;
     }
     async 捡漂流瓶API(e){

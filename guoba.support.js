@@ -99,6 +99,12 @@ export function supportGuoba() {
           }
         },
         {
+          field: 'dbcomment',
+          label: '漂流瓶评论区',
+          bottomHelpMessage: '是否开启漂流瓶评论区，开启后漂流瓶的销毁将从捡到及销毁改为三天后销毁',
+          component: 'Switch'
+        },
+        {
           field: 'plpapi',
           label: 'API获取漂流瓶',
           helpMessage: '警告：来自API的漂流瓶的信息不受审核，可能会获取到违规内容，请谨慎开启',
