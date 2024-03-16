@@ -5,8 +5,10 @@ import { promises as fs } from 'fs';
 import fs_ from 'fs'
 import post from '../model/post.js';
 import fetch from 'node-fetch';
+import { segment } from 'icqq';
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
+const GiPath = `./plugins/Gi-plugin`
 const _path = process.cwd().replace(/\\/g, '/')
 
 export class plp extends plugin {
@@ -31,6 +33,9 @@ export class plp extends plugin {
         })
     }
     async recall_floating_bottle(e){
+        await e.reply(`该功能正在维护中……`) 
+        // 漂流瓶结构大改，所以撤回漂流瓶要维护
+        return true
         //获取日期，用于读取漂流瓶日志文件
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -96,25 +101,25 @@ export class plp extends plugin {
         if(this.e.msg == `0`|| this.e.msg == `[0]`){
             e.reply(`已取消扔漂流瓶`)
             return true;
-        }/**
+        }
         const date_time = await Gimodel.date_time()
         let times_ = await redis.get(`Yunzai:Giplp_${e.user_id}_times`)
         times_ = JSON.parse(times_)
         let type;
         let plp_content;
         let plp_imgUrl;
-        if(e.msg && e.img){
+        if(this.e.msg && this.e.img){
             type = `text_img`
-            plp_content = e.msg
-            plp_imgUrl = e.img
-        } else if(e.msg) {
+            plp_content = this.e.msg
+            plp_imgUrl = this.e.img
+        } else if(this.e.msg) {
             type = `text`
-            plp_content = e.msg
+            plp_content = this.e.msg
             plp_imgUrl = ``
-        } else if(e.img) {
+        } else if(this.e.img) {
             type = `image`
             plp_content = ``
-            plp_imgUrl = e.img
+            plp_imgUrl = this.e.img
         } else {
             e.reply(`扔漂流瓶失败了，无法在漂流瓶内塞进卡片内容。`)
             return true;
@@ -137,188 +142,76 @@ export class plp extends plugin {
             plp_text: plp_content,
             plp_imgUrl,
         }
-        redis.set(`Yunzai.giplugin_plp_${plp_id}`, JSON.stringify(plp))
+        redis.set(`Yunzai:giplugin_plp_${plp_id}`, JSON.stringify(plp))
         redis.set(`Yunzai:giplugin-plpid`, JSON.stringify(plp_id))
-
-        await fs.appendFile(filePath, `@${plp_id}；${e.user_id}\n`, `utf-8`)
+        let data;
+        try {
+            data = JSON.parse(await fs.readFile(GiPath + `/data/dbid.json`, `utf-8`))
+        } catch {
+            data = []
+        }
+        data.push({ number: plp_id, qq: e.user_id })
+        if(!fs_.existsSync(GiPath + `/data`)) {
+            fs_.mkdirSync(GiPath + `/data`)
+        }
+        await fs.writeFile(GiPath + `/data/dbid.json`, JSON.stringify(data, null, 3), `utf-8`)
         e.reply(`你的漂流瓶成功扔出去了~`)
         logger.mark(`[Gi互动:扔漂流瓶]用户${e.user_id}扔了一个漂流瓶【${plp}】`)
         return true;
-**/
-        const date_time = await Gimodel.date_time()
-        let plp;
-        let times_ = await redis.get(`Yunzai:Giplp_${e.user_id}_times`)
-        times_ = JSON.parse(times_)
-        let plp_ = this.e.msg
-        if(!plp_ || plp_ == undefined){
-            for (let i = 0; i < this.e.message.length; i++) {
-                const msg = this.e.message[i];
-                if (msg.type == `image`) {
-                    if(!msg.url){
-                        plp_ = msg.file
-                    } else {
-                        plp_ = msg.url
-                    }
-                }
-            }
-        } else {
-            plp_ = plp_.replace(/@/g, '');
-            plp_ = plp_.replace(/\n/g, '');
-            plp_ = plp_.replace(/；/g, '');
-            plp_ = plp_.replace(/https/g, '');
-            plp_ = plp_.replace(/⁧/g, '');
-        }
-        if(!plp_){
-            e.reply(`扔漂流瓶失败了，无法在漂流瓶内塞进卡片内容。`)
-            return true;
-        }
-        plp = `@${plp_}；${e.user_id}`
-        let plpfile = `plugins/Gi-plugin/resources/plp/${date_time}.txt`
-        let plpfile_ = `plugins/Gi-plugin/resources/plp`
-        if (!fs_.existsSync(plpfile_)) {
-            fs_.mkdirSync(plpfile_);
-            await Gimodel.mdfile(plpfile)
-        }
-        /**let { config } = getconfig(`config`, `config`)
-        if(config.plpshenhe){
-            let PLPnumber = await redis.get(`Yunzai:Gi-plugin:PLPnumber`)
-            if(!PLPnumber){
-                PLPnumber = 10000;
-            } else {
-                PLPnumber = JSON.parse(PLPnumber)
-            }
-            let plpsh_ = `plugins/Gi-plugin/resources/plp/shenhe.txt`
-            await Gimodel.mdfile(plpsh_)
-            fs.appendFile(plpsh_, plp + `；${PLPnumber}`, `utf-8`)
-            PLPnumber++;
-            await redis.set(`Yunzai:Gi-plugin:PLPnumber`, JSON.stringify(PLPnumber))
-            e.reply(`你的瓶子已经成功交由港口管理员审核了，审核通过后就可以送进海洋哦~`)
-            return true;
-        }**/
-        fs.appendFile(plpfile, plp + `\n`, `utf-8`)
-        let dcpost = {
-            user_id: e.user_id,
-            plpdata: plp_,
-            botid: e.self_id,
-            group_id: e.group_id
-        }
-        post(dcpost)
-        fs.appendFile(filePath, plp + '\n', 'utf8', (err) => {
-            if (err) {
-              logger.error(err);
-              e.reply(`发生错误` + err)
-              return;
-            }
-          })
-        e.reply(`你的漂流瓶成功扔出去了~`)
-        logger.mark(`[Gi互动:扔漂流瓶]用户${e.user_id}扔了一个漂流瓶【${plp_}】`)
-        times_++;
-        let times = `@${date_time}；${times_}`
-        redis.set(`Yunzai:giplugin-${e.user_id}_plp`, JSON.stringify(times));
     }
     async 捡漂流瓶(e){
-        /**
-        let dc = {
-            filePath,
-            type: 'plp'
+        let plpid;
+        try {
+            plpid = JSON.parse(fs_.readFileSync(GiPath + `/data/dbid.json`, `utf-8`))
+        } catch {
+            plpid = []
         }
-        let plpid = await Gimodel.NewgetFile(dc, e)
-        const randomIndex = Math.floor(Math.random() * plpid.length);
         if(plpid.length === 0){
-            e.reply(`海里空空的，没有漂流瓶呢~`)
-            return true;
-        }
-        let plp_id1 = plpid[randomIndex]
-        const matches = plp_id1.match(/@(.*)；(.*)/);
-        let plpcontent = await redis.get(`Yunzai:giplugin_plp_${matches[1]}`)
-        plpcontent = JSON.parse(plpcontent)
-
-        if(plpcontent.plp_type == `text`){
-            e.reply(`正在查看漂流瓶……\n这个漂流瓶里有封信哎\n【漂流瓶】\n` + plpcontent.plp_text)
-        } else if(plpcontent.plp_type == `image`){
-            let msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`, segment.image(plpcontent.plp_imgUrl)]
-            e.reply(msg)
-        } else if(plpcontent.plp_type == `text_img`){
-            let msg = [`正在查看漂流瓶……\n这个漂流瓶里有一封信和一张照片哎\n【信和照片】\n` + plpcontent.plp_text, segment.image(plpcontent.plp_imgUrl)]
-            e.reply(msg)
-        }
-
-        await Gimodel.delfile(dc.filePath, plp_id1)
-
-        return true;**/
-
-        let plp2;
-        let dc = {
-            filePath: filePath,
-            type: `plp`
-        }
-        let Piaoliu = await Gimodel.NewgetFile(dc, e)
-        let { config } = getconfig(`config`, `config`)
-        const date_time = await Gimodel.date_time()
-        let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp2`);date_time2 = JSON.parse(date_time2);
-        let times_;
-        if(date_time2){
-            const parts = date_time2.split('；');
-            const date_time3 = parts[0].substring(1);
-            times_ = parseInt(parts[1], 10);
-            if (!e.isMaster) {
-                if (date_time === date_time3) {
-                    if(times_ >= config.Jplp) {
-                        e.reply(`你今天已经捡过${times_}次漂流瓶，每天只能捡${config.Jplp}次哦~`)
-                        return true;
-                    }
-                } else {
-                    times_ = `0`;
-                }
-            }
-        } else {
-            times_ = `0`;
-        }
-        const randomIndex = Math.floor(Math.random() * Piaoliu.length);
-        if(Piaoliu.length === 0){
+            let { config } = getconfig(`config`, `config`)
             if(config.plpapi) {
                 this.捡漂流瓶API(e)
                 return true
             }
-            e.reply(`海里空空的，似乎没有漂流瓶呢`)
+            e.reply(`海里空空的，没有漂流瓶呢~`)
             return true;
         }
-        plp2 = Piaoliu[randomIndex];
-        const matches = plp2.match(/@(.*?)；(.*?)/);
-        const plp3 = matches[1];
-        const plp4 = matches[2];
-        if (plp4 == e.user_id) {
-            e.reply(`很可惜，这次没捡到漂流瓶呢~`)
-            return true;
+        let plp_id1 = plpid[Math.floor(Math.random() * plpid.length)]
+        let plpcontent = JSON.parse(await redis.get(`Yunzai:giplugin_plp_${plp_id1.number}`))
+        console.log(plp_id1.number)
+        let msgList = []
+        if(plpcontent.plp_type == `text`){
+            msgList.push({
+                user_id: plp_id1.qq,
+                message: plpcontent.plp_text
+            })
+            let msg = await Bot[Bot.uin].pickUser(e.self_id).makeForwardMsg(msgList)
+            let detail = msg.data?.meta?.detail
+            detail.news = [{ text: `点击查看漂流瓶` }]
+            await e.reply(msg)
+        } else if(plpcontent.plp_type == `image`){
+            msgList.push({
+                user_id: plp_id1.qq,
+                message: segment.image(plpcontent.plp_imgUrl[0])
+            })
+            let msg = await Bot[Bot.uin].pickUser(e.self_id).makeForwardMsg(msgList)
+            let detail = msg.data?.meta?.detail
+            detail.news = [{ text: `点击查看漂流瓶` }]
+            await e.reply(msg)
+        } else if(plpcontent.plp_type == `text_img`){
+            msgList.push({
+                user_id: plp_id1.qq,
+                message: [plpcontent.plp_text, segment.image(plpcontent.plp_imgUrl[0])]
+            })
+            let msg = await Bot[Bot.uin].pickUser(e.self_id).makeForwardMsg(msgList)
+            let detail = msg.data?.meta?.detail
+            detail.news = [{ text: `点击查看漂流瓶` }]
+            await e.reply(msg)
         }
-        if (plp4 == undefined) {
-            e.reply(`很可惜，这次没捡到漂流瓶呢~`)
-            return true;
-        } else if (plp3 == ``) {
-            e.reply(`很可惜，这次没捡到漂流瓶呢~`)
-            return true;
-        }
-        let msg = 
-[`正在查看漂流瓶……
-这个漂流瓶里有封信哎
-【漂流瓶】
-${plp3}`]
-        const regex = /https:\/\/(\w+\.)?qpic\.cn/;
-        const regexHttp = /http:\/\/(\w+\.)?qpic\.cn/;
-        if (plp3.match(regex)) {
-            msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
-            e.reply(msg)
-        } else if(plp3.match(regexHttp)){
-            msg = [`正在查看漂流瓶……\n这个漂流瓶里有照片哎\n【泛黄的照片】\n`,segment.image(plp3)]
-            logger.mark(plp3)
-            e.reply(msg)
-        } else {
-            e.reply(msg)
-        }
-        times_++;
-        let times = `@${date_time}；${times_}`
-        redis.set(`Yunzai:giplugin-${e.user_id}_plp2`, JSON.stringify(times));
-        Gimodel.delfile(filePath, plp2)
+
+        await Gimodel.deljson(plp_id1, GiPath + `/data/dbid.json`)
+        await redis.del(`Yunzai:giplugin_plp_${plp_id1.number}`)
+
+        return true;
     }
     async 捡漂流瓶API(e){
         let plp = await fetch(`https://free.wqwlkj.cn/wqwlapi/drift.php?select=&type=json`)

@@ -19,8 +19,10 @@ git clone --depth=1 https://gitee.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
 ```
 git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
 ```
+<details>
+<summary>指令以及其作用</summary>
 
-#### 指令以及其作用
+
 | 指令   | 作用                                | 权限 |
 |------|-----------------------------------|----|
 | 扔漂流瓶 | 扔出漂流瓶，等待有缘人捡到（可在锅巴中配置用户可扔漂流瓶次数）            | 用户 |
@@ -48,6 +50,10 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 | 互动强制更新 | 忽略本地冲突，直接更新Gi-plugin插件 | 主人 |
 
 
+
+</details>
+
+
 <details>
 <summary>画饼ing</summary>
 
@@ -58,7 +64,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 - [x] 支持漂流瓶图片内容
 - [x] 增加群历史文献功能(记录群聊值得铭记的历史)
 - [ ] 漂流瓶全云崽互通(互动插件)
-- [ ] 重构漂流瓶数据文件的相关操作
+- [x] 重构漂流瓶数据文件的相关操作
 - [x] 让钓鱼水桶不再是摆设(正在爆肝钓鱼功能
 - [x] 咕咕咕
 
