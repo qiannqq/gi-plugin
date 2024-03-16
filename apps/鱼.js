@@ -52,7 +52,7 @@ export class Gi_yu extends plugin {
     })
   }
   async Fish_shop(e) {
-    let command = e.msg.match(/^(#|\/)?(小卖铺|购买)(.*)?$/)
+    let command = e.msg.match(/^(#|\/)?小卖铺(购买)?(.*)?$/)
     let { config } = getconfig(`defSet`, `shop`)
     if(!command[2]) {
       let msgList = [{nickname: Bot.nickname, user_id: Bot.uin, message: `水库边的小卖铺~`}]
