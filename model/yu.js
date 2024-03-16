@@ -95,7 +95,7 @@ class Fish {
             playerInfo.push({ uid: uid, uname: nickname, money: number })
         } else {
             await Gimodel.deljson(playerInfo[0], GiPath + `/data/fishing/PlayerListMoney.json`)
-            if(!playerInfo[0].nickname){
+            if(!playerInfo[0].uname){
                 playerInfo[0] = {
                     uid,
                     uname: nickname,

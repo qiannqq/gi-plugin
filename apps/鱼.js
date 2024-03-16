@@ -41,7 +41,7 @@ export class Gi_yu extends plugin {
           fnc: 'change_nickname'
         },
         {
-          reg: '^(#|/)?一键出售🐟$',
+          reg: '^(#|/)?一键出售所有鱼$',
           fnc: 'sell_all_fish'
         }
       ]
@@ -58,6 +58,7 @@ export class Gi_yu extends plugin {
         u.push({
           user_id: e.user_id,
           msg: `出售${item.fishType}*${item.number}`,
+          nickname: e.nickname,
           reply: e.reply
         })
       }
