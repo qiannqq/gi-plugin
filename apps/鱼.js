@@ -83,9 +83,15 @@ export class Gi_yu extends plugin {
       }
       switch(product_info.name) {
         case('钓鱼竿润滑油'):
+          let userBuff = JSON.parse(await redis.get(`Fishing:${e.user_id}_buff`))
+          if(userBuff) {
+            var number = userBuff.number  
+          } else {
+            number = 0
+          }
           let data = {
             buffname: `钓鱼竿润滑油`,
-            number: 5
+            number: number + 5
           }
           await redis.set(`Fishing:${e.user_id}_buff`, JSON.stringify(data))
           break;
@@ -343,7 +349,16 @@ export class Gi_yu extends plugin {
   }
   async se空军(e){
     let { config } = getconfig(`config`, `fishText`)
-    let timeSet = timerManager.createTimer(e.user_id, 30)
+    let fishcd = 30
+    let userBuff = JSON.parse(await redis.get(`Fishing:${e.user_id}_buff`))
+    if(userBuff) {
+      if(userBuff.number <= 0) {
+        await redis.del(`Fishing:${e.user_id}_buff`)
+      } else {
+        fishcd = 10
+      }
+    }
+    let timeSet = timerManager.createTimer(e.user_id, fishcd)
     timeSet.start()
     let text = config.nothingText[Math.floor(Math.random() * config.nothingText.length)]
     text = text.replace(/\n$/g, '')
