@@ -101,6 +101,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 | 皮梦 |
 | 爱发电用户_pRBn |
 | 休比 |
+| 枭 |
 
 
 #### 参与贡献
