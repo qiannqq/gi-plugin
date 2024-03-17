@@ -46,12 +46,12 @@ export class Gi_yu extends plugin {
         },
         {
           reg: '^(#|/)?小卖铺(购买)?(.*)?$',
-          fnc: 'Fish_shop'
+          fnc: 'fish_shop'
         }
       ]
     })
   }
-  async Fish_shop(e) {
+  async fish_shop(e) {
     let command = e.msg.match(/^(#|\/)?小卖铺(购买)?(.*)?$/)
     let { config } = getconfig(`defSet`, `shop`)
     if(!command[2]) {
@@ -303,11 +303,14 @@ export class Gi_yu extends plugin {
       await e.reply(`你开始了钓鱼……`)
       await common.sleep(2000)
       if (yu == `特殊事件`) {
-        let special_event_list = [`鲨鱼`]
+        let special_event_list = [`鲨鱼`, `空军`]
         let special_event = special_event_list[Math.floor(Math.random() * special_event_list.length)]
         switch (special_event) {
           case '鲨鱼':
             this.se鲨鱼(e)
+            break
+          case '空军':
+            this.se空军(e)
             break
         }
         return true
@@ -337,6 +340,15 @@ export class Gi_yu extends plugin {
       }
       return true
     }
+  }
+  async se空军(e){
+    let { config } = getconfig(`config`, `fishText`)
+    let timeSet = timerManager.createTimer(e.user_id, 30)
+    timeSet.start()
+    let text = config.nothingText[Math.floor(Math.random() * config.nothingText.length)]
+    text = text.replace(/\n$/g, '')
+    await e.reply([segment.at(e.user_id),'\n' + text])
+    return true
   }
   async se鲨鱼(e){
     let msg = [segment.at(e.user_id), `\n水库中突然窜出一条🦈，将你咬伤后逃窜。`]

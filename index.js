@@ -79,32 +79,34 @@ if(!fs.existsSync(`./plugins/Gi-plugin/config/fishText.yaml`)) {
   fs.copyFileSync(`./plugins/Gi-plugin/defSet/fishText.yaml`, `./plugins/Gi-plugin/config/fishText.yaml`)
 } else {
   let config = yaml.parse(fs.readFileSync(`./plugins/Gi-plugin/config/fishText.yaml`, `utf-8`))
+  let configNT = config.nothingText || []
   config = config.fishText
   let defcfg = yaml.parse(fs.readFileSync(`./plugins/Gi-plugin/defSet/fishText.yaml`, `utf-8`))
+  let defcfgNT = defcfg.nothingText
   defcfg = defcfg.fishText
-  fs.writeFileSync(`./plugins/Gi-plugin/config/fishText.yaml`, yaml.stringify({ fishText: [...new Set(config.concat(defcfg))] }), `utf-8`)
+  fs.writeFileSync(`./plugins/Gi-plugin/config/fishText.yaml`, yaml.stringify({ fishText: [...new Set(config.concat(defcfg))], nothingText: [...new Set(configNT.concat(defcfgNT))] }), `utf-8`)
 }
 
 //旧版漂流瓶符号替换为新版漂流瓶符号
-let newplp = await redis.get(`Yunzai:giplugin-newplp`);
-newplp = JSON.parse(newplp);
-if (newplp != `ok`) {
-  fs.readFile(`${_path}/plugins/Gi-plugin/resources/plp.txt`, 'utf8', (err, data) => {
-    if (err) {
-      logger.error("漂流瓶文件初始化出错：", err);
-      return;
-    }
+// let newplp = await redis.get(`Yunzai:giplugin-newplp`);
+// newplp = JSON.parse(newplp);
+// if (newplp != `ok`) {
+//   fs.readFile(`${_path}/plugins/Gi-plugin/resources/plp.txt`, 'utf8', (err, data) => {
+//     if (err) {
+//       logger.error("漂流瓶文件初始化出错：", err);
+//       return;
+//     }
 
-    const modifiedData = data.replace(/-/g, '@');
-    fs.writeFile(`${_path}/plugins/Gi-plugin/resources/plp.txt`, modifiedData, 'utf8', (err) => {
-      if (err) {
-        logger.error("漂流瓶文件初始化出错：", err);
-        return;
-      }
-    });
-  });
-  redis.set(`Yunzai:giplugin-newplp`, JSON.stringify(`ok`));
-}
+//     const modifiedData = data.replace(/-/g, '@');
+//     fs.writeFile(`${_path}/plugins/Gi-plugin/resources/plp.txt`, modifiedData, 'utf8', (err) => {
+//       if (err) {
+//         logger.error("漂流瓶文件初始化出错：", err);
+//         return;
+//       }
+//     });
+//   });
+//   redis.set(`Yunzai:giplugin-newplp`, JSON.stringify(`ok`));
+// }
 //创建数据文件夹
 if(!fs.existsSync(`${_path}/plugins/Gi-plugin/resources/data`)) {
   fs.mkdirSync(`${_path}/plugins/Gi-plugin/resources/data`)
