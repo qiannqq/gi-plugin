@@ -100,28 +100,42 @@ export class Gi_yu extends plugin {
     return true
   }
   async sell_all_fish(e) {
+    // let userBucket = await Fish.getinfo_bucket(e.user_id)
+    // if(!userBucket || userBucket.length <= 0) {
+    //   await e.reply(`你水桶里似乎没有鱼呢`)
+    // }
+    // let u = []
+    // for (let item of userBucket) {
+    //   if(item.number > 0) {
+    //     u.push({
+    //       user_id: e.user_id,
+    //       msg: `出售${item.fishType}*${item.number}`,
+    //       nickname: e.nickname,
+    //       reply: e.reply
+    //     })
+    //   }
+    // }
+    // if(u.length <= 0) {
+    //   await e.reply(`你似乎没有鱼可以出售呢~`)
+    //   return true
+    // }
+    // for (let item of u) {
+    //   await this.出售(item)
+    // }
     let userBucket = await Fish.getinfo_bucket(e.user_id)
     if(!userBucket || userBucket.length <= 0) {
-      await e.reply(`你水桶里似乎没有鱼呢`)
-    }
-    let u = []
-    for (let item of userBucket) {
-      if(item.number > 0) {
-        u.push({
-          user_id: e.user_id,
-          msg: `出售${item.fishType}*${item.number}`,
-          nickname: e.nickname,
-          reply: e.reply
-        })
-      }
-    }
-    if(u.length <= 0) {
       await e.reply(`你似乎没有鱼可以出售呢~`)
       return true
     }
-    for (let item of u) {
-      await this.出售(item)
+    let number = 0
+    for (let item of userBucket) {
+        let fish_price = await Fish.get_fish_price(item.fishType)
+        number = number + item.number * fish_price
+        await Fish.del_fish(e.user_id, item.fishType, item.number)
     }
+    await Fish.wr_money(e.user_id, number)
+    await e.reply(`出售成功，获得了${number}鱼币`)
+    return true
   }
   async change_nickname(e){
     if(!await Fish.get_usermoneyInfo(e.user_id, true)) {

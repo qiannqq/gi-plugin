@@ -178,6 +178,16 @@ class Fish {
         fs.writeFileSync(GiPath + `/data/fishing/PlayerListMoney.json`, JSON.stringify(data, null, 3), a)
         return true
     }
+    /**
+     * 获取鱼的价格
+     * @param {string} fish 鱼
+     */
+    async get_fish_price(fish){
+        let { config } = getconfig(`config`, `config`)
+        for(let item of config.fish_sale) {
+            if(item.type === fish) return item.price
+        }
+    }
 
 }
 export default new Fish
