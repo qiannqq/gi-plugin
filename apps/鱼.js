@@ -133,6 +133,10 @@ export class Gi_yu extends plugin {
         number = number + item.number * fish_price
         await Fish.del_fish(e.user_id, item.fishType, item.number)
     }
+    if(number <= 0) {
+      await e.reply(`你似乎没有鱼可以出售呢~`)
+      return true
+    }
     await Fish.wr_money(e.user_id, number)
     await e.reply(`出售成功，获得了${number}鱼币`)
     return true
