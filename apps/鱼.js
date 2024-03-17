@@ -100,28 +100,6 @@ export class Gi_yu extends plugin {
     return true
   }
   async sell_all_fish(e) {
-    // let userBucket = await Fish.getinfo_bucket(e.user_id)
-    // if(!userBucket || userBucket.length <= 0) {
-    //   await e.reply(`你水桶里似乎没有鱼呢`)
-    // }
-    // let u = []
-    // for (let item of userBucket) {
-    //   if(item.number > 0) {
-    //     u.push({
-    //       user_id: e.user_id,
-    //       msg: `出售${item.fishType}*${item.number}`,
-    //       nickname: e.nickname,
-    //       reply: e.reply
-    //     })
-    //   }
-    // }
-    // if(u.length <= 0) {
-    //   await e.reply(`你似乎没有鱼可以出售呢~`)
-    //   return true
-    // }
-    // for (let item of u) {
-    //   await this.出售(item)
-    // }
     let userBucket = await Fish.getinfo_bucket(e.user_id)
     if(!userBucket || userBucket.length <= 0) {
       await e.reply(`你似乎没有鱼可以出售呢~`)

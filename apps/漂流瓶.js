@@ -74,6 +74,7 @@ export class plp extends plugin {
             dbcomment = []
         }
         dbcomment.push({
+            comment_nickname: e.nickname,
             user_id: e.user_id,
             message: this.e.message
         })
@@ -186,6 +187,7 @@ export class plp extends plugin {
         plp = {
             plp_id,
             plp_userid: e.user_id,
+            plp_nickname: e.nickname,
             plp_groupid: e.group_id,
             plp_type: type,
             plp_text: plp_content,
@@ -236,16 +238,19 @@ export class plp extends plugin {
         })
         if(plpcontent.plp_type == `text`){
             msgList.push({
+                nickname: plpcontent.plp_nickname,
                 user_id: plp_id1.qq,
                 message: plpcontent.plp_text
             })
         } else if(plpcontent.plp_type == `image`){
             msgList.push({
+                nickname: plpcontent.plp_nickname,
                 user_id: plp_id1.qq,
                 message: segment.image(plpcontent.plp_imgUrl[0])
             })
         } else if(plpcontent.plp_type == `text_img`){
             msgList.push({
+                nickname: plpcontent.plp_nickname,
                 user_id: plp_id1.qq,
                 message: [plpcontent.plp_text, segment.image(plpcontent.plp_imgUrl[0])]
             })
@@ -269,6 +274,7 @@ export class plp extends plugin {
             })
             for (let item of comment) {
                 msgList.push({
+                    nickname: item.comment_nickname,
                     user_id: Number(item.user_id),
                     message: item.message
                 })
