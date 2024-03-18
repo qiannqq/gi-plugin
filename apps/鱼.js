@@ -84,7 +84,7 @@ export class Gi_yu extends plugin {
         }
         await e.reply(`你开始了捕鱼`)
         await common.sleep(2000)
-        let msgList = [segment.at(e.user_id) + `\n捕鱼网捞上来了，你获得了：`]
+        let msgList = [segment.at(e.user_id), `\n捕鱼网捞上来了，你获得了：`]
         let yuList = {}
         for (let i = 0; i < 7; i++) {
           let yu = await Fish.get_fish()
