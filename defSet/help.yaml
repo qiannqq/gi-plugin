@@ -27,6 +27,9 @@
       title: '小卖铺'
       desc: '看看小卖铺都买些什么~'
     - icon: paimon
+      title: '捕鱼'
+      desc: '使用【捕鱼网】道具进行捕鱼，最多可捕获到7条鱼~'
+    - icon: paimon
       title: '财富榜'
       desc: '查看A市的鱼布斯财富榜~'
     - icon: paimon

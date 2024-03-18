@@ -47,9 +47,57 @@ export class Gi_yu extends plugin {
         {
           reg: '^(#|/)?小卖铺(购买)?(.*)?$',
           fnc: 'fish_shop'
+        },
+        {
+          reg: '^(#|/)?(开始)?捕(捞|鱼|渔)$',
+          fnc: 'fish_for'
         }
       ]
     })
+  }
+  async fish_for(e) {
+      // let time = await timerManager.getRemainingTime(e.user_id) 获取该用户的倒计时器
+      // let timeSet = timerManager.createTimer(e.user_id, 120); timeSet.start(); 设置该用户的倒计时器
+      let time = await timerManager.getRemainingTime(e.user_id + 101)
+      if(!time || time <= 0) {
+        let UserFishFor = JSON.parse(await redis.get(`Fishing:${e.user_id}_fishfor`))
+        if(!UserFishFor || UserFishFor.number <= 0) {
+          await e.reply(`你似乎没有捕鱼网呢，去【#小卖铺】购买捕鱼网再来使用吧~`)
+          return true
+        }
+        let { config } = getconfig(`config`, `config`)
+        let timeSet = timerManager.createTimer(e.user_id + 101, config.fishcd * 7); timeSet.start()
+        UserFishFor = {
+          number: UserFishFor.number - 1
+        }
+        if(UserFishFor.number <= 0) {
+          await redis.del(`Fishing:${e.user_id}_fishfor`)
+        } else {
+          await redis.set(`Fishing:${e.user_id}_fishfor`, JSON.stringify(UserFishFor))
+        }
+        await e.reply(`你开始了捕鱼`)
+        await common.sleep(2000)
+        let msgList = [`捕鱼网捞上来了，你获得了：`]
+        let yuList = {}
+        for (let i = 0; i < 7; i++) {
+          let yu = await Fish.get_fish()
+          if(yu == `特殊事件`) continue
+          await Fish.wr_bucket(e.user_id, yu)
+          if(yuList[yu]) {
+            yuList[yu]++
+          } else {
+            yuList[yu] = 1
+          }
+        }
+        for (let item in yuList) {
+          msgList.push(`\n`+item+` x `+yuList[item])
+        }
+        await e.reply(msgList)
+        return true
+      } else {
+        await e.reply(`河里的鱼需要休息……(${time}s)`)
+        return true
+      }
   }
   async fish_shop(e) {
     let command = e.msg.match(/^(#|\/)?小卖铺(购买)?(.*)?$/)
@@ -87,13 +135,25 @@ export class Gi_yu extends plugin {
           if(userBuff) {
             var number = userBuff.number  
           } else {
-            number = 0
+            var number = 0
           }
-          let data = {
+          let BuffData = {
             buffname: `钓鱼竿润滑油`,
             number: number + 5
           }
-          await redis.set(`Fishing:${e.user_id}_buff`, JSON.stringify(data))
+          await redis.set(`Fishing:${e.user_id}_buff`, JSON.stringify(BuffData))
+          break;
+        case('捕鱼网'):
+          let UserFishFor = JSON.parse(await redis.get(`Fishing:${e.user_id}_fishfor`))
+          if(UserFishFor) {
+            var number = UserFishFor.number
+          } else {
+            var number = 0
+          }
+          let FishforData = {
+            number: number + 1
+          }
+          await redis.set(`Fishing:${e.user_id}_fishfor`, JSON.stringify(FishforData))
           break;
       }
       if(await Fish.get_usermoneyInfo(e.user_id) < product_info.price) {
@@ -212,7 +272,7 @@ export class Gi_yu extends plugin {
     let paiming = 0
     for (let item of PlayerMoneyList) {
       paiming++;
-      msg.push(`\n第${paiming}名: ${item.uname || `侠名`} · ${item.money}鱼币`)
+      msg.push(`\n第${paiming}名: ${item.uname || `不知名的钓鱼佬`} · ${item.money}鱼币`)
     }
     await e.reply(msg)
     return true
@@ -288,7 +348,7 @@ export class Gi_yu extends plugin {
     // let time = await timerManager.getRemainingTime(e.user_id) 获取该用户的倒计时器
     // let timeSet = timerManager.createTimer(e.user_id, 120); timeSet.start(); 设置该用户的倒计时器
     let time = await timerManager.getRemainingTime(e.user_id)
-    if (!time || time == 0) {
+    if (!time || time <= 0) {
       if(await redis.get(`Fishing:${e.user_id}:shayu`)) {
         redis.del(`Fishing:${e.user_id}:shayu`)
       }
