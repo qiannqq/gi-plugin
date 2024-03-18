@@ -59,6 +59,13 @@ export class Gi_yu extends plugin {
       // let time = await timerManager.getRemainingTime(e.user_id) 获取该用户的倒计时器
       // let timeSet = timerManager.createTimer(e.user_id, 120); timeSet.start(); 设置该用户的倒计时器
       let time = await timerManager.getRemainingTime(e.user_id + 101)
+      let diaoyugantime = await timerManager.getRemainingTime(e.user_id)
+      if(diaoyugantime >= 1 && await redis.get(`Fishing:${e.user_id}:shayu`)) {
+        await e.reply(`你和你的鱼竿还在住院中，距离出院还有${diaoyugantime}s……\n你可以花费5鱼币提前出院【#加急治疗】`)
+        return true
+      } else {
+        await redis.del(`Fishing:${e.user_id}:shayu`)
+      }
       if(!time || time <= 0) {
         let UserFishFor = JSON.parse(await redis.get(`Fishing:${e.user_id}_fishfor`))
         if(!UserFishFor || UserFishFor.number <= 0) {
@@ -77,7 +84,7 @@ export class Gi_yu extends plugin {
         }
         await e.reply(`你开始了捕鱼`)
         await common.sleep(2000)
-        let msgList = [`捕鱼网捞上来了，你获得了：`]
+        let msgList = [segment.at(e.user_id) + `\n捕鱼网捞上来了，你获得了：`]
         let yuList = {}
         for (let i = 0; i < 7; i++) {
           let yu = await Fish.get_fish()
