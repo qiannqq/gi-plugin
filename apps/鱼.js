@@ -188,7 +188,7 @@ export class Gi_yu extends plugin {
       await e.reply(`你似乎没有鱼可以出售呢~`)
       return true
     }
-    await Fish.wr_money(e.user_id, number)
+    await Fish.wr_money(e.user_id, number, e.nickname)
     await e.reply(`出售成功，获得了${number}鱼币`)
     return true
   }
