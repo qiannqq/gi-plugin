@@ -25,7 +25,8 @@ export class example2 extends plugin {
             saveId: 'help',
             cwd: _path,
             genshinPath: `${_path}/plugins/genshin/resources/`,
-            helpData: config
+            helpData: config,
+            version: GiPluginVersion
        })
        e.reply(img)
     }

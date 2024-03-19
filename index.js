@@ -115,7 +115,7 @@ if(!fs.existsSync(`${_path}/plugins/Gi-plugin/resources/data`)) {
 if(!fs.existsSync(`${_path}/plugins/Gi-plugin/resources/data/dont_del`)) {
   init.plp()
 }
-
+// 计时器创建
 class CountdownTimer {
   constructor(duration) {
       this.duration = duration;
@@ -162,6 +162,10 @@ class TimerManager {
 let timerManager = new TimerManager();
 global.timerManager = timerManager
 
+// 全局声明Gi版本
+let GiPluginVersion = JSON.parse(fs.readFileSync(`./plugins/Gi-plugin/package.json`, `utf-8`))
+GiPluginVersion = GiPluginVersion.version
+global.GiPluginVersion = GiPluginVersion
 
 let ret = []
 
