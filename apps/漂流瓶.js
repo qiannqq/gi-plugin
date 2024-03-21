@@ -229,7 +229,6 @@ export class plp extends plugin {
         }
         let plp_id1 = plpid[Math.floor(Math.random() * plpid.length)]
         let plpcontent = JSON.parse(await redis.get(`Yunzai:giplugin_plp_${plp_id1.number}`))
-        // console.log(plp_id1.number)
         let msgList = []
         let msg
         msgList.push({
@@ -280,7 +279,11 @@ export class plp extends plugin {
                 })
             }
         }
-        msg = await Bot[Bot.uin].pickUser(e.self_id).makeForwardMsg(msgList)
+        try {
+            msg = await e.group.makeForwardMsg(msgList)
+        } catch {
+            msg = await e.friend.makeForwardMsg(msgList)
+        }
         let detail = msg.data?.meta?.detail
         detail.news = [{ text: `点击查看漂流瓶` }]
         await e.reply(msg)
@@ -293,8 +296,8 @@ export class plp extends plugin {
         return true;
     }
     async 捡漂流瓶API(e){
-        let plp = await fetch(`https://free.wqwlkj.cn/wqwlapi/drift.php?select=&type=json`)
         try {
+            var plp = await fetch(`https://free.wqwlkj.cn/wqwlapi/drift.php?select=&type=json`)
             plp = await plp.json()
         } catch {
             e.reply(`海里空空的，似乎没有漂流瓶呢`)
