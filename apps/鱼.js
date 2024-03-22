@@ -372,7 +372,7 @@ export class Gi_yu extends plugin {
       }
       let timeSet = timerManager.createTimer(e.user_id, config.fishcd)
       timeSet.start()
-      let yu = await Fish.get_fish()
+      let yu = await Fish.get_fish(e.user_id)
       await e.reply(`你开始了钓鱼……`)
       await common.sleep(2000)
       if (yu == `特殊事件`) {

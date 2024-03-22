@@ -6,11 +6,51 @@ let GiPath = `./plugins/Gi-plugin`
 class Fish {
     /**
      * 取鱼
+     * @param {number} uid 用户QQ号，用于创建独立的随机池
      * @returns 
      */
-    async get_fish() {
+    async get_fish(uid) {
         let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑", "特殊事件"]
-        return fishArray[Math.floor(Math.random() * fishArray.length)]
+        if(!uid) return fishArray[Math.floor(Math.random() * fishArray.length)]
+        let user_random_pool = []
+        try {
+            user_random_pool = JSON.parse(await redis.get(`giplugin_urp:${uid}`))
+            if(!user_random_pool) {
+                user_random_pool = []
+            }
+        } catch {}
+        if(user_random_pool.length <= 0) {
+            user_random_pool = fishArray
+            for (let i = user_random_pool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [user_random_pool[i], user_random_pool[j]] = [user_random_pool[j], user_random_pool[i]];
+            }
+            var target_fish = user_random_pool[0]
+            let urp = []
+            for (let item of user_random_pool) {
+                if(item != user_random_pool[0]) urp.push(item)
+            }
+            // user_random_pool 初始的用户随机池数组
+            // target_fish return
+            // urp 去除target_fish的随机池数组
+            await redis.set(`giplugin_urp:${uid}`, JSON.stringify(urp))
+            return target_fish
+        } else {
+            var target_fish = user_random_pool[0]
+            let urp = []
+            for (let item of user_random_pool) {
+                if(item != user_random_pool[0]) urp.push(item)
+            }
+            // user_random_pool 初始的用户随机池数组
+            // target_fish return
+            // urp 去除target_fish的随机池数组
+            if(urp.length <= 0) {
+                await redis.del(`giplugin_urp:${uid}`)
+            } else {
+                await redis.set(`giplugin_urp:${uid}`, JSON.stringify(urp))
+            }
+            return target_fish
+        }
     }
     async fishing_text() {
         let { config } = getconfig('config', 'fishText')
