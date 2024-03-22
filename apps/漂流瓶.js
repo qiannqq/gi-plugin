@@ -125,6 +125,10 @@ export class plp extends plugin {
         let date_time2 = await redis.get(`giplugin_db:${e.user_id}`);
         date_time2 = JSON.parse(date_time2);
         let { config } = getconfig(`config`, `config`)
+        if(config.Rplp == 0) {
+            await e.reply(`港口管理员未开放漂流瓶功能哦~`)
+            return true
+        }
         console.log(date_time2)
         if(date_time2 && date_time2.number >= config.Rplp && date_time2.date == date_time) {
             await e.reply(`你今天已经扔过${date_time2.number}次漂流瓶，每天只能扔${config.Rplp}次哦`)
@@ -221,6 +225,10 @@ export class plp extends plugin {
     async 捡漂流瓶(e){
         let userPDBnumber = JSON.parse(await redis.get(`giplugin_pdb:${e.user_id}`))
         let { config } = getconfig(`config`, `config`)
+        if(config.Jplp == 0) {
+            await e.reply(`港口管理员未开放漂流瓶功能哦~`)
+            return true
+        }
         let date_time = await Gimodel.date_time()
         let plpid;
         try {
