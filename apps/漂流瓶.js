@@ -130,7 +130,7 @@ export class plp extends plugin {
             return true
         }
         console.log(date_time2)
-        if(date_time2 && date_time2.number >= config.Rplp && date_time2.date == date_time) {
+        if(date_time2 && date_time2.number >= config.Rplp && date_time2.date == date_time && !e.isMaster) {
             await e.reply(`你今天已经扔过${date_time2.number}次漂流瓶，每天只能扔${config.Rplp}次哦`)
             return true
         } else {
@@ -245,7 +245,7 @@ export class plp extends plugin {
             return true;
         }
         console.log(userPDBnumber)
-        if(userPDBnumber && userPDBnumber.number >= config.Jplp && userPDBnumber.date == date_time) {
+        if(userPDBnumber && userPDBnumber.number >= config.Jplp && userPDBnumber.date == date_time && !e.isMaster) {
             await e.reply(`你今天已经捡过${userPDBnumber.number}次漂流瓶，每天只能捡${config.Jplp}次哦`)
             return true
         } else {
