@@ -122,29 +122,24 @@ export class plp extends plugin {
         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
         const day = currentDate.getDate().toString().padStart(2, '0');
         const date_time = `${year}-${month}-${day}`;
-        let date_time2 = await redis.get(`Yunzai:giplugin-${e.user_id}_plp`);date_time2 = JSON.parse(date_time2);
-        let times_;
+        let date_time2 = await redis.get(`giplugin_db:${e.user_id}`);
+        date_time2 = JSON.parse(date_time2);
         let { config } = getconfig(`config`, `config`)
-        if(date_time2){
-            const parts = date_time2.split('；');
-            const date_time3 = parts[0].substring(1);
-            times_ = parseInt(parts[1], 10);
-            logger.mark(times_)
-            if (!e.isMaster) {
-                if (date_time === date_time3) {
-                    if(times_ >= config.Rplp) {
-                        e.reply(`你今天已经扔过${times_}次漂流瓶，每天只能扔${config.Rplp}次哦~`)
-                        return true;
-                    }
-                } else {
-                    times_ = `0`;
-                }
-            }
+        console.log(date_time2)
+        if(date_time2 && date_time2.number >= config.Rplp && date_time2.date == date_time) {
+            await e.reply(`你今天已经扔过${date_time2.number}次漂流瓶，每天只能扔${config.Rplp}次哦`)
+            return true
         } else {
-            times_ = `0`;
+            if(!date_time2 || date_time2.date != date_time) {
+                date_time2 = {
+                    date: date_time,
+                    number: 0
+                }
+                await redis.set(`giplugin_db:${e.user_id}`, JSON.stringify(date_time2))
+            }
+            console.log(JSON.stringify(date_time2))
         }
-        e.reply(`发送你想要扔漂流瓶的内容(仅支持文字和图片)\n发送[0]取消扔漂流瓶`)
-        redis.set(`Yunzai:Giplp_${e.user_id}_times`, JSON.stringify(times_))
+        await e.reply(`发送你想要扔漂流瓶的内容(仅支持文字和图片)\n发送[0]取消扔漂流瓶`)
         this.setContext(`扔漂流瓶1`)
     }
     async 扔漂流瓶1(e){
@@ -152,6 +147,18 @@ export class plp extends plugin {
         if(this.e.msg == `0`|| this.e.msg == `[0]`){
             e.reply(`已取消扔漂流瓶`)
             return true;
+        } else {
+            let userDBnumber = JSON.parse(await redis.get(`giplugin_db:${e.user_id}`))
+            if(userDBnumber) {
+                userDBnumber.number++
+                await redis.set(`giplugin_db:${e.user_id}`, JSON.stringify(userDBnumber))
+            } else {
+                userDBnumber = {
+                    date: await Gimodel.date_time(),
+                    number: 1
+                }
+                await redis.set(`giplugin_db:${e.user_id}`, JSON.stringify(userDBnumber))
+            }
         }
         let times_ = await redis.get(`Yunzai:Giplp_${e.user_id}_times`)
         times_ = JSON.parse(times_)
@@ -212,13 +219,15 @@ export class plp extends plugin {
         return true;
     }
     async 捡漂流瓶(e){
+        let userPDBnumber = JSON.parse(await redis.get(`giplugin_pdb:${e.user_id}`))
+        let { config } = getconfig(`config`, `config`)
+        let date_time = await Gimodel.date_time()
         let plpid;
         try {
             plpid = JSON.parse(fs_.readFileSync(GiPath + `/data/dbid.json`, `utf-8`))
         } catch {
             plpid = []
         }
-        let { config } = getconfig(`config`, `config`)
         if(plpid.length === 0){
             if(config.plpapi) {
                 this.捡漂流瓶API(e)
@@ -226,6 +235,21 @@ export class plp extends plugin {
             }
             e.reply(`海里空空的，没有漂流瓶呢~`)
             return true;
+        }
+        console.log(userPDBnumber)
+        if(userPDBnumber && userPDBnumber.number >= config.Jplp && userPDBnumber.date == date_time) {
+            await e.reply(`你今天已经捡过${userPDBnumber.number}次漂流瓶，每天只能捡${config.Jplp}次哦`)
+            return true
+        } else {
+            if(!userPDBnumber) {
+                userPDBnumber = {
+                    date: date_time,
+                    number: 1
+                }
+            } else {
+                userPDBnumber.number++
+            }
+            await redis.set(`giplugin_pdb:${e.user_id}`, JSON.stringify(userPDBnumber))
         }
         let plp_id1 = plpid[Math.floor(Math.random() * plpid.length)]
         let plpcontent = JSON.parse(await redis.get(`Yunzai:giplugin_plp_${plp_id1.number}`))
@@ -296,6 +320,23 @@ export class plp extends plugin {
         return true;
     }
     async 捡漂流瓶API(e){
+        let userPDBnumber = JSON.parse(await redis.get(`giplugin_pdb:${e.user_id}`))
+        let { config } = getconfig(`config`, `config`)
+        let date_time = Gimodel.date_time()
+        if(userPDBnumber && userPDBnumber.number >= config.Jplp && userPDBnumber.date == date_time) {
+            await e.reply(`你今天已经捡过${userPDBnumber.number}次漂流瓶，每天只能捡${config.Jplp}次哦`)
+            return true
+        } else {
+            if(!userPDBnumber) {
+                userPDBnumber = {
+                    date: date_time,
+                    number: 1
+                }
+            } else {
+                userPDBnumber.number++
+            }
+            await redis.set(`giplugin_pdb:${e.user_id}`, JSON.stringify(userPDBnumber))
+        }
         try {
             var plp = await fetch(`https://free.wqwlkj.cn/wqwlapi/drift.php?select=&type=json`)
             plp = await plp.json()
