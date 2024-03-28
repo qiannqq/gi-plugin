@@ -37,6 +37,14 @@ class Gimodel {
     });**/
   }
   /**
+   * 获取配置文件
+   * @param {*} file 
+   * @param {*} name 
+   */
+  async get_cfg(file, name) {
+    return await yaml.parse(fs_.readFileSync(`./plugins/Gi-plugin/${file}/${name}.yaml`, `utf-8`))
+  }
+  /**
    * 获取并解析文件内容
    * @param {*} dc 包含type和filePath
    * @param {*} e  e

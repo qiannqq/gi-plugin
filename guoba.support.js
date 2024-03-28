@@ -126,11 +126,11 @@ export function supportGuoba() {
           }
         }
       ],
-      getConfigData() {
+      async getConfigData() {
         let { config } = getconfig(`config`, `config`)
         return config;
       },
-      setConfigData(data, { Result }) {
+      async setConfigData(data, { Result }) {
         // 1.读取现有配置文件
         const configFilePath = path.join(__dirname, 'config', 'config.yaml');
         let config = {};
