@@ -3,6 +3,7 @@ import Fish from '../model/yu.js'
 import getconfig from '../model/cfg.js'
 import Gimodel from '../model/getFile.js'
 import fs from 'fs'
+import { User, segment } from 'icqq'
 
 export class Gi_yu extends plugin {
   constructor() {
@@ -51,9 +52,43 @@ export class Gi_yu extends plugin {
         {
           reg: '^(#|/)?(开始)?捕(捞|鱼|渔)$',
           fnc: 'fish_for'
+        },{
+          reg: '^(#|/)?我的(鱼竿|🎣)$',
+          fnc: 'my_fishing_info'
         }
       ]
     })
+  }
+  async my_fishing_info(e) {
+      let userName;
+      try {
+        userName = JSON.parse(fs.readFileSync(`./plugins/Gi-plugin/data/fishing/PlayerListMoney.json`))
+      } catch {}
+      if(userName) {
+        for (let item of userName) {
+          if(item.uid == e.user_id && item.uname) userName = item.uname
+        }
+      }
+      let userMoney = await Fish.get_usermoneyInfo(e.user_id)
+      let userBuff
+      try {
+        userBuff = JSON.parse(await redis.get(`Fishing:${e.user_id}_buff`))
+        userBuff = userBuff.number
+      } catch {}
+      let UserFishFor
+      try {
+        UserFishFor = JSON.parse(await redis.get(`Fishing:${e.user_id}_fishfor`))
+        UserFishFor = UserFishFor.number
+      } catch {}
+      let msg = [
+        segment.at(e.user_id),
+        `\n钓鱼昵称:${userName || `不知名的钓鱼佬`}`,
+        `\n鱼币数量:${userMoney}`,
+        `\n润滑油数量:${userBuff || 0}`,
+        `\n捕鱼网数量:${UserFishFor || 0}`
+      ]
+      await e.reply(msg)
+      return true
   }
   async fish_for(e) {
       // let time = await timerManager.getRemainingTime(e.user_id) 获取该用户的倒计时器
