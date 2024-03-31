@@ -59,32 +59,41 @@ export class Gi_yu extends plugin {
     })
   }
   async my_fishing_info(e) {
-      let userName;
+      let uid = e.user_id
+      if(e.at) uid = e.at
+      let userInfo;
       try {
-        userName = JSON.parse(fs.readFileSync(`./plugins/Gi-plugin/data/fishing/PlayerListMoney.json`))
+        userInfo = JSON.parse(fs.readFileSync(`./plugins/Gi-plugin/data/fishing/PlayerListMoney.json`))
       } catch {}
-      if(userName) {
-        for (let item of userName) {
-          if(item.uid == e.user_id && item.uname) userName = item.uname
+      let userName
+      if(userInfo) {
+        for (let item of userInfo) {
+          if(item.uid == uid && item.uname) userName = item.uname
         }
       }
-      let userMoney = await Fish.get_usermoneyInfo(e.user_id)
+      let userMoney = await Fish.get_usermoneyInfo(uid)
       let userBuff
       try {
-        userBuff = JSON.parse(await redis.get(`Fishing:${e.user_id}_buff`))
+        userBuff = JSON.parse(await redis.get(`Fishing:${uid}_buff`))
         userBuff = userBuff.number
       } catch {}
       let UserFishFor
       try {
-        UserFishFor = JSON.parse(await redis.get(`Fishing:${e.user_id}_fishfor`))
+        UserFishFor = JSON.parse(await redis.get(`Fishing:${uid}_fishfor`))
         UserFishFor = UserFishFor.number
       } catch {}
+      let FishingCD = await timerManager.getRemainingTime(uid)
+      let FishforCD = await timerManager.getRemainingTime(uid + 101)
+      if(FishingCD < 0) FishingCD = 0
+      if(FishforCD < 0) FishforCD = 0
       let msg = [
-        segment.at(e.user_id),
+        segment.at(uid),
         `\n钓鱼昵称:${userName || `不知名的钓鱼佬`}`,
         `\n鱼币数量:${userMoney}`,
         `\n润滑油数量:${userBuff || 0}`,
-        `\n捕鱼网数量:${UserFishFor || 0}`
+        `\n捕鱼网数量:${UserFishFor || 0}`,
+        `\n钓鱼竿冷却:${await timerManager.getRemainingTime(uid) || 0}s`,
+        `\n捕鱼网冷却:${await timerManager.getRemainingTime(uid + 101) || 0}s`
       ]
       await e.reply(msg)
       return true
