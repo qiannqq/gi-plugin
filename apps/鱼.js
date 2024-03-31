@@ -3,7 +3,6 @@ import Fish from '../model/yu.js'
 import getconfig from '../model/cfg.js'
 import Gimodel from '../model/getFile.js'
 import fs from 'fs'
-import { User, segment } from 'icqq'
 
 export class Gi_yu extends plugin {
   constructor() {
