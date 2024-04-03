@@ -3,7 +3,6 @@ import Gimodel from '../model/getFile.js';
 import getconfig from '../model/cfg.js';
 import { promises as fs } from 'fs';
 import fs_ from 'fs'
-import post from '../model/post.js';
 import fetch from 'node-fetch';
 
 const filePath = `plugins/Gi-plugin/resources/plp.txt`
