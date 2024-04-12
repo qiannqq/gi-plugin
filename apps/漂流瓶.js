@@ -266,6 +266,7 @@ export class plp extends plugin {
             user_id: Bot.uin,
             message: `漂流瓶ID：${plp_id1.number}`
         })
+        let day = await Gimodel.date_calculation(plp_id1.date)
         if(plpcontent.plp_type == `text`){
             msgList.push({
                 nickname: plpcontent.plp_nickname,
@@ -291,10 +292,15 @@ export class plp extends plugin {
         } catch {
             comment = []
         }
-        if(config.dbcomment){
+        if(config.dbcomment && day && day < 3){
             msgList.push({
                 user_id: Bot.uin,
                 message: `漂流瓶的评论方法：#评论漂流瓶${plp_id1.number}`
+            })
+        } else {
+            msgList.push({
+                user_id: Bot.uin,
+                message: '漂流瓶已过期销毁'
             })
         }
         if(comment && comment.length > 0) {
@@ -318,8 +324,6 @@ export class plp extends plugin {
         let detail = msg.data?.meta?.detail
         detail.news = [{ text: `点击查看漂流瓶` }]
         await e.reply(msg)
-        let day = await Gimodel.date_calculation(plp_id1.date)
-        
         if(!day || day > 3 || !config.dbcomment) {
             await Gimodel.deljson(plp_id1, GiPath + `/data/dbid.json`)
             await redis.del(`Yunzai:giplugin_plp_${plp_id1.number}`)
