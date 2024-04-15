@@ -51,7 +51,8 @@ export class Gi_yu extends plugin {
         {
           reg: '^(#|/)?(开始)?捕(捞|鱼|渔)$',
           fnc: 'fish_for'
-        },{
+        },
+        {
           reg: '^(#|/)?我的(鱼竿|🎣)$',
           fnc: 'my_fishing_info'
         }
@@ -179,6 +180,10 @@ export class Gi_yu extends plugin {
         await e.reply(`啊嘞，小卖铺好像没有找到你要买的东西呢`)
         return true
       }
+      if(await Fish.get_usermoneyInfo(e.user_id) < product_info.price) {
+        await e.reply([segment.at(e.user_id), `\n小卖铺疑惑的看向你兜里的${await Fish.get_usermoneyInfo(e.user_id)}个鱼币，你尴尬的笑了笑。`])
+        return true
+      }
       switch(product_info.name) {
         case('钓鱼竿润滑油'):
           let userBuff = JSON.parse(await redis.get(`Fishing:${e.user_id}_buff`))
@@ -205,10 +210,6 @@ export class Gi_yu extends plugin {
           }
           await redis.set(`Fishing:${e.user_id}_fishfor`, JSON.stringify(FishforData))
           break;
-      }
-      if(await Fish.get_usermoneyInfo(e.user_id) < product_info.price) {
-        await e.reply([segment.at(e.user_id), `\n小卖铺疑惑的看向你兜里的${await Fish.get_usermoneyInfo(e.user_id)}个鱼币，你尴尬的笑了笑。`])
-        return true
       }
       await Fish.deduct_money(e.user_id, product_info.price)
       await e.reply(`你花费了${product_info.price}鱼币购买了${product_info.name}~`)
