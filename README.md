@@ -63,12 +63,12 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 
 - [ ] 增加更多互动娱乐相关内容
 - [x] 增加帮助图片
-- [ ] 打断+1和跟随+1(没跑路，在摸鱼……
+- [ ] 打断+1和跟随+1
 - [x] 支持漂流瓶图片内容
 - [x] 增加群历史文献功能(记录群聊值得铭记的历史)
 - [ ] 漂流瓶全云崽互通(互动插件) 暂鸽...
 - [x] 重构漂流瓶数据文件的相关操作
-- [x] 让钓鱼水桶不再是摆设(正在爆肝钓鱼功能
+- [x] 让钓鱼水桶不再是摆设(摸鱼ing...
 - [x] 咕咕咕
 
 
@@ -94,6 +94,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 | [@Zyy955](https://gitee.com/Zyy955) | fix：图片渲染BUG |
 | [@白狐](https://gitee.com/baihu433) | fix：锅巴引入链接错误 |
 | [@酸菜咸鱼](https://gitee.com/suancaixianyu) | 提供部分技术支持 |
+| [@wxq-597](https://gitee.com/wxq-597) | fix：文案错误 |
 | @安分 | 特别贡献 |
 | [@山水](https://gitee.com/dengshanshui) | 特别赞助 |
 
