@@ -106,6 +106,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 | 休比 |
 | 枭 |
 | 来来 |
+| 慕晚. |
 
 
 #### 参与贡献
