@@ -128,6 +128,7 @@ export class Gi_yu extends plugin {
         }
         await e.reply(`你开始了捕鱼`)
         await common.sleep(2000)
+        e.recall()
         let msgList = [segment.at(e.user_id), `\n捕鱼网捞上来了，你获得了：`]
         let yuList = {}
         for (let i = 0; i < 7; i++) {
@@ -209,6 +210,8 @@ export class Gi_yu extends plugin {
             number: number + 1
           }
           await redis.set(`Fishing:${e.user_id}_fishfor`, JSON.stringify(FishforData))
+          break;
+        case('捕鱼船票'):
           break;
       }
       await Fish.deduct_money(e.user_id, product_info.price)
@@ -419,6 +422,7 @@ export class Gi_yu extends plugin {
       let yu = await Fish.get_fish(e.user_id)
       await e.reply(`你开始了钓鱼……`)
       await common.sleep(2000)
+      e.recall()
       if (yu == `特殊事件`) {
         let special_event_list = [`鲨鱼`, `空军`]
         let special_event = special_event_list[Math.floor(Math.random() * special_event_list.length)]

@@ -5,29 +5,6 @@ import { dirname } from 'path';
 import yaml from 'yaml'
 import init from './model/init.js';
 
-////////////////////////////////////////////////////////////////////
-//                          _ooOoo_                               //
-//                         o8888888o                              //
-//                         88" . "88                              //
-//                         (| ^_^ |)                              //
-//                         O\  =  /O                              //
-//                      ____/`---'\____                           //
-//                    .'  \\|     |//  `.                         //
-//                   /  \\|||  :  |||//  \                        //
-//                  /  _||||| -:- |||||-  \                       //
-//                  |   | \\\  -  /// |   |                       //
-//                  | \_|  ''\---/''  |   |                       //
-//                  \  .-\__  `-`  ___/-. /                       //
-//                ___`. .'  /--.--\  `. . ___                     //
-//              ."" '<  `.___\_<|>_/___.'  >'"".                  //
-//            | | :  `- \`.;`\ _ /`;.`/ - ` : | |                 //
-//            \  \ `-.   \_ __\ /__ _/   .-` /  /                 //
-//      ========`-.____`-.___\_____/___.-`____.-'========         //
-//                           `=---='                              //
-//      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        //
-//         佛祖保佑       永无BUG     永不修改                     //
-////////////////////////////////////////////////////////////////////
-
 if (!global.segment) {
   global.segment = (await import("oicq")).segment
 }
@@ -87,26 +64,6 @@ if(!fs.existsSync(`./plugins/Gi-plugin/config/fishText.yaml`)) {
   fs.writeFileSync(`./plugins/Gi-plugin/config/fishText.yaml`, yaml.stringify({ fishText: [...new Set(config.concat(defcfg))], nothingText: [...new Set(configNT.concat(defcfgNT))] }), `utf-8`)
 }
 
-//旧版漂流瓶符号替换为新版漂流瓶符号
-// let newplp = await redis.get(`Yunzai:giplugin-newplp`);
-// newplp = JSON.parse(newplp);
-// if (newplp != `ok`) {
-//   fs.readFile(`${_path}/plugins/Gi-plugin/resources/plp.txt`, 'utf8', (err, data) => {
-//     if (err) {
-//       logger.error("漂流瓶文件初始化出错：", err);
-//       return;
-//     }
-
-//     const modifiedData = data.replace(/-/g, '@');
-//     fs.writeFile(`${_path}/plugins/Gi-plugin/resources/plp.txt`, modifiedData, 'utf8', (err) => {
-//       if (err) {
-//         logger.error("漂流瓶文件初始化出错：", err);
-//         return;
-//       }
-//     });
-//   });
-//   redis.set(`Yunzai:giplugin-newplp`, JSON.stringify(`ok`));
-// }
 //创建数据文件夹
 if(!fs.existsSync(`${_path}/plugins/Gi-plugin/resources/data`)) {
   fs.mkdirSync(`${_path}/plugins/Gi-plugin/resources/data`)
