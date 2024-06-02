@@ -7,9 +7,15 @@ class Fish {
     /**
      * 取鱼
      * @param {number} uid 用户QQ号，用于创建独立的随机池
+     * @param {string} waters 水域
      * @returns 
      */
-    async get_fish(uid) {
+    async get_fish(uid, waters = 'reservoir') {
+        if(waters === 'reservoir') return await this.get_fish_reservoir(uid)
+        if(waters === 'sea') return
+        return
+    }
+    async get_fish_reservoir(uid) {
         let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑", "特殊事件"]
         if(!uid) return fishArray[Math.floor(Math.random() * fishArray.length)]
         let user_random_pool = []
