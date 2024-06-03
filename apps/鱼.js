@@ -126,9 +126,13 @@ export class Gi_yu extends plugin {
         await redis.del(`Fishing:${e.user_id}:shayu`)
       }
       if(!time || time <= 0) {
+        let = key = `bucket:${e.user_id}`
+        if(status[key]) return true
+        status[key] = true
         let UserFishFor = JSON.parse(await redis.get(`Fishing:${e.user_id}_fishfor`))
         if(!UserFishFor || UserFishFor.number <= 0) {
           await e.reply(`你似乎没有捕鱼网呢，去【#小卖铺】购买捕鱼网再来使用吧~`)
+          delete status[key]
           return true
         }
         let { config } = getconfig(`config`, `config`)
@@ -150,6 +154,7 @@ export class Gi_yu extends plugin {
           let yu = await Fish.get_fish()
           if(yu == `特殊事件`) continue
           await Fish.wr_bucket(e.user_id, yu)
+          delete status[key]
           if(yuList[yu]) {
             yuList[yu]++
           } else {
@@ -452,6 +457,10 @@ export class Gi_yu extends plugin {
     // let timeSet = timerManager.createTimer(e.user_id, 120); timeSet.start(); 设置该用户的倒计时器
     let time = await timerManager.getRemainingTime(e.user_id)
     if (!time || time <= 0) {
+      let = key = `bucket:${e.user_id}`
+      if(status[key]) return true
+      status[key] = true
+
       if(await redis.get(`Fishing:${e.user_id}:shayu`)) {
         redis.del(`Fishing:${e.user_id}:shayu`)
       }
@@ -483,12 +492,14 @@ export class Gi_yu extends plugin {
             this.se空军(e)
             break
         }
+        delete status[key]
         return true
       }
       let yu_text = await Fish.fishing_text()
       yu_text = yu_text.replace(/【鱼】/g, yu)
       yu_text = yu_text.replace(/\n$/g, '')
       await e.reply([segment.at(e.user_id), '\n' + yu_text])
+      delete status[key]
       await Fish.wr_bucket(e.user_id, yu)
       return true
     } else {
