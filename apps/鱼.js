@@ -126,7 +126,7 @@ export class Gi_yu extends plugin {
         await redis.del(`Fishing:${e.user_id}:shayu`)
       }
       if(!time || time <= 0) {
-        let = key = `bucket:${e.user_id}`
+        let key = `bucket:${e.user_id}`
         if(status[key]) return true
         status[key] = true
         let UserFishFor = JSON.parse(await redis.get(`Fishing:${e.user_id}_fishfor`))
@@ -457,7 +457,7 @@ export class Gi_yu extends plugin {
     // let timeSet = timerManager.createTimer(e.user_id, 120); timeSet.start(); 设置该用户的倒计时器
     let time = await timerManager.getRemainingTime(e.user_id)
     if (!time || time <= 0) {
-      let = key = `bucket:${e.user_id}`
+      let key = `bucket:${e.user_id}`
       if(status[key]) return true
       status[key] = true
 
