@@ -4,6 +4,8 @@ import getconfig from '../model/cfg.js'
 import Gimodel from '../model/getFile.js'
 import fs from 'fs'
 
+let status = {}
+
 export class Gi_yu extends plugin {
   constructor() {
     super({
@@ -55,11 +57,23 @@ export class Gi_yu extends plugin {
         {
           reg: '^(#|/)?我的(鱼竿|🎣)$',
           fnc: 'my_fishing_info'
-        }
+        },
+        // {
+        //   reg: '^(#|/)?出海钓鱼(.*)$',
+        //   fnc: 'fishing_at_sea'
+        // }
       ]
     })
   }
+  async fishing_at_sea(e) {
+    
+  }
   async my_fishing_info(e) {
+      // 写入状态，以免造成并发问题
+      let key = `PlayerListMoney:${e.user_id}`
+      if(status[key] || status['PlayerListMoney']) return true
+      status[key] = true
+
       let uid = e.user_id
       if(e.at) uid = e.at
       let userInfo;
@@ -97,6 +111,7 @@ export class Gi_yu extends plugin {
         `\n捕鱼网冷却:${await timerManager.getRemainingTime(uid + 101) || 0}s`
       ]
       await e.reply(msg)
+      delete status[key]
       return true
   }
   async fish_for(e) {
@@ -172,6 +187,9 @@ export class Gi_yu extends plugin {
       await e.reply(msg)
       return true
     } else {
+      let key = 'PlayerListMoney'
+      if(status[key]) return true
+      status[key] = true
       let product_info;
       command[3] = command[3].replace(/购买/g, ``)
       for (let item of config.shop) {
@@ -179,10 +197,12 @@ export class Gi_yu extends plugin {
       }
       if(!product_info) {
         await e.reply(`啊嘞，小卖铺好像没有找到你要买的东西呢`)
+        delete status[key]
         return true
       }
       if(await Fish.get_usermoneyInfo(e.user_id) < product_info.price) {
         await e.reply([segment.at(e.user_id), `\n小卖铺疑惑的看向你兜里的${await Fish.get_usermoneyInfo(e.user_id)}个鱼币，你尴尬的笑了笑。`])
+        delete status[key]
         return true
       }
       switch(product_info.name) {
@@ -215,14 +235,19 @@ export class Gi_yu extends plugin {
           break;
       }
       await Fish.deduct_money(e.user_id, product_info.price)
+      delete status[key]
       await e.reply(`你花费了${product_info.price}鱼币购买了${product_info.name}~`)
     }
     return true
   }
   async sell_all_fish(e) {
+    let key = 'PlayerListMoney'
+    if(status[key]) return true
+    status[key] = true
     let userBucket = await Fish.getinfo_bucket(e.user_id)
     if(!userBucket || userBucket.length <= 0) {
       await e.reply(`你似乎没有鱼可以出售呢~`)
+      delete status[key]
       return true
     }
     let number = 0
@@ -233,13 +258,17 @@ export class Gi_yu extends plugin {
     }
     if(number <= 0) {
       await e.reply(`你似乎没有鱼可以出售呢~`)
+      delete status[key]
       return true
     }
     await Fish.wr_money(e.user_id, number, e.nickname)
+    delete status[key]
     await e.reply(`出售成功，获得了${number}鱼币`)
     return true
   }
   async change_nickname(e){
+    //读取状态，以免造成并发问题
+    if(status[`PlayerListMoney:${e.user_id}`] || status[`PlayerListMoney`]) return true
     if(!await Fish.get_usermoneyInfo(e.user_id, true)) {
       await e.reply(`你还没有出售过鱼，请先出售一次鱼在尝试修改昵称吧~`)
       return true
@@ -253,13 +282,19 @@ export class Gi_yu extends plugin {
     this.setContext(`change_nickname_`)
   }
   async change_nickname_(e) {
+    //写入状态，以免造成并发问题
+    let key = 'PlayerListMoney'
+    status[key] = true
+
     this.finish(`change_nickname_`)
     if(this.e.msg != `#确认支付`) {
       e.reply(`你取消了支付`)
+      delete status[key]
       return true
     }
     if(await Fish.get_usermoneyInfo(e.user_id) < 5) {
       await e.reply(`啊嘞，你的钱似乎不够支付改名费呢~`)
+      delete status[key]
       return true
     }
     await Fish.deduct_money(e.user_id, 30)
@@ -279,10 +314,12 @@ export class Gi_yu extends plugin {
     }
     alluserInfo.push(userInfo)
     fs.writeFileSync(`./plugins/Gi-plugin/data/fishing/PlayerListMoney.json`, JSON.stringify(alluserInfo, null, 3), `utf-8`)
+    delete status[key]
     await e.reply(`你的🎣昵称已修改为【${nickname}】`)
     return true
   }
   async 加急治疗(e) {
+    if(status[`PlayerListMoney:${e.user_id}`] || status[`PlayerListMoney`]) return true
     let time = await timerManager.getRemainingTime(e.user_id)
     console.log(time)
     if(!time || time == 0 ||!await redis.get(`Fishing:${e.user_id}:shayu`)) {
@@ -293,6 +330,8 @@ export class Gi_yu extends plugin {
     this.setContext('加急治疗_')
   }
   async 加急治疗_(e) {
+    let key = 'PlayerListMoney'
+    status[key] = true
     this.finish(`加急治疗_`)
     if(this.e.msg == `#确认支付`) {
       if(await Fish.get_usermoneyInfo(e.user_id) < 5) {
@@ -304,9 +343,11 @@ export class Gi_yu extends plugin {
       await redis.del(`Fishing:${e.user_id}:shayu`)
       await e.reply([segment.at(e.user_id), `\n在医生的全力以赴下，你健康的出了院~`])
       await Fish.deduct_money(e.user_id, 5)
+      delete status[key]
       return true
     } else {
       await e.reply(`你取消了支付。`)
+      delete status[key]
     }
   }
   async wealth_list (e) {
@@ -335,16 +376,21 @@ export class Gi_yu extends plugin {
     await e.reply(`你的兜里还剩${await Fish.get_usermoneyInfo(e.user_id)}个鱼币~`)
   }
   async 出售(e) {
+    let key = 'PlayerListMoney'
+    if(status[key]) return true
+    status[key] = true
     let { config } = getconfig(`config`, `config`)
     let playerBucket = await Fish.getinfo_bucket(e.user_id)
     if(playerBucket.length == 0) {
       await e.reply(`你没有鱼可以出售哦~`)
+      delete status[key]
       return true
     }
     let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑"]
     let msg = e.msg.match(/^(#|\/)?出售(.*)\*(.*)?$/)
     if(!fishArray.includes(msg[2])) {
       await e.reply(`啊嘞，生物百科好像没有你说的鱼呢~`)
+      delete status[key]
       return true
     }
     let fish_sale = []
@@ -355,11 +401,13 @@ export class Gi_yu extends plugin {
     }
     if(fish_sale[0].number <= 0 || fish_sale.length == 0) {
       e.reply(`啊嘞，你好像没有${msg[2]}呢~`)
+      delete status[key]
       return true
     }
     if(msg[3] && msg[3] > 1) {
       if(fish_sale[0].number < msg[3]) {
         e.reply(`啊嘞，数量不够哎？不要虚报数量哦~`)
+        delete status[key]
         return true
       }
       let price;
@@ -379,6 +427,7 @@ export class Gi_yu extends plugin {
       await Fish.del_fish(e.user_id, msg[2])
       await e.reply(`出售成功，获得了${price}鱼币`)
     }
+    delete status[key]
   }
   async user_bucket(e) {
     let playerBucket = await Fish.getinfo_bucket(e.user_id)
