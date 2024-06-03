@@ -145,7 +145,7 @@ export class Gi_yu extends plugin {
         } else {
           await redis.set(`Fishing:${e.user_id}_fishfor`, JSON.stringify(UserFishFor))
         }
-        await e.reply(`你开始了捕鱼`)
+        await e.reply(`你开始了捕鱼……`, false, { recallMsg: 5 })
         await common.sleep(2000)
         e.recall()
         let msgList = [segment.at(e.user_id), `\n捕鱼网捞上来了，你获得了：`]
@@ -478,9 +478,9 @@ export class Gi_yu extends plugin {
       let timeSet = timerManager.createTimer(e.user_id, config.fishcd)
       timeSet.start()
       let yu = await Fish.get_fish(e.user_id)
-      await e.reply(`你开始了钓鱼……`)
+      await e.reply(`你开始了钓鱼……`, false, { recallMsg: 5 })
       await common.sleep(2000)
-      e.recall()
+      
       if (yu == `特殊事件`) {
         let special_event_list = [`鲨鱼`, `空军`]
         let special_event = special_event_list[Math.floor(Math.random() * special_event_list.length)]
