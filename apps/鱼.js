@@ -381,57 +381,62 @@ export class Gi_yu extends plugin {
   }
   async 出售(e) {
     let key = 'PlayerListMoney'
-    if(status[key]) return true
+    if (status[key]) return true
     status[key] = true
-    let { config } = getconfig(`config`, `config`)
-    let playerBucket = await Fish.getinfo_bucket(e.user_id)
-    if(playerBucket.length == 0) {
-      await e.reply(`你没有鱼可以出售哦~`)
-      delete status[key]
-      return true
-    }
-    let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑"]
-    let msg = e.msg.match(/^(#|\/)?出售(.*)\*(.*)?$/)
-    if(!fishArray.includes(msg[2])) {
-      await e.reply(`啊嘞，生物百科好像没有你说的鱼呢~`)
-      delete status[key]
-      return true
-    }
-    let fish_sale = []
-    for (let item of playerBucket) {
-      if(item.fishType == msg[2]) {
-        fish_sale.push(item)
-      }
-    }
-    if(fish_sale[0].number <= 0 || fish_sale.length == 0) {
-      e.reply(`啊嘞，你好像没有${msg[2]}呢~`)
-      delete status[key]
-      return true
-    }
-    if(msg[3] && msg[3] > 1) {
-      if(fish_sale[0].number < msg[3]) {
-        e.reply(`啊嘞，数量不够哎？不要虚报数量哦~`)
+    try {
+      let { config } = getconfig(`config`, `config`)
+      let playerBucket = await Fish.getinfo_bucket(e.user_id)
+      if (playerBucket.length == 0) {
+        await e.reply(`你没有鱼可以出售哦~`)
         delete status[key]
         return true
       }
-      let price;
-      for(let item of config.fish_sale) {
-        if(item.type == msg[2]) price = item.price
+      let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑"]
+      let msg = e.msg.match(/^(#|\/)?出售(.*)\*(.*)?$/)
+      if (!fishArray.includes(msg[2])) {
+        await e.reply(`啊嘞，生物百科好像没有你说的鱼呢~`)
+        delete status[key]
+        return true
       }
-      price = price * msg[3]
-      await Fish.wr_money(e.user_id, price, e.nickname)
-      await Fish.del_fish(e.user_id, msg[2], msg[3])
-      await e.reply(`出售成功，获得了${price}鱼币`)
-    } else {
-      let price;
-      for(let item of config.fish_sale) {
-        if(item.type == msg[2]) price = item.price
+      let fish_sale = []
+      for (let item of playerBucket) {
+        if (item.fishType == msg[2]) {
+          fish_sale.push(item)
+        }
       }
-      await Fish.wr_money(e.user_id, price, e.nickname)
-      await Fish.del_fish(e.user_id, msg[2])
-      await e.reply(`出售成功，获得了${price}鱼币`)
+      if (fish_sale[0].number <= 0 || fish_sale.length == 0) {
+        e.reply(`啊嘞，你好像没有${msg[2]}呢~`)
+        delete status[key]
+        return true
+      }
+      if (msg[3] && msg[3] > 1) {
+        if (fish_sale[0].number < msg[3]) {
+          e.reply(`啊嘞，数量不够哎？不要虚报数量哦~`)
+          delete status[key]
+          return true
+        }
+        let price;
+        for (let item of config.fish_sale) {
+          if (item.type == msg[2]) price = item.price
+        }
+        price = price * msg[3]
+        await Fish.wr_money(e.user_id, price, e.nickname)
+        await Fish.del_fish(e.user_id, msg[2], msg[3])
+        await e.reply(`出售成功，获得了${price}鱼币`)
+      } else {
+        let price;
+        for (let item of config.fish_sale) {
+          if (item.type == msg[2]) price = item.price
+        }
+        await Fish.wr_money(e.user_id, price, e.nickname)
+        await Fish.del_fish(e.user_id, msg[2])
+        await e.reply(`出售成功，获得了${price}鱼币`)
+      }
+      delete status[key]
+    } catch (error) {
+      await e.reply('出售失败，请检查你是否有这条鱼')
+      delete status[key]
     }
-    delete status[key]
   }
   async user_bucket(e) {
     let playerBucket = await Fish.getinfo_bucket(e.user_id)
