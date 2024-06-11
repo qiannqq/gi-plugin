@@ -4,7 +4,11 @@ const { exec, execSync } = require("child_process");
 import getconfig from '../model/cfg.js';
 import lodash from 'lodash'
 
+// 该Update功能实现参考土块插件 (https://gitee.com/SmallK111407/earth-k-plugin)
+
 const { config } = getconfig(`config`, `config`)
+
+let updateStatus = false
 
 export class update extends plugin {
     constructor() {
@@ -28,89 +32,118 @@ export class update extends plugin {
           }
     }
     async 自动更新(){
-        const { config } = getconfig(`config`, `config`)
-        if(!config.autoupdate) return true;
-        let oldCommitId = await getcommitId(`Gi-plugin`)
-        const gitPullCmd = 'git -C ./plugins/Gi-plugin/ pull --no-rebase';
-        let ret = await execSyncc(gitPullCmd)
+        if(updateStatus) return false
+        updateStatus = true
+        try {
+            const { config } = getconfig(`config`, `config`)
+            if (!config.autoupdate) {
+                updateStatus = false
+                return true
+            };
+            let oldCommitId = await getcommitId(`Gi-plugin`)
+            const gitPullCmd = 'git -C ./plugins/Gi-plugin/ pull --no-rebase';
+            let ret = await execSyncc(gitPullCmd)
+            const pnpmCmd = 'cd ./plugins/Gi-plugin&& pnpm i --registry=https://registry.npmmirror.com'
+            await execSyncc(pnpmCmd)
 
-        if(ret.error){
-            let stdout = ret.stdout.toString()
-            let errMsg = ret.error.toString()
-            let errmsgs;
-            if(errMsg.includes("Timed out")) {
-                errmsgs = `连接超时`
+            if (ret.error) {
+                let stdout = ret.stdout.toString()
+                let errMsg = ret.error.toString()
+                let errmsgs;
+                if (errMsg.includes("Timed out")) {
+                    errmsgs = `连接超时`
+                }
+                if (/Failed to connect|unable to access/g.test(errMsg)) {
+                    errmsgs = `连接失败`
+                }
+                if (errMsg.includes("be overwritten by merge")) {
+                    errmsgs = `存在冲突，请解决冲突后再更新，或者执行#互动强制更新，放弃本地修改`
+                }
+                if (stdout.includes("CONFLICT")) {
+                    errmsgs = `存在冲突，请解决冲突后再更新，或者执行#互动强制更新，放弃本地修改`
+                }
+                logger.error(`互动插件：自动更新失败！\n${ret.error}\n${errmsgs}`)
+                updateStatus = false
+                return true;
             }
-            if(/Failed to connect|unable to access/g.test(errMsg)) {
-                errmsgs = `连接失败`
+            let Newtime = await getTime(`Gi-plugin`)
+            if (/(Already up[ -]to[ -]date|已经是最新的)/.test(ret.stdout)) {
+                logger.mark(`互动插件：自动更新未发现新版本\n最后更新时间:${Newtime}`)
+                updateStatus = false
+                return true;
             }
-            if(errMsg.includes("be overwritten by merge")) {
-                errmsgs = `存在冲突，请解决冲突后再更新，或者执行#互动强制更新，放弃本地修改`
-            }
-            if(stdout.includes("CONFLICT")) {
-                errmsgs = `存在冲突，请解决冲突后再更新，或者执行#互动强制更新，放弃本地修改`
-            }
-            logger.error(`互动插件：自动更新失败！\n${ret.error}\n${errmsgs}`)
-            return true;
+            logger.mark(`互动插件：自动更新成功\n最后更新时间:${Newtime}`)
+            let updateLog = await getLog(`Gi-plugin`, oldCommitId, {}, true)
+            updateLog.join(`\n\n`)
+            logger.mark(updateLog)
+            updateStatus = false
+            return true
+        } catch {
+            updateStatus = false
+            return false
         }
-        let Newtime = await getTime(`Gi-plugin`)
-        if (/(Already up[ -]to[ -]date|已经是最新的)/.test(ret.stdout)) {
-            logger.mark(`互动插件：自动更新未发现新版本\n最后更新时间:${Newtime}`)
-            return true;
-        }
-        logger.mark(`互动插件：自动更新成功\n最后更新时间:${Newtime}`)
-        let updateLog = await getLog(`Gi-plugin`, oldCommitId, {}, true)
-        updateLog.join(`\n\n`)
-        logger.mark(updateLog)
     }
     async 互动插件更新(e) {
-        if(!e.isMaster){
+        if (!e.isMaster) {
             e.reply(`暂无权限，只有主人才能操作`)
             return true;
         }
-        const gitPullCmd = 'git -C ./plugins/Gi-plugin/ pull --no-rebase';
 
-        let command = gitPullCmd;
-
-        if (e.msg.includes("强制")) {
-            e.reply(`[Gi-plugin]正在执行强制更新操作，请稍等`)
-            command = `git -C ./plugins/Gi-plugin/ checkout . && ${gitPullCmd}`
-        } else {
-            e.reply(`[Gi-plugin]正在执行更新操作，请稍等`)
+        if(updateStatus) {
+            await e.reply('[Gi-plugin]操作频繁')
+            return true
         }
-        let oldCommitId = await getcommitId(`Gi-plugin`)
+        updateStatus = true
+        try {
+            const gitPullCmd = 'git -C ./plugins/Gi-plugin/ pull --no-rebase';
 
+            let command = gitPullCmd;
 
-        let ret = await execSyncc(command)
-
-        if(ret.error){
-            gitErr(ret.error, ret.stdout, e);
-            return true;
-        }
-
-        let msgList = [];
-        let time = await getTime(`Gi-plugin`)
-        if (/(Already up[ -]to[ -]date|已经是最新的)/.test(ret.stdout)){
-            await e.reply(`互动插件已经是最新的了\n最后更新时间:${time}`)
-        } else {
-            await e.reply(`[Gi-plugin]互动插件 更新成功\n最后更新时间:${time}`)
-            let log = await getLog(`Gi-plugin`, oldCommitId, e)
-            for (let item of log) {
-                msgList.push({
-                    user_id: Bot.uin,
-                    nickname: Bot.nickname,
-                    message: item
-                })
+            if (e.msg.includes("强制")) {
+                e.reply(`[Gi-plugin]正在执行强制更新操作，请稍等`)
+                command = `git -C ./plugins/Gi-plugin/ checkout . && ${gitPullCmd}`
+            } else {
+                e.reply(`[Gi-plugin]正在执行更新操作，请稍等`)
             }
-            try {
-                msgList = await e.group.makeForwardMsg(msgList)
-            } catch(err) {
-                msgList = await e.friend.makeForwardMsg(msgList)
-            }
-            await e.reply(msgList)
-            await e.reply(`请重启Yunzai以应用更新\n【#重启】`)
-        }
+            let oldCommitId = await getcommitId(`Gi-plugin`)
 
+
+            let ret = await execSyncc(command)
+            const pnpmCmd = 'cd ./plugins/Gi-plugin&& pnpm i --registry=https://registry.npmmirror.com'
+            await execSyncc(pnpmCmd)
+
+            if (ret.error) {
+                gitErr(ret.error, ret.stdout, e);
+                updateStatus = false
+                return true;
+            }
+
+            let msgList = [];
+            let time = await getTime(`Gi-plugin`)
+            if (/(Already up[ -]to[ -]date|已经是最新的)/.test(ret.stdout)) {
+                await e.reply(`互动插件已经是最新的了\n最后更新时间:${time}`)
+            } else {
+                await e.reply(`[Gi-plugin]互动插件 更新成功\n最后更新时间:${time}`)
+                let log = await getLog(`Gi-plugin`, oldCommitId, e)
+                for (let item of log) {
+                    msgList.push({
+                        user_id: Bot.uin,
+                        nickname: Bot.nickname,
+                        message: item
+                    })
+                }
+                try {
+                    msgList = await e.group.makeForwardMsg(msgList)
+                } catch (err) {
+                    msgList = await e.friend.makeForwardMsg(msgList)
+                }
+                await e.reply(msgList)
+                await e.reply(`请重启Yunzai以应用更新\n【#重启】`)
+            }
+            updateStatus = false
+        } catch {
+
+        }
     }
 }
 
