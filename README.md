@@ -95,6 +95,7 @@ git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin
 | [@白狐](https://gitee.com/baihu433) | fix：锅巴引入链接错误 |
 | [@酸菜咸鱼](https://gitee.com/suancaixianyu) | 提供部分技术支持 |
 | [@wxq-597](https://gitee.com/wxq-597) | fix：文案错误 |
+| [土块插件](https://gitee.com/SmallK111407/earth-k-plugin) | Gi-plugin参考了土块插件的Update功能实现 |
 | @安分 | 特别贡献 |
 | [@山水](https://gitee.com/dengshanshui) | 特别赞助 |
 
