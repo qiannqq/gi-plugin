@@ -486,16 +486,7 @@ export class Gi_yu extends plugin {
       await common.sleep(2000)
       
       if (yu == `特殊事件`) {
-        let special_event_list = [`鲨鱼`, `空军`]
-        let special_event = special_event_list[Math.floor(Math.random() * special_event_list.length)]
-        switch (special_event) {
-          case '鲨鱼':
-            this.se鲨鱼(e)
-            break
-          case '空军':
-            this.se空军(e)
-            break
-        }
+        await this.特殊事件(e)
         delete status[key]
         return true
       }
@@ -526,33 +517,45 @@ export class Gi_yu extends plugin {
       return true
     }
   }
-  async se空军(e){
-    let { config } = getconfig(`config`, `fishText`)
-    let fishcd = 30
-    let userBuff = JSON.parse(await redis.get(`Fishing:${e.user_id}_buff`))
-    if(userBuff) {
-      if(userBuff.number <= 0) {
-        await redis.del(`Fishing:${e.user_id}_buff`)
-      } else {
-        fishcd = 10
+  async 特殊事件(e) {
+      try {
+        const { fish_cse } = await import(`../fish_cse/default.js`)
+        let new_fish_cse = new fish_cse(e)
+        let cse_probability = await new_fish_cse.probability()
+        let fnc_name = await Gimodel.getRandomName(cse_probability)
+        await new_fish_cse[fnc_name](e)
+        return true
+      } catch (error) {
+        return true
       }
-    }
-    let timeSet = timerManager.createTimer(e.user_id, fishcd)
-    timeSet.start()
-    let text = config.nothingText[Math.floor(Math.random() * config.nothingText.length)]
-    text = text.replace(/\n$/g, '')
-    await e.reply([segment.at(e.user_id),'\n' + text])
-    return true
   }
-  async se鲨鱼(e){
-    let msg = [segment.at(e.user_id), `\n水库中突然窜出一条🦈，将你咬伤后逃窜。`]
-    await e.reply(msg)
-    await common.sleep(500)
-    let { config } = getconfig(`config`, `config`)
-    await e.reply(`你很疑惑，为什么淡水库会有鲨鱼？但医生告诉你：你和你的鱼竿需要住院休息。\n鱼竿的假期时间翻倍(${config.fishcd * 2}s)\n你可以花费5鱼币提前出院【#加急治疗】`)
-    await redis.set(`Fishing:${e.user_id}:shayu`, `true`)
-    let timeSet = timerManager.createTimer(e.user_id, config.fishcd * 2)
-    timeSet.start()
-    // e.group.muteMember(e.user_id, 60)
-  }
+  // async se空军(e){
+  //   let { config } = getconfig(`config`, `fishText`)
+  //   let fishcd = 30
+  //   let userBuff = JSON.parse(await redis.get(`Fishing:${e.user_id}_buff`))
+  //   if(userBuff) {
+  //     if(userBuff.number <= 0) {
+  //       await redis.del(`Fishing:${e.user_id}_buff`)
+  //     } else {
+  //       fishcd = 10
+  //     }
+  //   }
+  //   let timeSet = timerManager.createTimer(e.user_id, fishcd)
+  //   timeSet.start()
+  //   let text = config.nothingText[Math.floor(Math.random() * config.nothingText.length)]
+  //   text = text.replace(/\n$/g, '')
+  //   await e.reply([segment.at(e.user_id),'\n' + text])
+  //   return true
+  // }
+  // async se鲨鱼(e){
+  //   let msg = [segment.at(e.user_id), `\n水库中突然窜出一条🦈，将你咬伤后逃窜。`]
+  //   await e.reply(msg)
+  //   await common.sleep(500)
+  //   let { config } = getconfig(`config`, `config`)
+  //   await e.reply(`你很疑惑，为什么淡水库会有鲨鱼？但医生告诉你：你和你的鱼竿需要住院休息。\n鱼竿的假期时间翻倍(${config.fishcd * 2}s)\n你可以花费5鱼币提前出院【#加急治疗】`)
+  //   await redis.set(`Fishing:${e.user_id}:shayu`, `true`)
+  //   let timeSet = timerManager.createTimer(e.user_id, config.fishcd * 2)
+  //   timeSet.start()
+  //   // e.group.muteMember(e.user_id, 60)
+  // }
 }

@@ -10,6 +10,38 @@ import getconfig from './cfg.js';
 
 class Gimodel {
   /**
+   * 依传入的概率随机抽取一个Name
+   * @param {Array} arr 数组，元素为对象 { name: 'name1', probability: 20 }
+   * @returns 
+   */
+  async getRandomName(arr) {
+    return new Promise((resolve, reject) => {
+        try {
+            let totalProbability = arr.reduce((sum, item) => sum + item.probability, 0);
+            if (totalProbability > 100) {
+                let factor = 100 / totalProbability;
+                arr = arr.map(item => ({
+                    name: item.name,
+                    probability: item.probability * factor
+                }));
+            }
+
+            let random = Math.random() * 100;
+            let sum = 0;
+
+            for (let item of arr) {
+                sum += item.probability;
+                if (random <= sum) {
+                    resolve(item.name);
+                    break;
+                }
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+  /**
    * 已废弃
    * @param {*} filePath 
    * @param {*} callback 
