@@ -16,7 +16,12 @@ class Fish {
         return
     }
     async get_fish_reservoir(uid) {
-        let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑", "特殊事件"]
+        let { config } = getconfig('config', 'config')
+        let fishArray = []
+        for (let item of config.fish_sale) {
+            fishArray.push(item.type)
+        }
+        fishArray.push('特殊事件')
         if(!uid) return fishArray[Math.floor(Math.random() * fishArray.length)]
         let user_random_pool = []
         try {

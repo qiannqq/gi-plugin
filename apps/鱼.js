@@ -391,7 +391,10 @@ export class Gi_yu extends plugin {
         delete status[key]
         return true
       }
-      let fishArray = ["🐟", "🐡", "🦐", "🦀", "🐠", "🐙", "🦑"]
+      let fishArray = []
+      for (let item of config.fish_sale) {
+        fishArray.push(item.type)
+      }
       let msg = e.msg.match(/^(#|\/)?出售(.*)\*(.*)?$/)
       if (!fishArray.includes(msg[2])) {
         await e.reply(`啊嘞，生物百科好像没有你说的鱼呢~`)
