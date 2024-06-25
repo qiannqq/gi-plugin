@@ -1,5 +1,6 @@
-import plugin from "../../../lib/plugins/plugin.js";
-import image from "../model/image.js";
+import { Gimodel, image } from '../model/index.js'
+import fs from 'fs'
+let GiPath = './plugins/Gi-plugin'
 
 export class chafen extends plugin {
     constructor(){
@@ -17,68 +18,45 @@ export class chafen extends plugin {
         })
     }
     async 查分(e){
-        let zhi1 = await redis.get(`Yunzai:chafen${e.user_id}`);zhi1 = JSON.parse(zhi1);
-        if (zhi1 === 8) {
-          let yuwen = await redis.get(`Yunzai:chafen${e.user_id}_yuwen`);yuwen = JSON.parse(yuwen);
-          let shuxue = await redis.get(`Yunzai:chafen${e.user_id}_shuxue`);shuxue = JSON.parse(shuxue);
-          let yingyu = await redis.get(`Yunzai:chafen${e.user_id}_yingyu`);yingyu = JSON.parse(yingyu);
-          let wuli = await redis.get(`Yunzai:chafen${e.user_id}_wuli`);wuli = JSON.parse(wuli);
-          let zhengzhi = await redis.get(`Yunzai:chafen${e.user_id}_zhengzhi`);zhengzhi = JSON.parse(zhengzhi);
-          let huaxue = await redis.get(`Yunzai:chafen${e.user_id}_huaxue`);huaxue = JSON.parse(huaxue);
-          let zongfen = await redis.get(`Yunzai:chafen${e.user_id}_zongfen`);zongfen = JSON.parse(zongfen);
-          const user_id = e.user_id;
-          const user_name = e.nickname;
-          const { img } = await image(e, 'chafen', 'chafen',{
-            user_id,
-            user_name,
-            yuwen,
-            shuxue,
-            yingyu,
-            wuli,
-            zhengzhi,
-            huaxue,
-            zongfen,
-          });
-            let msg = [
-                segment.at(e.user_id),
-                `\n你已经查过分了\n`,img
+        let data = []
+        data.push({ title: '考生姓名', value: this.nickname || this.e.nickname || e.sender.nickname || '未知考生' })
+        data.push({ title: '考生号', value: e.user_id })
+        if(!fs.existsSync(`${GiPath}/data/gaokao`)) await fs.promises.mkdir(`${GiPath}/data/gaokao`)
+        let total_score = 0
+        if(fs.existsSync(`${GiPath}/data/gaokao/2024_${e.user_id}.json`)) {
+            try {
+                let subject = JSON.parse(await fs.promises.readFile(`${GiPath}/data/gaokao/2024_${e.user_id}.json`, 'utf-8'))
+                let total_score = 0
+                for (let item of subject) {
+                    total_score = total_score + item.value
+                }
+                data.push(...subject, { title: '总分', value: total_score })
+                let { img } = await image(e, 'chafen', 'chafen', {
+                    data,
+                    vCode: await Gimodel.getRandom64Code()
+                })
+                await e.reply([segment.at(e.user_id), `\n考生号：${e.user_id}\n(每年仅能查一次)\n你的成绩为：`, img])
+            } catch (error) {
+                
+            }
+        } else {
+            let subject = [
+                { title: '语文', value: await Gimodel.getReadmeNumber(111, 40) },
+                { title: '数学、物理', value: await Gimodel.getReadmeNumber(182, 70) },
+                { title: '英语', value: await Gimodel.getReadmeNumber(111, 40) },
+                { title: '生物、化学', value: await Gimodel.getReadmeNumber(142, 60) },
             ]
-            e.reply(msg)
-            return true;
+            for (let item of subject) {
+                total_score = total_score + item.value
+            }
+            data.push(...subject, { title: '总分', value: total_score })
+            let { img } = await image(e, 'chafen', 'chafen', {
+                data,
+                vCode: await Gimodel.getRandom64Code()
+            })
+            await fs.promises.writeFile(`${GiPath}/data/gaokao/2024_${e.user_id}.json`, JSON.stringify(subject, null, 3), 'utf-8')
+            await e.reply([segment.at(e.user_id), `\n考生号：${e.user_id}\n(每年仅能查一次)\n你的成绩为：`, img])
         }
-        let zhi = 8;
-        redis.set(`Yunzai:chafen${e.user_id}`, JSON.stringify(zhi));
-        const yuwen = Math.floor(Math.random() * 111) + 40;
-        const shuxue = Math.floor(Math.random() * 111) + 40;
-        const yingyu = Math.floor(Math.random() * 111) + 40;
-        const wuli = Math.floor(Math.random() * 71) + 30;
-        const zhengzhi = Math.floor(Math.random() * 71) + 30;
-        const huaxue = Math.floor(Math.random() * 71) + 30;
-        const zongfen = yuwen + shuxue + yingyu + wuli + zhengzhi + huaxue;
-        const user_name = e.nickname;
-        const user_id = e.user_id;
-        const { img } = await image(e, 'chafen', 'chafen',{
-          user_id,
-          user_name,
-          yuwen,
-          shuxue,
-          yingyu,
-          wuli,
-          zhengzhi,
-          huaxue,
-          zongfen,
-        });
-        let msg = [
-            segment.at(e.user_id),
-            `\n你的分数是……\n`,img]
-        e.reply(msg)
-        redis.set(`Yunzai:chafen${e.user_id}_yuwen`, JSON.stringify(yuwen));//语文
-        redis.set(`Yunzai:chafen${e.user_id}_shuxue`, JSON.stringify(shuxue));//数学
-        redis.set(`Yunzai:chafen${e.user_id}_yingyu`, JSON.stringify(yingyu));//英语
-        redis.set(`Yunzai:chafen${e.user_id}_wuli`, JSON.stringify(wuli));//物理
-        redis.set(`Yunzai:chafen${e.user_id}_zhengzhi`, JSON.stringify(zhengzhi));//政治
-        redis.set(`Yunzai:chafen${e.user_id}_huaxue`, JSON.stringify(huaxue));//化学
-        redis.set(`Yunzai:chafen${e.user_id}_zongfen`, JSON.stringify(zongfen));//总分
         return true;
     }
 }

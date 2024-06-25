@@ -14,10 +14,6 @@ if (!global.segment) {
 
 let ret = []
 
-
-
-
-
 const files = fs
   .readdirSync('./plugins/Gi-plugin/apps')
   .filter((file) => file.endsWith('.js'))

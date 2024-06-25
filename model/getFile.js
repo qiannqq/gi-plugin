@@ -40,7 +40,28 @@ class Gimodel {
             reject(error);
         }
     });
-}
+  }
+  /**
+   * 获取64位随机数字与字母的组合
+   * @returns string
+   */
+  async getRandom64Code() {
+    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < 64; i++) {
+      result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+  }
+  /**
+   * 生成随机数字
+   * @param {number} a 数字最大范围
+   * @param {number} b 基于获取的数字再增加，默认0
+   * @returns number
+   */
+  async getReadmeNumber(a, b = 0) {
+    return Math.floor(Math.random() * a) + b
+  }
   /**
    * 已废弃
    * @param {*} filePath 

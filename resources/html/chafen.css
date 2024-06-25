@@ -1,38 +1,30 @@
-body {
-    width: 1080px;
-    height: 2600px;
-}
-
-table {
-    margin: 0 auto;
-}
-
-th,
-td {
-    padding: 10px;
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
     text-align: center;
 }
-
-th {
-    background-color: #f2f2f2;
+th, td {
+    padding: 8px;
 }
-
-.centered {
-    text-align: center;
-}
-
-.red {
+h3 {
     color: red;
+    text-align: center;
 }
-
-th {
-    font-size: 8em;
-}
-
-td {
-    font-size: 8em;
-}
-
 p {
-    font-size: 6em;
+    text-align: center;
+}
+table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+tr:nth-child(odd) {
+    background-color: lightgray;
+}
+tr:nth-child(even) {
+    background-color: white;
+}
+.a1 {
+    font-weight: bold;
+    color: red;
 }
