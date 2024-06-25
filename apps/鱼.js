@@ -1,8 +1,5 @@
-import common from '../../../lib/common/common.js'
-import Fish from '../model/yu.js'
-import getconfig from '../model/cfg.js'
-import Gimodel from '../model/getFile.js'
 import fs from 'fs'
+import { common, Fish, getconfig, Gimodel } from '../model/index.js'
 
 let status = {}
 

@@ -1,6 +1,6 @@
 import fs from 'fs'
-import getconfig from './cfg.js'
-import Gimodel from './getFile.js'
+import { getconfig, Gimodel } from './index.js'
+
 let GiPath = `./plugins/Gi-plugin`
 
 class Fish {
