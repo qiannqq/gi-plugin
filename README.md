@@ -6,6 +6,8 @@
   <img src="https://gitee.com/qiannqq/gi-plugin/raw/master/resources/logo.png" alt="Image" width="200" height="200">
 </p>
 
+> 最近身体抱恙，暂缓更新
+
 #### 简介
 本插件多用于群聊中群友之间互动娱乐，因此叫做群互动插件。<br>
 本插件主要开发方向为提升群友与群友与bot之间的互动性，让bot不止是个冰冷只会查询数据的机器人。
