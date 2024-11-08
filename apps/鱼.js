@@ -44,7 +44,7 @@ export class Gi_yu extends plugin {
           fnc: 'sell_all_fish'
         },
         {
-          reg: '^(#|/)?小卖铺(购买)?(.*)?$',
+          reg: /^(#|\/)?小卖铺(购买.*)?(\*\d*)?$/,
           fnc: 'fish_shop'
         },
         {
@@ -168,41 +168,59 @@ export class Gi_yu extends plugin {
       }
   }
   async fish_shop(e) {
-    let command = e.msg.match(/^(#|\/)?小卖铺(购买)?(.*)?$/)
+    let command = e.msg.match(/^(#|\/)?小卖铺(购买.*)?(\*\d+)?$/)
     let { config } = getconfig(`defSet`, `shop`)
     if(!command[2]) {
       let msgList = [{nickname: Bot.nickname, user_id: Bot.uin, message: `水库边的小卖铺~`}]
+      let rawMsg = []
       for (let item of config.shop) {
         msgList.push({
           nickname: Bot.nickname,
           user_id: Bot.uin,
-          message: `商品名称:${item.name}\n商品描述:${item.desc}\n商品价格:${item.price}鱼币\n购买方式:发送#小卖铺购买${item.name}`
+          message: `商品名称:${item.name}\n商品描述:${item.desc}\n商品价格:${item.price}鱼币\n购买方式:发送#小卖铺购买${item.name}*1`
         })
+        rawMsg.push(`商品名称:${item.name}\n商品描述:${item.desc}\n商品价格:${item.price}鱼币\n购买方式:发送#小卖铺购买${item.name}*1`)
       }
       let msg;
       try {
-        msg = await Bot.pickUser(e.user_id).makeForwardMsg(msgList)
+        try {
+          msg = await Bot.pickUser(e.user_id).makeForwardMsg(msgList)
+        } catch {
+          msg = await e.group.makeForwardMsg(msgList)
+        }
       } catch {
-        msg = await e.group.makeForwardMsg(msgList)
+        msg = rawMsg.join('\n\n')
       }
       await e.reply(msg)
       return true
     } else {
+      let buyNumber
+      try {
+        buyNumber = command[2].match(/.*\*(.*)/)[1]
+      } catch { }
       let key = 'PlayerListMoney'
       if(status[key]) return true
       status[key] = true
       let product_info;
-      command[3] = command[3].replace(/购买/g, ``)
+      command[2] = command[2].replace(/购买|\*\d*/g, ``)
+      console.log(command)
       for (let item of config.shop) {
-        if(command[3] === item.name) product_info = item 
+        if(command[2] === item.name) product_info = item 
       }
       if(!product_info) {
         await e.reply(`啊嘞，小卖铺好像没有找到你要买的东西呢`)
         delete status[key]
         return true
       }
+      if(buyNumber) {
+        buyNumber = buyNumber.replace(/\*/, ``)
+        buyNumber = Number(buyNumber)
+        if(typeof buyNumber === 'number') {
+          product_info.price = product_info.price * buyNumber
+        }
+      }
       if(await Fish.get_usermoneyInfo(e.user_id) < product_info.price) {
-        await e.reply([segment.at(e.user_id), `\n小卖铺疑惑的看向你兜里的${await Fish.get_usermoneyInfo(e.user_id)}个鱼币，你尴尬的笑了笑。`])
+        await e.reply([segment.at(e.user_id), `\n小卖铺老板疑惑的看向你兜里的${await Fish.get_usermoneyInfo(e.user_id)}个鱼币，你尴尬的笑了笑。`])
         delete status[key]
         return true
       }
@@ -216,7 +234,7 @@ export class Gi_yu extends plugin {
           }
           let BuffData = {
             buffname: `钓鱼竿润滑油`,
-            number: number + 5
+            number: number + 5 * ( buyNumber || 1 )
           }
           await redis.set(`Fishing:${e.user_id}_buff`, JSON.stringify(BuffData))
           break;
@@ -228,7 +246,7 @@ export class Gi_yu extends plugin {
             var number = 0
           }
           let FishforData = {
-            number: number + 1
+            number: number + 1 * ( buyNumber || 1 )
           }
           await redis.set(`Fishing:${e.user_id}_fishfor`, JSON.stringify(FishforData))
           break;
@@ -237,7 +255,7 @@ export class Gi_yu extends plugin {
       }
       await Fish.deduct_money(e.user_id, product_info.price)
       delete status[key]
-      await e.reply(`你花费了${product_info.price}鱼币购买了${product_info.name}~`)
+      await e.reply(`你花费了${product_info.price}鱼币购买了${buyNumber || 1}个${product_info.name}~`)
     }
     return true
   }
