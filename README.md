@@ -15,11 +15,11 @@
 在Yunzai-Bot根目录执行以下命令   **安装时请注意文件夹大小写！** <br>
 ##### Gitee源（国内推荐使用）
 ```
-git clone --depth=1 https://gitee.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
+git clone --depth=1 https://gitee.com/qiannqq/Gi-plugin.git ./plugins/Gi-plugin/
 ```
 ##### Github源（镜像仓库同步更新，无需在意更新延迟）
 ```
-git clone --depth=1 https://github.com/qiannqq/gi-plugin.git ./plugins/Gi-plugin/
+git clone --depth=1 https://github.com/qiannqq/Gi-plugin.git ./plugins/Gi-plugin/
 ```
 <details>
 <summary>指令以及其作用</summary>

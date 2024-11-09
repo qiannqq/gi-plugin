@@ -14,7 +14,7 @@ export function supportGuoba() {
       title: '互动插件(Gi-plugin)',
       author: '@千奈千祁',
       authorLink: 'https://gitee.com/QianNQQ',
-      link: 'https://gitee.com/QianNQQ/gi-plugin',
+      link: 'https://gitee.com/QianNQQ/Gi-plugin',
       isV3: true,
       isV2: false,
       description: `漂流瓶、每日打卡等群友之间互动的娱乐功能`,
